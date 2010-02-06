@@ -123,7 +123,7 @@ msgstr "Воздержаться"
 #: ../root/user/profile.tt:114
 #, perl-format
 msgid "Accepted"
-msgstr ""
+msgstr "Принято"
 
 #: ../root/layout/menu.tt:185 ../root/layout/menu.tt:232
 #, fuzzy, perl-format
