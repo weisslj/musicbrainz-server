@@ -103,7 +103,7 @@ msgstr ""
 #: ../root/edit/details/add_track.tt:17
 #, perl-format
 msgid "A new recording was created for this track"
-msgstr ""
+msgstr "Для этой дорожки была создана новая запись"
 
 #: ../root/scripts/module_guideline_list.tt:16
 #, perl-format
@@ -111,7 +111,7 @@ msgid "Abbreviation Style"
 msgstr ""
 
 #: ../root/forms/edit-note.tt:4
-#, fuzzy, perl-format
+#, perl-format
 msgid "About edit notes:"
 msgstr "Править:"
 
