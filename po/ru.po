@@ -2,7 +2,7 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the mbserver package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mbserver\n"
@@ -14,21 +14,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Launchpad-Export-Date: 2010-01-02 15:32+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../root/user/lost_password.tt:7
 #, perl-format
-msgid ""
-" Enter your username and email below. We will send you an email with a link "
-"to reset your password. If you have forgotten your username, {link|retrieve "
-"it} first and then reset your password. "
-msgstr ""
-" Введите имя пользователя и адрес электронной почты. Мы вышлем письмо со "
-"ссылкой для сброса вашего пароля. Если вы забыли имя пользователя, {link|"
-"восстановите его}, а затем сбросьте пароль. "
+msgid " Enter your username and email below. We will send you an email with a link to reset your password. If you have forgotten your username, {link|retrieve it} first and then reset your password. "
+msgstr " Введите имя пользователя и адрес электронной почты. Мы вышлем письмо со ссылкой для сброса вашего пароля. Если вы забыли имя пользователя, {link|восстановите его}, а затем сбросьте пароль. "
 
 #: ../root/edit/details/delete_medium.tt:5
 #, perl-format
@@ -69,9 +62,7 @@ msgstr ""
 
 #: ../root/release/lookup.tt:31
 #, perl-format
-msgid ""
-"* Match indicates the total difference in seconds between the CD you "
-"requested and the matches we found."
+msgid "* Match indicates the total difference in seconds between the CD you requested and the matches we found."
 msgstr ""
 
 #: ../root/user/profile.tt:87
@@ -101,18 +92,12 @@ msgstr ""
 
 #: ../root/forms/auto-editor.tt:5
 #, perl-format
-msgid ""
-"<strong>AutoEditor privileges</strong>: If you untick this checkbox, this "
-"edit will be entered as if you would not have {status|AutoEditor} status. "
-"You can enable them any time again."
+msgid "<strong>AutoEditor privileges</strong>: If you untick this checkbox, this edit will be entered as if you would not have {status|AutoEditor} status. You can enable them any time again."
 msgstr ""
 
 #: ../root/browse/page_selector.tt:17
 #, perl-format
-msgid ""
-"<strong>Note:</strong> You have requested to browse listings using a query "
-"longer than 5 charaters.  We do not index data at this level of "
-"granularity.  You may want to use the the various {uri|search pages} instead."
+msgid "<strong>Note:</strong> You have requested to browse listings using a query longer than 5 charaters.  We do not index data at this level of granularity.  You may want to use the the various {uri|search pages} instead."
 msgstr ""
 
 #: ../root/edit/details/add_track.tt:17
@@ -133,7 +118,7 @@ msgstr "Править:"
 #: ../root/edit/vote.tt:16
 #, perl-format
 msgid "Abstain"
-msgstr ""
+msgstr "Воздержаться"
 
 #: ../root/user/profile.tt:114
 #, perl-format
@@ -328,10 +313,7 @@ msgstr ""
 
 #: ../root/main/index.tt:83
 #, perl-format
-msgid ""
-"Alternatively, you might just want to {search_url|search} or {browse_url|"
-"browse} the MusicBrainz database. If you spot a mistake, or something that "
-"is missing, you can even {edit|edit or add more data}!"
+msgid "Alternatively, you might just want to {search_url|search} or {browse_url|browse} the MusicBrainz database. If you spot a mistake, or something that is missing, you can even {edit|edit or add more data}!"
 msgstr ""
 
 #: ../root/annotation/history.tt:2
@@ -346,9 +328,7 @@ msgstr "Аннотация изменена в последний раз в {las
 
 #: ../root/user/register.tt:58
 #, perl-format
-msgid ""
-"Any notes attached to your edits will be emailed to you. This enables you to "
-"remove, correct or clarify edits which will otherwise be rejected."
+msgid "Any notes attached to your edits will be emailed to you. This enables you to remove, correct or clarify edits which will otherwise be rejected."
 msgstr ""
 
 #: ../root/recording/index.tt:5 ../root/tracklist/index.tt:25
@@ -363,94 +343,58 @@ msgstr "Удалить"
 
 #: ../root/artist/merge_confirm.tt:4
 #, perl-format
-msgid ""
-"Are you sure that you want to merge the artist {artist1} into the artist "
-"{artist2}?"
-msgstr ""
-"Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
+msgid "Are you sure that you want to merge the artist {artist1} into the artist {artist2}?"
+msgstr "Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
 
 #: ../root/label/merge_confirm.tt:4
 #, fuzzy, perl-format
-msgid ""
-"Are you sure that you want to merge the label {label1} into the label "
-"{label2}?"
-msgstr ""
-"Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
+msgid "Are you sure that you want to merge the label {label1} into the label {label2}?"
+msgstr "Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
 
 #: ../root/release_group/merge_confirm.tt:4
 #, fuzzy, perl-format
-msgid ""
-"Are you sure that you want to merge the release group {rg1} by {artist1} "
-"into the release group {rg2} by {artist2}?"
-msgstr ""
-"Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
+msgid "Are you sure that you want to merge the release group {rg1} by {artist1} into the release group {rg2} by {artist2}?"
+msgstr "Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
 
 #: ../root/artist/delete_alias.tt:8
 #, fuzzy, perl-format
-msgid ""
-"Are you sure you want to remove the alias {alias} , which points to the "
-"artist {artist}?"
-msgstr ""
-"Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, "
-"указывающее на исполнителя {artist}?"
+msgid "Are you sure you want to remove the alias {alias} , which points to the artist {artist}?"
+msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
 #: ../root/label/delete_alias.tt:8
 #, fuzzy, perl-format
-msgid ""
-"Are you sure you want to remove the alias {alias} , which points to the "
-"label {label}?"
-msgstr ""
-"Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, "
-"указывающее на исполнителя {artist}?"
+msgid "Are you sure you want to remove the alias {alias} , which points to the label {label}?"
+msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
 #: ../root/admin/linkattributetype/delete.tt:6
 #, fuzzy, perl-format
-msgid ""
-"Are you sure you wish to delete the <strong>{link_attr_type}</strong> link "
-"type?"
-msgstr ""
-"Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, "
-"указывающее на исполнителя {artist}?"
+msgid "Are you sure you wish to delete the <strong>{link_attr_type}</strong> link type?"
+msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
 #: ../root/admin/linktype/delete.tt:6
 #, fuzzy, perl-format
-msgid ""
-"Are you sure you wish to delete the <strong>{link_type}</strong> link type?"
-msgstr ""
-"Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, "
-"указывающее на исполнителя {artist}?"
+msgid "Are you sure you wish to delete the <strong>{link_type}</strong> link type?"
+msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
 #: ../root/admin/wikidoc/delete.tt:6
 #, fuzzy, perl-format
-msgid ""
-"Are you sure you wish to remove the <strong>{page}</strong> page from the "
-"transclusion index?"
-msgstr ""
-"Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, "
-"указывающее на исполнителя {artist}?"
+msgid "Are you sure you wish to remove the <strong>{page}</strong> page from the transclusion index?"
+msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
 #: ../root/label/delete.tt:8
 #, fuzzy, perl-format
 msgid "Are you sure you wish to remove the label {label} from MusicBrainz?"
-msgstr ""
-"Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, "
-"указывающее на исполнителя {artist}?"
+msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
 #: ../root/edit/relationship/delete.tt:6
 #, fuzzy, perl-format
-msgid ""
-"Are you sure you wish to remove the relationship between {entity0} and "
-"{entity1} from MusicBrainz?"
-msgstr ""
-"Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
+msgid "Are you sure you wish to remove the relationship between {entity0} and {entity1} from MusicBrainz?"
+msgstr "Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
 
 #: ../root/release_group/delete.tt:5
 #, fuzzy, perl-format
-msgid ""
-"Are you sure you wish to remove the release group {rg} by {artist} from "
-"MusicBrainz?"
-msgstr ""
-"Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
+msgid "Are you sure you wish to remove the release group {rg} by {artist} from MusicBrainz?"
+msgstr "Вы уверены, что хотите свести исполнителя {artist1} в исполнителя {artist2}?"
 
 #: ../root/label/edit_form.tt:9
 #, perl-format
@@ -535,9 +479,7 @@ msgstr ""
 
 #: ../root/edit/require_note.tt:2
 #, perl-format
-msgid ""
-"As some editors have voted against this edit, you must leave an edit note "
-"before you can approve the edit"
+msgid "As some editors have voted against this edit, you must leave an edit note before you can approve the edit"
 msgstr ""
 
 #: ../root/recording/puids.tt:3
@@ -592,18 +534,12 @@ msgstr "Вы собираетесь добавить исполнителя в M
 
 #: ../root/user/register.tt:53
 #, perl-format
-msgid ""
-"Because some users, unfortunately, made lots of questionable edits and could "
-"not be contacted to fix their mistakes, we now require a confirmed (i.e. "
-"working) email address before a user can make edits to the database."
+msgid "Because some users, unfortunately, made lots of questionable edits and could not be contacted to fix their mistakes, we now require a confirmed (i.e. working) email address before a user can make edits to the database."
 msgstr ""
 
 #: ../root/user/registered.tt:13
 #, perl-format
-msgid ""
-"Because you provided an email address, an verification email has been sent "
-"to <code>{addr}</code>. Please check your mailbox and click on the link in "
-"the email to verify the new email address."
+msgid "Because you provided an email address, an verification email has been sent to <code>{addr}</code>. Please check your mailbox and click on the link in the email to verify the new email address."
 msgstr ""
 
 #: ../root/user/register.tt:7
@@ -627,10 +563,7 @@ msgstr "Конечная дата"
 
 #: ../root/search/error/internal-error.tt:6
 #, perl-format
-msgid ""
-"Below is the error information. If you wish to file a bug report, you may do "
-"so at {bugs|our bug tracker}. The below information will help, so please be "
-"sure to include it!"
+msgid "Below is the error information. If you wish to file a bug report, you may do so at {bugs|our bug tracker}. The below information will help, so please be sure to include it!"
 msgstr ""
 
 #: ../root/user/edit.tt:25 ../root/user/profile.tt:79
@@ -731,12 +664,8 @@ msgstr "Отменить"
 
 #: ../root/artist/delete_alias.tt:17 ../root/label/delete_alias.tt:17
 #, fuzzy, perl-format
-msgid ""
-"Cancelling a pending edit will take effect within an hour, while removing an "
-"artist alias has to be voted on according to the voting process."
-msgstr ""
-"Отмена свежей правки подействует в течении часа, в то время как данные "
-"принятые в базу данных должны будут пройти процесс голосования."
+msgid "Cancelling a pending edit will take effect within an hour, while removing an artist alias has to be voted on according to the voting process."
+msgstr "Отмена свежей правки подействует в течении часа, в то время как данные принятые в базу данных должны будут пройти процесс голосования."
 
 #: ../root/scripts/module_guideline_list.tt:62
 #, fuzzy, perl-format
@@ -881,25 +810,13 @@ msgstr "Править аннотацию"
 
 #: ../root/artist/edit_form.tt:29
 #, perl-format
-msgid ""
-"Confirm by activating the checkbox below that you have read the "
-"{doc_artistcomment|artist comment guideline}, understood how we distinguish "
-"duplicate artists, and that you know what you are doing."
-msgstr ""
-"Подтвердите галочкой ниже, что вы прочитали {doc_artistcomment|указания по "
-"комментариям для исполнителей}, поняли как различаются исполнители и что вы "
-"знаете, что вы делаете."
+msgid "Confirm by activating the checkbox below that you have read the {doc_artistcomment|artist comment guideline}, understood how we distinguish duplicate artists, and that you know what you are doing."
+msgstr "Подтвердите галочкой ниже, что вы прочитали {doc_artistcomment|указания по комментариям для исполнителей}, поняли как различаются исполнители и что вы знаете, что вы делаете."
 
 #: ../root/label/edit_form.tt:21
 #, fuzzy, perl-format
-msgid ""
-"Confirm by activating the checkbox below that you have read the "
-"{doc_labelcomment|label comment guideline}, understood how we distinguish "
-"duplicate labels, and that you know what you are doing."
-msgstr ""
-"Подтвердите галочкой ниже, что вы прочитали {doc_artistcomment|указания по "
-"комментариям для исполнителей}, поняли как различаются исполнители и что вы "
-"знаете, что вы делаете."
+msgid "Confirm by activating the checkbox below that you have read the {doc_labelcomment|label comment guideline}, understood how we distinguish duplicate labels, and that you know what you are doing."
+msgstr "Подтвердите галочкой ниже, что вы прочитали {doc_artistcomment|указания по комментариям для исполнителей}, поняли как различаются исполнители и что вы знаете, что вы делаете."
 
 #: ../root/user/change_password.tt:21
 #, fuzzy, perl-format
@@ -913,9 +830,7 @@ msgstr "Старый пароль:"
 
 #: ../root/user/registered.tt:4
 #, perl-format
-msgid ""
-"Congratulations, your new account has been created and you are now logged "
-"into MusicBrainz!"
+msgid "Congratulations, your new account has been created and you are now logged into MusicBrainz!"
 msgstr ""
 
 #: ../root/layout/footer-bar.tt:56
@@ -1026,12 +941,8 @@ msgstr "Дата"
 
 #: ../root/artist/edit_form.tt:69 ../root/label/edit_form.tt:57
 #, perl-format
-msgid ""
-"Dates are in the format YYYY-MM-DD. Partial dates such as YYYY-MM or just "
-"YYYY are OK, or you can omit the date entirely."
-msgstr ""
-"Даты записываются в формате ГГГГ-ММ-ДД. Можно вводить даты частично, "
-"например ГГГГ-ММ или ГГГГ, или не вписывать дату вообще."
+msgid "Dates are in the format YYYY-MM-DD. Partial dates such as YYYY-MM or just YYYY are OK, or you can omit the date entirely."
+msgstr "Даты записываются в формате ГГГГ-ММ-ДД. Можно вводить даты частично, например ГГГГ-ММ или ГГГГ, или не вписывать дату вообще."
 
 #: ../root/admin/linkattributetype/delete.tt:10
 #: ../root/admin/linktype/delete.tt:10 ../root/admin/wikidoc/delete.tt:10
@@ -1536,9 +1447,7 @@ msgstr "Отредактировать"
 
 #: ../root/user/lost_username.tt:7
 #, perl-format
-msgid ""
-"Enter your email address below and we will send you an email with your "
-"MusicBrainz account information."
+msgid "Enter your email address below and we will send you an email with your MusicBrainz account information."
 msgstr ""
 
 #: ../root/report/not_available.tt:1 ../root/report/not_available.tt:3
@@ -1599,9 +1508,7 @@ msgstr ""
 
 #: ../root/search/error/wrapper.tt:5
 #, perl-format
-msgid ""
-"For assistance in writing effective search queries, try reading the {syntax|"
-"text search syntax} documentation."
+msgid "For assistance in writing effective search queries, try reading the {syntax|text search syntax} documentation."
 msgstr ""
 
 #: ../root/layout/menu.tt:244 ../root/layout/sidebar/login.tt:14
@@ -1719,12 +1626,7 @@ msgstr "Google"
 
 #: ../root/main/frame.tt:4
 #, perl-format
-msgid ""
-"Google Chrome Frame is a plug-in that seamlessly brings Google Chrome's open "
-"web technologies and speedy JavaScript engine to Internet Explorer. "
-"MusicBrainz uses a lot of modern technology that Internet Explorer does not "
-"yet support, so we highly recommend the use of this plugin to ensure you get "
-"the most out of the website."
+msgid "Google Chrome Frame is a plug-in that seamlessly brings Google Chrome's open web technologies and speedy JavaScript engine to Internet Explorer. MusicBrainz uses a lot of modern technology that Internet Explorer does not yet support, so we highly recommend the use of this plugin to ensure you get the most out of the website."
 msgstr ""
 
 #: ../root/scripts/module_guideline_list.tt:72
@@ -1796,52 +1698,27 @@ msgstr ""
 
 #: ../root/artist/edit_form.tt:6
 #, perl-format
-msgid ""
-"If one or more artists with the same name already exist in the database, you "
-"will be prompted to {doc_addcomment|add a comment to this artist}, which "
-"will allow users to distinguish this entry from the other artist(s) with the "
-"same name."
-msgstr ""
-"Если исполнитель с таким именем уже существует, вас попросят {doc_addcomment|"
-"добавить комментарий}, по которому пользователи смогут различить "
-"исполнителей с одинаковым именем."
+msgid "If one or more artists with the same name already exist in the database, you will be prompted to {doc_addcomment|add a comment to this artist}, which will allow users to distinguish this entry from the other artist(s) with the same name."
+msgstr "Если исполнитель с таким именем уже существует, вас попросят {doc_addcomment|добавить комментарий}, по которому пользователи смогут различить исполнителей с одинаковым именем."
 
 #: ../root/label/edit_form.tt:3
 #, fuzzy, perl-format
-msgid ""
-"If one or more labels with the same name already exist in the database, you "
-"will be prompted to add a {doc_comment|comment to this label} that will "
-"allow users to distinguish this entry from the other label(s) with the same "
-"name."
-msgstr ""
-"Если исполнитель с таким именем уже существует, вас попросят {doc_addcomment|"
-"добавить комментарий}, по которому пользователи смогут различить "
-"исполнителей с одинаковым именем."
+msgid "If one or more labels with the same name already exist in the database, you will be prompted to add a {doc_comment|comment to this label} that will allow users to distinguish this entry from the other label(s) with the same name."
+msgstr "Если исполнитель с таким именем уже существует, вас попросят {doc_addcomment|добавить комментарий}, по которому пользователи смогут различить исполнителей с одинаковым именем."
 
 #: ../root/artist/delete_alias.tt:11 ../root/label/delete_alias.tt:11
 #, perl-format
-msgid ""
-"If you added this alias by mistake, please follow the instructions about "
-"{cancel|how to cancel pending edits}, to cancel the pending add track edit. "
-"Removing pending edits, rather than entering new edits helps reducing the "
-"amount of open edits in the system."
+msgid "If you added this alias by mistake, please follow the instructions about {cancel|how to cancel pending edits}, to cancel the pending add track edit. Removing pending edits, rather than entering new edits helps reducing the amount of open edits in the system."
 msgstr ""
 
 #: ../root/main/index.tt:89
 #, perl-format
-msgid ""
-"If you are a software developer you might want to learn about the "
-"{doc_client|MusicBrainz client library/<abbr title=\"software development kit"
-"\">SDK</abbr>}. You can use the library to enable your programs to access "
-"the MusicBrainz database, both for looking up data and also for submitting "
-"new data."
+msgid "If you are a software developer you might want to learn about the {doc_client|MusicBrainz client library/<abbr title=\"software development kit\">SDK</abbr>}. You can use the library to enable your programs to access the MusicBrainz database, both for looking up data and also for submitting new data."
 msgstr ""
 
 #: ../root/main/index.tt:86
 #, perl-format
-msgid ""
-"If you are new to MusicBrainz, please take a moment to read the {doc_begin|"
-"beginners' guide} before editing the database."
+msgid "If you are new to MusicBrainz, please take a moment to read the {doc_begin|beginners' guide} before editing the database."
 msgstr ""
 
 #: ../root/user/edit.tt:7
@@ -1851,93 +1728,57 @@ msgstr ""
 
 #: ../root/user/register.tt:8
 #, perl-format
-msgid ""
-"If you have any questions, please review the {faq|Frequently Asked Questions "
-"(FAQ)}, or post it to the appropriate {ml|Mailing List}."
+msgid "If you have any questions, please review the {faq|Frequently Asked Questions (FAQ)}, or post it to the appropriate {ml|Mailing List}."
 msgstr ""
 
 #: ../root/user/login.tt:11
 #, perl-format
-msgid ""
-"If you have trouble logging in, please note that since this is a {server} "
-"server, the passwords may have been reset to \"mb\". If you still cannot "
-"login, try to clear the cookies for musicbrainz.org, and/or clearing the "
-"browser cache."
+msgid "If you have trouble logging in, please note that since this is a {server} server, the passwords may have been reset to \"mb\". If you still cannot login, try to clear the cookies for musicbrainz.org, and/or clearing the browser cache."
 msgstr ""
 
 #: ../root/search/form.tt:30
 #, perl-format
-msgid ""
-"If you require up to the minute correct search, please use the direct "
-"database search"
+msgid "If you require up to the minute correct search, please use the direct database search"
 msgstr ""
 
 #: ../root/artist/add_alias.tt:5 ../root/artist/edit_alias.tt:5
 #, fuzzy, perl-format
-msgid ""
-"If you see a misspelled alias here, it most likely is listed on purpose, and "
-"should not be renamed or removed. Please see {aa|artist aliases} for more "
-"details."
-msgstr ""
-"Альтернативные имена с опечатками скорее всего введены в базу намеренно, их "
-"не нужно переименовывать или удалять. Почитайте на эту тему про {doc_alias|"
-"альтернативные имена}."
+msgid "If you see a misspelled alias here, it most likely is listed on purpose, and should not be renamed or removed. Please see {aa|artist aliases} for more details."
+msgstr "Альтернативные имена с опечатками скорее всего введены в базу намеренно, их не нужно переименовывать или удалять. Почитайте на эту тему про {doc_alias|альтернативные имена}."
 
 #: ../root/label/add_alias.tt:5 ../root/label/edit_alias.tt:5
 #, fuzzy, perl-format
-msgid ""
-"If you see a misspelled alias here, it most likely is listed on purpose, and "
-"should not be renamed or removed. Please see {aa|label aliases} for more "
-"details."
-msgstr ""
-"Альтернативные имена с опечатками скорее всего введены в базу намеренно, их "
-"не нужно переименовывать или удалять. Почитайте на эту тему про {doc_alias|"
-"альтернативные имена}."
+msgid "If you see a misspelled alias here, it most likely is listed on purpose, and should not be renamed or removed. Please see {aa|label aliases} for more details."
+msgstr "Альтернативные имена с опечатками скорее всего введены в базу намеренно, их не нужно переименовывать или удалять. Почитайте на эту тему про {doc_alias|альтернативные имена}."
 
 #: ../root/main/index.tt:104
 #, perl-format
-msgid ""
-"If you spot something that is wrong, poorly entered or just plain missing, "
-"please {uri_register|register} and {edit|edit the data}"
+msgid "If you spot something that is wrong, poorly entered or just plain missing, please {uri_register|register} and {edit|edit the data}"
 msgstr ""
 
 #: ../root/main/404.tt:10
 #, perl-format
-msgid ""
-"If you think this is our fault (for example, you found a broken link <i>and "
-"the link you found is on our site</i>) please contact us at {email|"
-"support@musicbrainz.org}, or via <abbr title=\"Internet Relay Chat\">IRC</"
-"abbr> in the {irc|#musicbrainz channel} on freenode."
+msgid "If you think this is our fault (for example, you found a broken link <i>and the link you found is on our site</i>) please contact us at {email|support@musicbrainz.org}, or via <abbr title=\"Internet Relay Chat\">IRC</abbr> in the {irc|#musicbrainz channel} on freenode."
 msgstr ""
 
 #: ../root/main/index.tt:48
 #, perl-format
-msgid ""
-"If you want to edit the MusicBrainz data, you will need to go to the {uri|"
-"main MusicBrainz server}<img src=\"{ext_link}\" alt=\"{ext_site}\" width=\"12"
-"\" />."
+msgid "If you want to edit the MusicBrainz data, you will need to go to the {uri|main MusicBrainz server}<img src=\"{ext_link}\" alt=\"{ext_site}\" width=\"12\" />."
 msgstr ""
 
 #: ../root/user/edit.tt:8
 #, perl-format
-msgid ""
-"If you would like to delete your account, please see the <abbr title="
-"\"Frequently Asked Questions\">FAQ</abbr> entry: {faq|How do I delete my "
-"account?}"
+msgid "If you would like to delete your account, please see the <abbr title=\"Frequently Asked Questions\">FAQ</abbr> entry: {faq|How do I delete my account?}"
 msgstr ""
 
 #: ../root/user/donate.tt:8
 #, perl-format
-msgid ""
-"If you would like to make a donation, {donate|you can do that here}. If you "
-"have donated, but you are still being nagged, please {contact|contact us}."
+msgid "If you would like to make a donation, {donate|you can do that here}. If you have donated, but you are still being nagged, please {contact|contact us}."
 msgstr ""
 
 #: ../root/user/register.tt:60
 #, perl-format
-msgid ""
-"In all cases your email address will not be revealed to other MusicBrainz "
-"users.  They will see only your user name."
+msgid "In all cases your email address will not be revealed to other MusicBrainz users.  They will see only your user name."
 msgstr ""
 
 #: ../root/user/login.tt:20
@@ -1967,12 +1808,7 @@ msgstr ""
 
 #: ../root/doc/bare_error.tt:6 ../root/doc/error.tt:7
 #, perl-format
-msgid ""
-"It is possible that the page <strong>{id}</strong> does not exist <em>yet</"
-"em>.  You might find a page which has a similar title by using the page "
-"search function in the {uri|MusicBrainz Wiki}. If this does not help either, "
-"and you know how to edit wiki pages, please help us by completing our "
-"documentation."
+msgid "It is possible that the page <strong>{id}</strong> does not exist <em>yet</em>.  You might find a page which has a similar title by using the page search function in the {uri|MusicBrainz Wiki}. If this does not help either, and you know how to edit wiki pages, please help us by completing our documentation."
 msgstr ""
 
 #: ../root/scripts/module_guideline_list.tt:75
@@ -2129,11 +1965,7 @@ msgstr ""
 
 #: ../root/scripts/module_track_parser.tt:74
 #, perl-format
-msgid ""
-"Load release information from a text file on your hard drive.<br /><br /"
-">Note: This function requires that JavaScript be able to read a file on your "
-"hard drive.  This JavaScript capability is only available in Firefox 3+.  "
-"This function therefore is not displayed in other browsers."
+msgid "Load release information from a text file on your hard drive.<br /><br />Note: This function requires that JavaScript be able to read a file on your hard drive.  This JavaScript capability is only available in Firefox 3+.  This function therefore is not displayed in other browsers."
 msgstr ""
 
 #: ../root/layout/sidebar/login.tt:4 ../root/user/login.tt:1
@@ -2324,41 +2156,23 @@ msgstr ""
 
 #: ../root/main/index.tt:54
 #, perl-format
-msgid ""
-"MusicBrainz is a community music meta-database that attempts to create a "
-"comprehensive music information site. You can use the MusicBrainz data "
-"either by browsing this web site, or you can access the data from a client "
-"program - for example, a CD player program can use MusicBrainz to identify "
-"CDs and provide information about the CD, about the Artist or about related "
-"information. You can also use the MusicBrainz Tagger to automatically "
-"identify and clean up the metadata tags in your digital music collections. "
-"Find out more in the {uri|introduction}."
+msgid "MusicBrainz is a community music meta-database that attempts to create a comprehensive music information site. You can use the MusicBrainz data either by browsing this web site, or you can access the data from a client program - for example, a CD player program can use MusicBrainz to identify CDs and provide information about the CD, about the Artist or about related information. You can also use the MusicBrainz Tagger to automatically identify and clean up the metadata tags in your digital music collections. Find out more in the {uri|introduction}."
 msgstr ""
 
 #: ../root/release/edit.tt:108
 #, perl-format
-msgid ""
-"MusicBrainz supports using the same tracklist over multiple releases, which "
-"is very convenient when the same disc can be found in multiple releases (for "
-"example box sets). If you wish to reuse an existing tracklist, search for "
-"the release name, and drag the tracklist you wish to use into the release "
-"editor above."
+msgid "MusicBrainz supports using the same tracklist over multiple releases, which is very convenient when the same disc can be found in multiple releases (for example box sets). If you wish to reuse an existing tracklist, search for the release name, and drag the tracklist you wish to use into the release editor above."
 msgstr ""
 
 #: ../root/artist/add_alias.tt:4 ../root/artist/edit_alias.tt:4
 #, perl-format
-msgid ""
-"MusicBrainz uses artist aliases mainly as variant names or search hints."
-msgstr ""
-"Альтернативные имена исполнителей в MusicBrainz используются для записи "
-"вариаций имён и для уточнения поиска."
+msgid "MusicBrainz uses artist aliases mainly as variant names or search hints."
+msgstr "Альтернативные имена исполнителей в MusicBrainz используются для записи вариаций имён и для уточнения поиска."
 
 #: ../root/label/add_alias.tt:4 ../root/label/edit_alias.tt:4
 #, fuzzy, perl-format
 msgid "MusicBrainz uses label aliases mainly as variant names or search hints."
-msgstr ""
-"Альтернативные имена исполнителей в MusicBrainz используются для записи "
-"вариаций имён и для уточнения поиска."
+msgstr "Альтернативные имена исполнителей в MusicBrainz используются для записи вариаций имён и для уточнения поиска."
 
 #: ../root/layout.tt:10
 #, perl-format
@@ -2743,9 +2557,7 @@ msgstr ""
 
 #: ../root/user/registered.tt:7
 #, perl-format
-msgid ""
-"Please <a href=\"{uri}\">update your profile</a> when you get time, to let "
-"other editors know a bit more about you."
+msgid "Please <a href=\"{uri}\">update your profile</a> when you get time, to let other editors know a bit more about you."
 msgstr ""
 
 #: ../root/search/form.tt:26
@@ -2760,46 +2572,28 @@ msgstr ""
 
 #: ../root/annotation/edit.tt:2
 #, perl-format
-msgid ""
-"Please do <strong>not</strong> post any copyrighted texts here! Please note "
-"that any content submitted to MusicBrainz will be made available to the "
-"public under {open|open licenses}."
+msgid "Please do <strong>not</strong> post any copyrighted texts here! Please note that any content submitted to MusicBrainz will be made available to the public under {open|open licenses}."
 msgstr ""
 
 #: ../root/main/index.tt:98
 #, perl-format
-msgid ""
-"Please download and use Picard. By doing so, you will be using and adding to "
-"the MusicBrainz database."
+msgid "Please download and use Picard. By doing so, you will be using and adding to the MusicBrainz database."
 msgstr ""
 
 #: ../root/artist/merge_search.tt:5
 #, fuzzy, perl-format
-msgid ""
-"Please enter the {name|artist name} of the artist into which you would like "
-"to merge this artist, and press <em>search</em> to start the search."
-msgstr ""
-"Введите {name|имя исполнителя} с которым нужно свести текущего исполнителя и "
-"нажмите кнопку <em>Искать</em>"
+msgid "Please enter the {name|artist name} of the artist into which you would like to merge this artist, and press <em>search</em> to start the search."
+msgstr "Введите {name|имя исполнителя} с которым нужно свести текущего исполнителя и нажмите кнопку <em>Искать</em>"
 
 #: ../root/label/merge_search.tt:5
 #, fuzzy, perl-format
-msgid ""
-"Please enter the {name|label name} of the label into which you would like to "
-"merge this label, and press <em>search</em> to start the search."
-msgstr ""
-"Введите {name|имя исполнителя} с которым нужно свести текущего исполнителя и "
-"нажмите кнопку <em>Искать</em>"
+msgid "Please enter the {name|label name} of the label into which you would like to merge this label, and press <em>search</em> to start the search."
+msgstr "Введите {name|имя исполнителя} с которым нужно свести текущего исполнителя и нажмите кнопку <em>Искать</em>"
 
 #: ../root/release_group/merge_search.tt:5
 #, fuzzy, perl-format
-msgid ""
-"Please enter the {name|release group name} of the release group into which "
-"you would like to merge this release group, and press <em>search</em> to "
-"start the search."
-msgstr ""
-"Введите {name|имя исполнителя} с которым нужно свести текущего исполнителя и "
-"нажмите кнопку <em>Искать</em>"
+msgid "Please enter the {name|release group name} of the release group into which you would like to merge this release group, and press <em>search</em> to start the search."
+msgstr "Введите {name|имя исполнителя} с которым нужно свести текущего исполнителя и нажмите кнопку <em>Искать</em>"
 
 #: ../root/user/change_password.tt:5
 #, perl-format
@@ -2813,9 +2607,7 @@ msgstr ""
 
 #: ../root/user/login.tt:7
 #, perl-format
-msgid ""
-"Please log in using the form below. Note that the password field <em>is</em> "
-"case sensitive."
+msgid "Please log in using the form below. Note that the password field <em>is</em> case sensitive."
 msgstr ""
 
 #: ../root/url/index.tt:7
@@ -2855,98 +2647,58 @@ msgstr "Править исполнителя можно только <a href={u
 
 #: ../root/label/edit_form.tt:4
 #, perl-format
-msgid ""
-"Please note that casing of the label is taken into account when determining "
-"the need for a comment.  The two labels <em>some name</em> and <em>Some "
-"Name</em> are not the same."
+msgid "Please note that casing of the label is taken into account when determining the need for a comment.  The two labels <em>some name</em> and <em>Some Name</em> are not the same."
 msgstr ""
 
 #: ../root/forms/edit-note.tt:5
 #, perl-format
-msgid ""
-"Please note that it is highly recommended to enter a edit note. If you do "
-"so, your edit is more likely to be voted on, and unanimously accepted by the "
-"other MusicBrainz editors. If your edit receives the required number of "
-"unanimous yes votes, it will be applied instantly, even before the voting "
-"period elapses in which edits usually are kept open. For detailed "
-"information on how long edits stay open and how many votes are required for "
-"it to pass unanimously, please see our edit conditions page."
+msgid "Please note that it is highly recommended to enter a edit note. If you do so, your edit is more likely to be voted on, and unanimously accepted by the other MusicBrainz editors. If your edit receives the required number of unanimous yes votes, it will be applied instantly, even before the voting period elapses in which edits usually are kept open. For detailed information on how long edits stay open and how many votes are required for it to pass unanimously, please see our edit conditions page."
 msgstr ""
 
 #: ../root/artist/merge_search.tt:4
 #, fuzzy, perl-format
-msgid ""
-"Please read the guideline on {doc_merging|how to merge artists} before "
-"entering this edit."
+msgid "Please read the guideline on {doc_merging|how to merge artists} before entering this edit."
 msgstr "До правки прочтите указания по {doc_merging|сведению исполнителей}."
 
 #: ../root/label/merge_search.tt:4
 #, fuzzy, perl-format
-msgid ""
-"Please read the guideline on {doc_merging|how to merge labels} before "
-"entering this edit."
+msgid "Please read the guideline on {doc_merging|how to merge labels} before entering this edit."
 msgstr "До правки прочтите указания по {doc_merging|сведению исполнителей}."
 
 #: ../root/release_group/merge_search.tt:4
 #, fuzzy, perl-format
-msgid ""
-"Please read the guideline on {doc_merging|how to merge release groups} "
-"before entering this edit."
+msgid "Please read the guideline on {doc_merging|how to merge release groups} before entering this edit."
 msgstr "До правки прочтите указания по {doc_merging|сведению исполнителей}."
 
 #: ../root/label/edit_form.tt:2
 #, fuzzy, perl-format
-msgid ""
-"Please read the {doc_styleguide|Style Guidelines} then use the fields below "
-"to update the information of this label."
-msgstr ""
-"Прочтите {doc_styleguide|указания по стилю} и затем укажите ниже нужную "
-"информация о новом исполнителе."
+msgid "Please read the {doc_styleguide|Style Guidelines} then use the fields below to update the information of this label."
+msgstr "Прочтите {doc_styleguide|указания по стилю} и затем укажите ниже нужную информация о новом исполнителе."
 
 #: ../root/artist/edit_form.tt:5
 #, perl-format
-msgid ""
-"Please read the {doc_styleguide|Style Guidelines}, then provide the "
-"necessary information about the new artist below."
-msgstr ""
-"Прочтите {doc_styleguide|указания по стилю} и затем укажите ниже нужную "
-"информация о новом исполнителе."
+msgid "Please read the {doc_styleguide|Style Guidelines}, then provide the necessary information about the new artist below."
+msgstr "Прочтите {doc_styleguide|указания по стилю} и затем укажите ниже нужную информация о новом исполнителе."
 
 #: ../root/label/delete.tt:5
 #, fuzzy, perl-format
-msgid ""
-"Please review the documentation about the {doc_remove|remove label edit-"
-"type}, before entering this edit"
-msgstr ""
-"До правки, взгляните на информацию об {aliases|альтернативных именах "
-"исполнителей}."
+msgid "Please review the documentation about the {doc_remove|remove label edit-type}, before entering this edit"
+msgstr "До правки, взгляните на информацию об {aliases|альтернативных именах исполнителей}."
 
 #: ../root/release_group/delete.tt:8
 #, fuzzy, perl-format
-msgid ""
-"Please review the documentation about the {doc_remove|remove release group "
-"edit-type}, before entering this edit"
-msgstr ""
-"До правки, взгляните на информацию об {aliases|альтернативных именах "
-"исполнителей}."
+msgid "Please review the documentation about the {doc_remove|remove release group edit-type}, before entering this edit"
+msgstr "До правки, взгляните на информацию об {aliases|альтернативных именах исполнителей}."
 
 #: ../root/artist/delete_alias.tt:5
 #, perl-format
-msgid ""
-"Please review the documentation about {aliases|artist aliases}, before "
-"entering this edit."
-msgstr ""
-"До правки, взгляните на информацию об {aliases|альтернативных именах "
-"исполнителей}."
+msgid "Please review the documentation about {aliases|artist aliases}, before entering this edit."
+msgstr "До правки, взгляните на информацию об {aliases|альтернативных именах исполнителей}."
 
 #: ../root/label/delete_alias.tt:5
 #, fuzzy, perl-format
-msgid ""
-"Please review the documentation about {aliases|label aliases}, before "
-"entering this edit."
-msgstr ""
-"До правки, взгляните на информацию об {aliases|альтернативных именах "
-"исполнителей}."
+msgid "Please review the documentation about {aliases|label aliases}, before entering this edit."
+msgstr "До правки, взгляните на информацию об {aliases|альтернативных именах исполнителей}."
 
 #: ../root/scripts/text_strings.tt:36
 #, fuzzy, perl-format
@@ -2955,20 +2707,13 @@ msgstr "Связать с:"
 
 #: ../root/scripts/text_strings.tt:35
 #, perl-format
-msgid ""
-"Please select a subtype of the currently selected relationship type. The "
-"selected relationship type is only used for grouping subtypes."
+msgid "Please select a subtype of the currently selected relationship type. The selected relationship type is only used for grouping subtypes."
 msgstr ""
 
 #: ../root/artist/edit_form.tt:8
 #, fuzzy, perl-format
-msgid ""
-"Please use the Guess Case buttons to fix common style errors. <span class="
-"\"only-if-no-javascript\">(Available only if you have JavaScript enabled.)</"
-"span>"
-msgstr ""
-"Кнопки \"Примерный регистр\" могут помочь быстро исправить основные стилевые "
-"ошибки. (Только при включенном JavaScript)"
+msgid "Please use the Guess Case buttons to fix common style errors. <span class=\"only-if-no-javascript\">(Available only if you have JavaScript enabled.)</span>"
+msgstr "Кнопки \"Примерный регистр\" могут помочь быстро исправить основные стилевые ошибки. (Только при включенном JavaScript)"
 
 #: ../root/components/aliases.tt:41
 #, fuzzy, perl-format
@@ -2978,8 +2723,7 @@ msgstr "Править исполнителя можно только <a href={u
 #: ../root/annotation/common.tt:47
 #, fuzzy, perl-format
 msgid "Please {uri|log in} to add an annotation."
-msgstr ""
-"Чтобы добавить аннотацию, нужно сначала <a href={uri}>войти в систему</a>."
+msgstr "Чтобы добавить аннотацию, нужно сначала <a href={uri}>войти в систему</a>."
 
 #: ../root/annotation/common.tt:34
 #, fuzzy, perl-format
@@ -3314,10 +3058,7 @@ msgstr "Старый пароль:"
 
 #: ../root/user/register.tt:41
 #, perl-format
-msgid ""
-"Rest assured that we will not pass your email address on to anyone, "
-"including other MusicBrainz users, without your most explicit consent. At "
-"any time you can fill in your email address if it"
+msgid "Rest assured that we will not pass your email address on to anyone, including other MusicBrainz users, without your most explicit consent. At any time you can fill in your email address if it"
 msgstr ""
 
 #: ../root/components/search.tt:18
@@ -3435,8 +3176,7 @@ msgstr "Выбрать"
 
 #: ../root/user/edit.tt:6
 #, perl-format
-msgid ""
-"See also your {uri|user preferences}, which includes your privacy settings."
+msgid "See also your {uri|user preferences}, which includes your privacy settings."
 msgstr ""
 
 #: ../root/release/sidebar.tt:14
@@ -3473,10 +3213,7 @@ msgstr ""
 
 #: ../root/scripts/module_track_parser.tt:66
 #, perl-format
-msgid ""
-"Separator characters used to indicate where the track title stops and the "
-"artist name starts.  (The tab character will be added to this list of split "
-"characters.)"
+msgid "Separator characters used to indicate where the track title stops and the artist name starts.  (The tab character will be added to this list of split characters.)"
 msgstr ""
 
 #: ../root/scripts/module_track_parser.tt:68
@@ -3551,12 +3288,8 @@ msgstr ""
 
 #: ../root/scripts/text_strings.tt:33
 #, fuzzy, perl-format
-msgid ""
-"Showing results <strong>{start}</strong>&ndash;<strong>{end}</strong> of "
-"<strong>{matches}</strong>"
-msgstr ""
-"{user} подписан на <strong>{num_artist}</strong> исполнителей, <strong>"
-"{num_label}</strong> лейблов и <strong>{num_editor}</strong> редакторов."
+msgid "Showing results <strong>{start}</strong>&ndash;<strong>{end}</strong> of <strong>{matches}</strong>"
+msgstr "{user} подписан на <strong>{num_artist}</strong> исполнителей, <strong>{num_label}</strong> лейблов и <strong>{num_editor}</strong> редакторов."
 
 #: ../root/scripts/module_guideline_list.tt:85
 #, perl-format
@@ -3585,25 +3318,17 @@ msgstr ""
 
 #: ../root/search/error/no-results.tt:3
 #, perl-format
-msgid ""
-"Sorry, but your query \"(<code>query</code>)\" did not match any {type}. "
-"Please check you used the correct spelling.  Sometimes searching for fewer "
-"or different words may also help."
+msgid "Sorry, but your query \"(<code>query</code>)\" did not match any {type}. Please check you used the correct spelling.  Sometimes searching for fewer or different words may also help."
 msgstr ""
 
 #: ../root/search/error/general.tt:3
 #, perl-format
-msgid ""
-"Sorry, but your query (<code>{query}</code>) could not be performed, due to "
-"an error which we are not quite able to identify."
+msgid "Sorry, but your query (<code>{query}</code>) could not be performed, due to an error which we are not quite able to identify."
 msgstr ""
 
 #: ../root/main/500.tt:9
 #, perl-format
-msgid ""
-"Sorry, it seems like something has gone wrong! Repeating your request may "
-"solve this problem, however if it persists, please file a bug report at {uri|"
-"our bug tracker}."
+msgid "Sorry, it seems like something has gone wrong! Repeating your request may solve this problem, however if it persists, please file a bug report at {uri|our bug tracker}."
 msgstr ""
 
 #: ../root/browse/artist.tt:29
@@ -3628,9 +3353,7 @@ msgstr "Не найдено записей типа {type} начанающих�
 
 #: ../root/search/editor.tt:18
 #, fuzzy, perl-format
-msgid ""
-"Sorry, we could not find any users matching the query for <code>{query}</"
-"code>"
+msgid "Sorry, we could not find any users matching the query for <code>{query}</code>"
 msgstr "Не найдено записей типа {type} начанающихся с {index}"
 
 #: ../root/browse/work.tt:29
@@ -3640,11 +3363,7 @@ msgstr "Не найдено записей типа {type} начанающих�
 
 #: ../root/search/error/no-info.tt:3
 #, perl-format
-msgid ""
-"Sorry, your query (<code>{query}</code>) does not contain enough information "
-"to carry out a search. If you are attempting to find something that contains "
-"nothing but punctuation characters (e.g. !!!) then you need to use the {uri|"
-"browse page}, since this search ignores punctuation characters."
+msgid "Sorry, your query (<code>{query}</code>) does not contain enough information to carry out a search. If you are attempting to find something that contains nothing but punctuation characters (e.g. !!!) then you need to use the {uri|browse page}, since this search ignores punctuation characters."
 msgstr ""
 
 #: ../root/search/results-artist.tt:11 ../root/search/results-label.tt:11
@@ -3858,10 +3577,7 @@ msgstr ""
 
 #: ../root/report/index.tt:6
 #, perl-format
-msgid ""
-"The following links show pages that are likely to contain data that does not "
-"conform to the style guidelines. If you'd like to participate in the editing "
-"process, but do not know where to start, check out these pages."
+msgid "The following links show pages that are likely to contain data that does not conform to the style guidelines. If you'd like to participate in the editing process, but do not know where to start, check out these pages."
 msgstr ""
 
 #: ../root/main/404.tt:7
@@ -3871,9 +3587,7 @@ msgstr ""
 
 #: ../root/search/error/internal-error.tt:3
 #, perl-format
-msgid ""
-"The search server could not fulfill your request due to an internal error. "
-"This is usually only temporary, so please retry your search again later."
+msgid "The search server could not fulfill your request due to an internal error. This is usually only temporary, so please retry your search again later."
 msgstr ""
 
 #: ../root/main/500.tt:12
@@ -3888,10 +3602,7 @@ msgstr ""
 
 #: ../root/main/index.tt:8
 #, perl-format
-msgid ""
-"The {uri|MetaBrainz Foundation}, a California 501.(c).3 non-profit "
-"corporation, operates the MusicBrainz project. All {donate|donations} to "
-"MusicBrainz are tax deductible!"
+msgid "The {uri|MetaBrainz Foundation}, a California 501.(c).3 non-profit corporation, operates the MusicBrainz project. All {donate|donations} to MusicBrainz are tax deductible!"
 msgstr ""
 
 #: ../root/release/discids.tt:34
@@ -3941,9 +3652,7 @@ msgstr ""
 
 #: ../root/label/delete.tt:18
 #, perl-format
-msgid ""
-"This label cannot be deleted, because there are still releases, tracks and/"
-"or relationships attributed to it."
+msgid "This label cannot be deleted, because there are still releases, tracks and/or relationships attributed to it."
 msgstr ""
 
 #: ../root/label/annotation.tt:1
@@ -3988,9 +3697,7 @@ msgstr "У этого {entity} нет аннотации."
 
 #: ../root/release_group/delete.tt:18
 #, perl-format
-msgid ""
-"This release group cannot be deleted, because there are still releases, "
-"tracks and/or relationships attributed to it."
+msgid "This release group cannot be deleted, because there are still releases, tracks and/or relationships attributed to it."
 msgstr ""
 
 #: ../root/release_group/annotation.tt:1
@@ -4010,17 +3717,12 @@ msgstr ""
 
 #: ../root/report/artists_that_may_be_persons.tt:6
 #, perl-format
-msgid ""
-"This report lists artists that are <em>unknown</em> or <em>group</em>, but "
-"may be <em>person</em>, based on all advanced relationships except "
-"\"collaboration\"."
+msgid "This report lists artists that are <em>unknown</em> or <em>group</em>, but may be <em>person</em>, based on all advanced relationships except \"collaboration\"."
 msgstr ""
 
 #: ../root/report/artists_that_may_be_groups.tt:6
 #, perl-format
-msgid ""
-"This report lists artists that are <em>unknown</em> or <em>person</em>, but "
-"may be <em>group</em>, based on band \"is member of\" advanced relationships."
+msgid "This report lists artists that are <em>unknown</em> or <em>person</em>, but may be <em>group</em>, based on band \"is member of\" advanced relationships."
 msgstr ""
 
 #: ../root/report/releases_without_script.tt:6
@@ -4065,9 +3767,7 @@ msgstr "У этого {entity} нет аннотации."
 
 #: ../root/doc/page.tt:13
 #, perl-format
-msgid ""
-"This {doclink1|WikiDocs page} is based on revision #{doclink2|version} of "
-"{doclink3|title}"
+msgid "This {doclink1|WikiDocs page} is based on revision #{doclink2|version} of {doclink3|title}"
 msgstr ""
 
 #: ../root/cdtoc/index.tt:39 ../root/cdtoc/index.tt:41
@@ -4232,10 +3932,7 @@ msgstr "Название записи"
 
 #: ../root/main/index.tt:41
 #, perl-format
-msgid ""
-"Unless you want to be testing the latest and greatest MusicBrainz features "
-"you probably want to go to the main server {uri|http://musicbrainz.org}<img "
-"src=\"{ext_link}\" alt=\"{ext_site}\"/>."
+msgid "Unless you want to be testing the latest and greatest MusicBrainz features you probably want to go to the main server {uri|http://musicbrainz.org}<img src=\"{ext_link}\" alt=\"{ext_site}\"/>."
 msgstr ""
 
 #: ../root/artist/layout.tt:33 ../root/label/layout.tt:27
@@ -4408,25 +4105,17 @@ msgstr ""
 
 #: ../root/search/editor.tt:5
 #, fuzzy, perl-format
-msgid ""
-"We found the following users that matched your query for <code>{query}</"
-"code>."
+msgid "We found the following users that matched your query for <code>{query}</code>."
 msgstr "Не найдено записей типа {type} начанающихся с {index}"
 
 #: ../root/user/donate.tt:5
 #, perl-format
-msgid ""
-"We have not received a donation from you recently. If you have just made a "
-"PayPal donation, then we have not received a notification from PayPal yet. "
-"Please wait a few minutes and reload this page to check again."
+msgid "We have not received a donation from you recently. If you have just made a PayPal donation, then we have not received a notification from PayPal yet. Please wait a few minutes and reload this page to check again."
 msgstr ""
 
 #: ../root/user/edit_ok.tt:8
 #, perl-format
-msgid ""
-"We have sent you a verification email to <code>{email}</code>. Please check "
-"your mailbox and click on the link in the email to verify the new email "
-"address."
+msgid "We have sent you a verification email to <code>{email}</code>. Please check your mailbox and click on the link in the email to verify the new email address."
 msgstr ""
 
 #: ../root/user/register.tt:38
@@ -4436,26 +4125,17 @@ msgstr ""
 
 #: ../root/user/register.tt:49
 #, perl-format
-msgid ""
-"We won't send you any newsletters, promotional mailings, etc. If you're "
-"interested in receiving information from the MusicBrainz staff and "
-"communicating with other users, {ml|please subscribe to our mailing lists}."
+msgid "We won't send you any newsletters, promotional mailings, etc. If you're interested in receiving information from the MusicBrainz staff and communicating with other users, {ml|please subscribe to our mailing lists}."
 msgstr ""
 
 #: ../root/user/lost_username_sent.tt:5
 #, perl-format
-msgid ""
-"We've sent you informations about your MusicBrainz account. If you don't "
-"receive this email or still have problems logging in, please {link|contact "
-"us}."
+msgid "We've sent you informations about your MusicBrainz account. If you don't receive this email or still have problems logging in, please {link|contact us}."
 msgstr ""
 
 #: ../root/user/lost_password_sent.tt:5
 #, perl-format
-msgid ""
-"We've sent you instructions on how to reset your password. If you don't "
-"receive this email or still have problems logging in, please {link|contact "
-"us}."
+msgid "We've sent you instructions on how to reset your password. If you don't receive this email or still have problems logging in, please {link|contact us}."
 msgstr ""
 
 #: ../root/layout/menu.tt:311
@@ -4490,37 +4170,23 @@ msgstr ""
 
 #: ../root/user/register.tt:57
 #, perl-format
-msgid ""
-"When you enter your email address, other editors will be able to send "
-"messages to you (likewise, you will be able to send messages to them)."
+msgid "When you enter your email address, other editors will be able to send messages to you (likewise, you will be able to send messages to them)."
 msgstr ""
 
 #: ../root/artist/merge_search.tt:6
 #, fuzzy, perl-format
-msgid ""
-"When you have found the artist that you would like to merge {artist} into, "
-"please select that entity and click <em>merge</em>."
-msgstr ""
-"Как только вы найдёте нужного исполнителя для сведения с {artist}, можно "
-"будет перейти к следующему шагу пройдя по ссылке."
+msgid "When you have found the artist that you would like to merge {artist} into, please select that entity and click <em>merge</em>."
+msgstr "Как только вы найдёте нужного исполнителя для сведения с {artist}, можно будет перейти к следующему шагу пройдя по ссылке."
 
 #: ../root/label/merge_search.tt:6
 #, fuzzy, perl-format
-msgid ""
-"When you have found the label that you would like to merge {label} into, "
-"please select that entity and click <em>merge</em>."
-msgstr ""
-"Как только вы найдёте нужного исполнителя для сведения с {artist}, можно "
-"будет перейти к следующему шагу пройдя по ссылке."
+msgid "When you have found the label that you would like to merge {label} into, please select that entity and click <em>merge</em>."
+msgstr "Как только вы найдёте нужного исполнителя для сведения с {artist}, можно будет перейти к следующему шагу пройдя по ссылке."
 
 #: ../root/release_group/merge_search.tt:6
 #, fuzzy, perl-format
-msgid ""
-"When you have found the release groupthat you would like to merge {rg} into, "
-"please select that entity and click <em>merge</em>."
-msgstr ""
-"Как только вы найдёте нужного исполнителя для сведения с {artist}, можно "
-"будет перейти к следующему шагу пройдя по ссылке."
+msgid "When you have found the release groupthat you would like to merge {rg} into, please select that entity and click <em>merge</em>."
+msgstr "Как только вы найдёте нужного исполнителя для сведения с {artist}, можно будет перейти к следующему шагу пройдя по ссылке."
 
 #: ../root/admin/wikidoc/index.tt:20 ../root/layout/sidebar/sites.tt:40
 #, perl-format
@@ -4565,14 +4231,12 @@ msgstr ""
 
 #: ../root/artist/edit_form.tt:34
 #, perl-format
-msgid ""
-"Yes, I am sure this artist is not duplicate, and I know what I am doing."
+msgid "Yes, I am sure this artist is not duplicate, and I know what I am doing."
 msgstr "Да, я уверен что исполнитель не дублируется, и я знаю что делаю."
 
 #: ../root/label/edit_form.tt:23
 #, fuzzy, perl-format
-msgid ""
-"Yes, I am sure this label is not a duplicate, and I know what I am doing."
+msgid "Yes, I am sure this label is not a duplicate, and I know what I am doing."
 msgstr "Да, я уверен что исполнитель не дублируется, и я знаю что делаю."
 
 #: ../root/scripts/module_guideline_list.tt:89
@@ -4587,21 +4251,13 @@ msgstr "Вы собираетесь добавить исполнителя в M
 
 #: ../root/label/edit_form.tt:12
 #, fuzzy, perl-format
-msgid ""
-"You are attempting to add a label which appears to be very similar, if not "
-"exactly the same, as these existing labels:"
-msgstr ""
-"Вы пытаетесь добавить исполнителя, чьё имя похоже либо совпадает с именами "
-"следующих исполнителей:"
+msgid "You are attempting to add a label which appears to be very similar, if not exactly the same, as these existing labels:"
+msgstr "Вы пытаетесь добавить исполнителя, чьё имя похоже либо совпадает с именами следующих исполнителей:"
 
 #: ../root/artist/edit_form.tt:19
 #, perl-format
-msgid ""
-"You are attempting to add an artist which appears to be very similar, if not "
-"exactly the same, as these existing artists:"
-msgstr ""
-"Вы пытаетесь добавить исполнителя, чьё имя похоже либо совпадает с именами "
-"следующих исполнителей:"
+msgid "You are attempting to add an artist which appears to be very similar, if not exactly the same, as these existing artists:"
+msgstr "Вы пытаетесь добавить исполнителя, чьё имя похоже либо совпадает с именами следующих исполнителей:"
 
 #: ../root/edit/index.tt:47
 #, fuzzy, perl-format
@@ -4625,23 +4281,13 @@ msgstr "На данный момент нет редакторов, подпис
 
 #: ../root/artist/edit_form.tt:28
 #, perl-format
-msgid ""
-"You are required to enter a comment which allows users to distinguish this "
-"artist from the other artists with the same name, if the final artist name "
-"is similar to an existing artist."
-msgstr ""
-"Введите комментарий, по которому можно будет различать этого исполнителя и "
-"исполнителей с похожим именем."
+msgid "You are required to enter a comment which allows users to distinguish this artist from the other artists with the same name, if the final artist name is similar to an existing artist."
+msgstr "Введите комментарий, по которому можно будет различать этого исполнителя и исполнителей с похожим именем."
 
 #: ../root/label/edit_form.tt:20
 #, fuzzy, perl-format
-msgid ""
-"You are required to enter a comment which allows users to distinguish this "
-"label from the other labels with the same name, if the final label name is "
-"similar to an existing label."
-msgstr ""
-"Введите комментарий, по которому можно будет различать этого исполнителя и "
-"исполнителей с похожим именем."
+msgid "You are required to enter a comment which allows users to distinguish this label from the other labels with the same name, if the final label name is similar to an existing label."
+msgstr "Введите комментарий, по которому можно будет различать этого исполнителя и исполнителей с похожим именем."
 
 #: ../root/main/index.tt:46
 #, perl-format
@@ -4650,25 +4296,17 @@ msgstr ""
 
 #: ../root/main/index.tt:59
 #, perl-format
-msgid ""
-"You can use MusicBrainz right now to automatically identify and label your "
-"music files - all you have to do is download and run a MusicBrainz enabled "
-"tagger. {taggers|Read more about our taggers}."
+msgid "You can use MusicBrainz right now to automatically identify and label your music files - all you have to do is download and run a MusicBrainz enabled tagger. {taggers|Read more about our taggers}."
 msgstr ""
 
 #: ../root/user/register.tt:59
 #, perl-format
-msgid ""
-"You may choose to \"subscribe\" (for free) to your favourite Artists, in "
-"which case MusicBrainz will send you a daily list of edits made to the "
-"Artists to which you have subscribed."
+msgid "You may choose to \"subscribe\" (for free) to your favourite Artists, in which case MusicBrainz will send you a daily list of edits made to the Artists to which you have subscribed."
 msgstr ""
 
 #: ../root/user/registered.tt:21
 #, perl-format
-msgid ""
-"You may proceed to <a href=\"{uri}\">your user profile</a>, or maybe you "
-"want to {edit|start editing}!"
+msgid "You may proceed to <a href=\"{uri}\">your user profile</a>, or maybe you want to {edit|start editing}!"
 msgstr ""
 
 #: ../root/edit/index.tt:52
@@ -4698,16 +4336,12 @@ msgstr "Внимание:"
 
 #: ../root/user/email_sent.tt:5
 #, perl-format
-msgid ""
-"Your email has been successfully sent! Click {link|here} to continue to "
-"{user}'s profile."
+msgid "Your email has been successfully sent! Click {link|here} to continue to {user}'s profile."
 msgstr ""
 
 #: ../root/user/change_password_ok.tt:5
 #, perl-format
-msgid ""
-"Your password has been changed. Click {link|here} to continue to your user "
-"page."
+msgid "Your password has been changed. Click {link|here} to continue to your user page."
 msgstr ""
 
 #: ../root/user/reset_password_ok.tt:5
@@ -4717,9 +4351,7 @@ msgstr ""
 
 #: ../root/user/preferences_ok.tt:5
 #, perl-format
-msgid ""
-"Your preferences have been saved. Click {link|here} to continue to your user "
-"page."
+msgid "Your preferences have been saved. Click {link|here} to continue to your user page."
 msgstr ""
 
 #: ../root/user/edit_ok.tt:6
@@ -5174,13 +4806,8 @@ msgstr "Править {artist}"
 
 #: ../root/main/index.tt:101
 #, perl-format
-msgid ""
-"{uri_search|Search} or {uri_browse|browse} the MusicBrainz data for your "
-"favourite Artists, or for your {uri_fav|favourite releases}."
-msgstr ""
-"{uri_search|Воспользуйтесь поиском} или {uri_browse|выберите из списка} "
-"интересных вам исполнителей, или {uri_fav|любимые записи}, чтобы увидеть "
-"информацию."
+msgid "{uri_search|Search} or {uri_browse|browse} the MusicBrainz data for your favourite Artists, or for your {uri_fav|favourite releases}."
+msgstr "{uri_search|Воспользуйтесь поиском} или {uri_browse|выберите из списка} интересных вам исполнителей, или {uri_fav|любимые записи}, чтобы увидеть информацию."
 
 #: ../root/edit/show.tt:57
 #, fuzzy, perl-format
@@ -5213,14 +4840,11 @@ msgstr "Старый пароль введен неверно."
 
 #: ../lib/MusicBrainz/Server/Form/User/Register.pm:39
 msgid "Please choose another username, this one is already taken"
-msgstr ""
-"Данное имя пользователя уже занято, пожалуйста, выберите другое имя "
-"пользователя."
+msgstr "Данное имя пользователя уже занято, пожалуйста, выберите другое имя пользователя."
 
 #~ msgid "Add New Artist"
 #~ msgstr "Добавить исполнителя"
 
-#, fuzzy
 #~ msgid "Add New Label"
 #~ msgstr "метки"
 
@@ -5236,69 +4860,35 @@ msgstr ""
 #~ msgid "Add an annotation"
 #~ msgstr "Добавить аннотацию"
 
-#, fuzzy
 #~ msgid "All Tags:"
 #~ msgstr "Ярлыки"
 
-#, fuzzy
-#~ msgid ""
-#~ "Are you sure you want to move the release {release} to the artist "
-#~ "{artist}?"
-#~ msgstr ""
-#~ "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</"
-#~ "strong>, указывающее на исполнителя {artist}?"
+#~ msgid "Are you sure you want to move the release {release} to the artist {artist}?"
+#~ msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
-#~ msgid ""
-#~ "Are you sure you want to remove the alias <strong>{alias}</strong>, which "
-#~ "points to the artist {artist}?"
-#~ msgstr ""
-#~ "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</"
-#~ "strong>, указывающее на исполнителя {artist}?"
+#~ msgid "Are you sure you want to remove the alias <strong>{alias}</strong>, which points to the artist {artist}?"
+#~ msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
-#, fuzzy
-#~ msgid ""
-#~ "Are you sure you want to remove the assossciation between PUID <code>"
-#~ "{puid}</code> and the track {track} by {artist}?"
-#~ msgstr ""
-#~ "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</"
-#~ "strong>, указывающее на исполнителя {artist}?"
+#~ msgid "Are you sure you want to remove the assossciation between PUID <code>{puid}</code> and the track {track} by {artist}?"
+#~ msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
-#, fuzzy
 #~ msgid "Are you sure you want to remove the release {release}?"
-#~ msgstr ""
-#~ "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</"
-#~ "strong>, указывающее на исполнителя {artist}?"
+#~ msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
-#, fuzzy
 #~ msgid "Are you sure you want to remove the track {track}?"
-#~ msgstr ""
-#~ "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</"
-#~ "strong>, указывающее на исполнителя {artist}?"
+#~ msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
-#, fuzzy
-#~ msgid ""
-#~ "Are you sure you want to remove the {type1}-to-{type22} relationship from "
-#~ "{source} to {dest}?"
-#~ msgstr ""
-#~ "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</"
-#~ "strong>, указывающее на исполнителя {artist}?"
+#~ msgid "Are you sure you want to remove the {type1}-to-{type22} relationship from {source} to {dest}?"
+#~ msgstr "Вы уверены, что хотите удалить альтернативное имя <strong>{alias}</strong>, указывающее на исполнителя {artist}?"
 
 #~ msgid "Artist Credits"
 #~ msgstr "Авторство исполнителя"
 
-#~ msgid ""
-#~ "Blank tracks will be ignored.  Leave empty the fields that you do not "
-#~ "need."
-#~ msgstr ""
-#~ "Пустые дорожки не учитываются, ненужные поля просто оставьте пустыми."
+#~ msgid "Blank tracks will be ignored.  Leave empty the fields that you do not need."
+#~ msgstr "Пустые дорожки не учитываются, ненужные поля просто оставьте пустыми."
 
-#~ msgid ""
-#~ "Cancelling a pending edit will take effect within an hour, while removing "
-#~ "data already accepted into the databse has to be voted on according to "
-#~ "the voting process."
-#~ msgstr ""
-#~ "Отмена свежей правки подействует в течении часа, в то время как данные "
-#~ "принятые в базу данных должны будут пройти процесс голосования."
+#~ msgid "Cancelling a pending edit will take effect within an hour, while removing data already accepted into the databse has to be voted on according to the voting process."
+#~ msgstr "Отмена свежей правки подействует в течении часа, в то время как данные принятые в базу данных должны будут пройти процесс голосования."
 
 #~ msgid "Change Data Quality"
 #~ msgstr "Изменить оценку качества"
@@ -5312,110 +4902,72 @@ msgstr ""
 #~ msgid "Confirm Artist"
 #~ msgstr "Подтверждение исполнителя"
 
-#, fuzzy
 #~ msgid "Confirm Artist Alias Removal"
 #~ msgstr "Подтверждение исполнителя"
 
 #~ msgid "Confirm Label"
 #~ msgstr "Подтверждение метки"
 
-#, fuzzy
 #~ msgid "Confirm Removal"
 #~ msgstr "Подтверждение метки"
 
-#, fuzzy
 #~ msgid "Convert to Single Artist"
 #~ msgstr "Свести исполнителей"
 
-#, fuzzy
 #~ msgid "Create Relationship:"
 #~ msgstr "Связать"
 
-#, fuzzy
 #~ msgid "Create Releationship"
 #~ msgstr "Связать"
 
-#, fuzzy
 #~ msgid "Create label"
 #~ msgstr "метки"
 
-#, fuzzy
 #~ msgid "Data Quality"
 #~ msgstr "Оценка качества:"
 
 #~ msgid "Data Quality setting"
 #~ msgstr "Оценка качества"
 
-#~ msgid ""
-#~ "Demo tracks and promotional tracks that have never been released on a "
-#~ "release are good candidates for non-album tracks."
-#~ msgstr ""
-#~ "Демонстрационные и рекламные дорожки, не выпущенные ни на одной записи, "
-#~ "обычно являются внеальбомными."
+#~ msgid "Demo tracks and promotional tracks that have never been released on a release are good candidates for non-album tracks."
+#~ msgstr "Демонстрационные и рекламные дорожки, не выпущенные ни на одной записи, обычно являются внеальбомными."
 
 #~ msgid "Details / Link"
 #~ msgstr "Подробнее / Ссылка"
 
-#, fuzzy
-#~ msgid ""
-#~ "Did you know that you can {uri|import Releases} from the {doc_freedb|"
-#~ "FreeDB database}?"
-#~ msgstr ""
-#~ "А знали ли вы, что записи можно <a href={uri}>импортировать</a> из "
-#~ "{doc_freedb|каталога FreeDB}?"
+#~ msgid "Did you know that you can {uri|import Releases} from the {doc_freedb|FreeDB database}?"
+#~ msgstr "А знали ли вы, что записи можно <a href={uri}>импортировать</a> из {doc_freedb|каталога FreeDB}?"
 
-#, fuzzy
 #~ msgid "Disc ID:"
 #~ msgstr "номеров диска"
 
-#, fuzzy
 #~ msgid "Edit Release Title"
 #~ msgstr "Название записи"
 
-#, fuzzy
 #~ msgid "Editor Name"
 #~ msgstr "Имя для сортировки"
 
 #~ msgid "End Date"
 #~ msgstr "Конечная дата"
 
-#, fuzzy
 #~ msgid "Enter the release"
 #~ msgstr "Править альтернативное имя исполнителя"
 
-#, fuzzy
 #~ msgid "Enter votes"
 #~ msgstr "Введите правку"
 
-#~ msgid ""
-#~ "If you are sure that your Release is different, please confirm by "
-#~ "selecting the button below."
+#~ msgid "If you are sure that your Release is different, please confirm by selecting the button below."
 #~ msgstr "Если вашей записи нет в списке, нажмите на кнопку ниже."
 
-#~ msgid ""
-#~ "If you wish to add a permanent link to the MusicBrainz {type} {entity} "
-#~ "from your web page or blog, choose one of the link styles below."
-#~ msgstr ""
-#~ "Ниже представлены несколько вариантов, как можно добавить постоянную "
-#~ "ссылку на {type} {entity} с вашей веб-страницы или блога,"
+#~ msgid "If you wish to add a permanent link to the MusicBrainz {type} {entity} from your web page or blog, choose one of the link styles below."
+#~ msgstr "Ниже представлены несколько вариантов, как можно добавить постоянную ссылку на {type} {entity} с вашей веб-страницы или блога,"
 
-#, fuzzy
-#~ msgid ""
-#~ "If you wish to use a link with an icon (e.g. {entity}), you can use the "
-#~ "following markup:"
-#~ msgstr ""
-#~ "Если нужна ссылка с иконкой (например {entity}), то воспользуйтесь "
-#~ "следующим фрагментом:"
+#~ msgid "If you wish to use a link with an icon (e.g. {entity}), you can use the following markup:"
+#~ msgstr "Если нужна ссылка с иконкой (например {entity}), то воспользуйтесь следующим фрагментом:"
 
-#, fuzzy
-#~ msgid ""
-#~ "If you wish to use a text link (e.g. {entity}), you can use the following "
-#~ "markup:"
-#~ msgstr ""
-#~ "Если нужна текстовая ссылка (например {entity}), то воспользуйтесь "
-#~ "следующим фрагментом:"
+#~ msgid "If you wish to use a text link (e.g. {entity}), you can use the following markup:"
+#~ msgstr "Если нужна текстовая ссылка (например {entity}), то воспользуйтесь следующим фрагментом:"
 
-#, fuzzy
 #~ msgid "Import FreeDB Release"
 #~ msgstr "Импортировать запись"
 
@@ -5425,53 +4977,29 @@ msgstr ""
 #~ msgid "Info:"
 #~ msgstr "Информация:"
 
-#~ msgid ""
-#~ "Just highlight (Ctrl+a) the content in the textbox, and copy (Ctrl+c) and "
-#~ "paste (Ctrl+v) it into your web page or blog."
-#~ msgstr ""
-#~ "Просто выделите указанный текст и скопируйте его в нужное место на вашей "
-#~ "страничке или блоге."
+#~ msgid "Just highlight (Ctrl+a) the content in the textbox, and copy (Ctrl+c) and paste (Ctrl+v) it into your web page or blog."
+#~ msgstr "Просто выделите указанный текст и скопируйте его в нужное место на вашей страничке или блоге."
 
 #~ msgid "Language"
 #~ msgstr "Язык"
 
-#~ msgid ""
-#~ "Most live versions are released on singles. If you want to enter those "
-#~ "tracks into MusicBrainz, please enter them as the single, or import the "
-#~ "single from {freedb|FreeDB}, instead of adding them as {nonalbum_tracks|"
-#~ "non-album tracks}."
-#~ msgstr ""
-#~ "Большинство \"живых\" записей выпускают на синглах. Добавляйте или "
-#~ "импортируйте такие дорожки из {freedb|FreeDB}в MusicBrainz как синглы, а "
-#~ "не как {nonalbum_tracks|вне-альбомные дорожки}."
+#~ msgid "Most live versions are released on singles. If you want to enter those tracks into MusicBrainz, please enter them as the single, or import the single from {freedb|FreeDB}, instead of adding them as {nonalbum_tracks|non-album tracks}."
+#~ msgstr "Большинство \"живых\" записей выпускают на синглах. Добавляйте или импортируйте такие дорожки из {freedb|FreeDB}в MusicBrainz как синглы, а не как {nonalbum_tracks|вне-альбомные дорожки}."
 
-#, fuzzy
 #~ msgid "Move Release"
 #~ msgstr "Запись"
 
-#, fuzzy
 #~ msgid "Move Release to Another Artist"
 #~ msgstr "Свести {artist} в другого исполнителя"
 
-#, fuzzy
 #~ msgid "My account"
 #~ msgstr "Количество дорожек"
 
-#~ msgid ""
-#~ "Non-album tracks are designed for tracks that have not been released on "
-#~ "<strong>ANY</strong> {doc_release|release}."
-#~ msgstr ""
-#~ "Под определение вне-альбомных дорожек попадают те дорожки, которые не "
-#~ "были выпущены <strong>ни на одной</strong> {doc_release|записи}."
+#~ msgid "Non-album tracks are designed for tracks that have not been released on <strong>ANY</strong> {doc_release|release}."
+#~ msgstr "Под определение вне-альбомных дорожек попадают те дорожки, которые не были выпущены <strong>ни на одной</strong> {doc_release|записи}."
 
-#~ msgid ""
-#~ "Note that this is <strong>only</strong> to change the {doc_quality|Data "
-#~ "Quality} setting.  {doc_quality|Data Quality} has nothing to do with "
-#~ "<em>popularity</em>."
-#~ msgstr ""
-#~ "Заметьте, что тут изменяется <strong>только</strong> {doc_quality|оценка "
-#~ "качества}. {doc_quality|Оценка качества} не имеет никакого отношения к "
-#~ "<em>популярности</em>."
+#~ msgid "Note that this is <strong>only</strong> to change the {doc_quality|Data Quality} setting.  {doc_quality|Data Quality} has nothing to do with <em>popularity</em>."
+#~ msgstr "Заметьте, что тут изменяется <strong>только</strong> {doc_quality|оценка качества}. {doc_quality|Оценка качества} не имеет никакого отношения к <em>популярности</em>."
 
 #~ msgid "Number of Tracks on the Release"
 #~ msgstr "Количество дорожек на записи"
@@ -5479,63 +5007,28 @@ msgstr ""
 #~ msgid "PUIDs"
 #~ msgstr "PUID"
 
-#, fuzzy
 #~ msgid "Please <a href=\"{url}\">log in</a> to vote on this election"
 #~ msgstr "Чтобы изменить аннотацию, нужно <a href={uri}>войти в систему</a>"
 
-#~ msgid ""
-#~ "Please enter the titles of the tracks you wish to add as {nonalbum_doc|"
-#~ "non-album tracks}."
-#~ msgstr ""
-#~ "Введите названия дорожек, которые будут учтены как {nonalbum_doc|вне-"
-#~ "альбомные}."
+#~ msgid "Please enter the titles of the tracks you wish to add as {nonalbum_doc|non-album tracks}."
+#~ msgstr "Введите названия дорожек, которые будут учтены как {nonalbum_doc|вне-альбомные}."
 
-#, fuzzy
-#~ msgid ""
-#~ "Please note that aliases are currently required to be <strong>unique for "
-#~ "all artists</strong>. You can circumvent this limitation by adding a "
-#~ "comment to the alias, preferably in parentheses."
-#~ msgstr ""
-#~ "На данный момент, конкретное альтернативное имя может относиться "
-#~ "<strong>только к одному исполнителю</strong>. Обойти это ограничение "
-#~ "можно, добавив комментарий к этому имени, лучше всего в скобках."
+#~ msgid "Please note that aliases are currently required to be <strong>unique for all artists</strong>. You can circumvent this limitation by adding a comment to the alias, preferably in parentheses."
+#~ msgstr "На данный момент, конкретное альтернативное имя может относиться <strong>только к одному исполнителю</strong>. Обойти это ограничение можно, добавив комментарий к этому имени, лучше всего в скобках."
 
-#, fuzzy
-#~ msgid ""
-#~ "Please note that aliases are currently required to be <strong>unique for "
-#~ "all labels</strong>. You can circumvent this limitation by adding a "
-#~ "comment to the alias, preferably in parentheses."
-#~ msgstr ""
-#~ "На данный момент, конкретное альтернативное имя может относиться "
-#~ "<strong>только к одному исполнителю</strong>. Обойти это ограничение "
-#~ "можно, добавив комментарий к этому имени, лучше всего в скобках."
+#~ msgid "Please note that aliases are currently required to be <strong>unique for all labels</strong>. You can circumvent this limitation by adding a comment to the alias, preferably in parentheses."
+#~ msgstr "На данный момент, конкретное альтернативное имя может относиться <strong>только к одному исполнителю</strong>. Обойти это ограничение можно, добавив комментарий к этому имени, лучше всего в скобках."
 
-#~ msgid ""
-#~ "Please read the {doc_styleguide|Style Guidelines}, then enter the number "
-#~ "of Tracks on this Release to begin the add release wizard."
-#~ msgstr ""
-#~ "Для начала прочтите {doc_styleguide|указания по стилю}, а затем начните "
-#~ "добавление записи указанием количества дорожек на записи."
+#~ msgid "Please read the {doc_styleguide|Style Guidelines}, then enter the number of Tracks on this Release to begin the add release wizard."
+#~ msgstr "Для начала прочтите {doc_styleguide|указания по стилю}, а затем начните добавление записи указанием количества дорожек на записи."
 
-#~ msgid ""
-#~ "Please search and select the correct Label.  If searching yields no "
-#~ "useful results, you can use the form below to add a new Label."
-#~ msgstr ""
-#~ "Найдите и выберите правильную метку. Если её нет в базе данных, то её "
-#~ "можно добавить ниже."
+#~ msgid "Please search and select the correct Label.  If searching yields no useful results, you can use the form below to add a new Label."
+#~ msgstr "Найдите и выберите правильную метку. Если её нет в базе данных, то её можно добавить ниже."
 
-#, fuzzy
-#~ msgid ""
-#~ "Please search and select the correct artist.  If searching yields no "
-#~ "useful results, you may add the artist using the form below."
-#~ msgstr ""
-#~ "Найдите и выберите правильную метку. Если её нет в базе данных, то её "
-#~ "можно добавить ниже."
+#~ msgid "Please search and select the correct artist.  If searching yields no useful results, you may add the artist using the form below."
+#~ msgstr "Найдите и выберите правильную метку. Если её нет в базе данных, то её можно добавить ниже."
 
-#, fuzzy
-#~ msgid ""
-#~ "Please select a new {quality|Data Quality} level, and enter an {note|edit "
-#~ "note} to justify this edit."
+#~ msgid "Please select a new {quality|Data Quality} level, and enter an {note|edit note} to justify this edit."
 #~ msgstr "Выберите новую {doc_quality|оценку качества}."
 
 #~ msgid "Please select the new {doc_quality|Data Quality} setting."
@@ -5547,19 +5040,15 @@ msgstr ""
 #~ msgid "Preview"
 #~ msgstr "Предпросмотр"
 
-#, fuzzy
 #~ msgid "Propose"
 #~ msgstr "Просмотреть"
 
-#, fuzzy
 #~ msgid "Proposed At"
 #~ msgstr "Предложено, не официально"
 
-#, fuzzy
 #~ msgid "Relationship"
 #~ msgstr "Просмотреть связи"
 
-#, fuzzy
 #~ msgid "Relationship Timespan"
 #~ msgstr "Просмотреть связи"
 
@@ -5569,57 +5058,45 @@ msgstr ""
 #~ msgid "Release Information"
 #~ msgstr "Информация о записи"
 
-#, fuzzy
 #~ msgid "Release Language"
 #~ msgstr "Дата выпуска"
 
-#, fuzzy
 #~ msgid "Release Status:"
 #~ msgstr "Дата выпуска"
 
-#, fuzzy
 #~ msgid "Release Type:"
 #~ msgstr "Название записи"
 
 #~ msgid "Remove Artist Alias"
 #~ msgstr "Удалить альтернативное имя исполнителя"
 
-#, fuzzy
 #~ msgid "Remove Relationship"
 #~ msgstr "Связать"
 
-#, fuzzy
 #~ msgid "Remove Release"
 #~ msgstr "Импортировать запись"
 
-#, fuzzy
 #~ msgid "Remove Track"
 #~ msgstr "Удалить"
 
-#, fuzzy
 #~ msgid "Remove {track}"
 #~ msgstr "Удалить"
 
-#, fuzzy
 #~ msgid "Remove?"
 #~ msgstr "Удалить"
 
-#, fuzzy
 #~ msgid "Script"
 #~ msgstr "Подписки"
 
-#, fuzzy
 #~ msgid "Search query"
 #~ msgstr "Найти"
 
-#, fuzzy
 #~ msgid "Select Artist Type"
 #~ msgstr "Свести исполнителей"
 
 #~ msgid "Similar Artists"
 #~ msgstr "Схожие исполнители"
 
-#, fuzzy
 #~ msgid "Single Artist or Various Artists?"
 #~ msgstr "Разные исполнители"
 
@@ -5629,7 +5106,6 @@ msgstr ""
 #~ msgid "Start Date"
 #~ msgstr "Начальная дата"
 
-#, fuzzy
 #~ msgid "Tags: "
 #~ msgstr "Ярлыки"
 
@@ -5639,45 +5115,26 @@ msgstr ""
 #~ msgid "The data quality for {artist} is currently set to:"
 #~ msgstr "Оценка качества для {artist}на данный момент:"
 
-#~ msgid ""
-#~ "The fields below allow you to enter information about the title, track "
-#~ "title(s), and artist(s) for this release."
+#~ msgid "The fields below allow you to enter information about the title, track title(s), and artist(s) for this release."
 #~ msgstr "Введите информацию о названии записи, дорожках и исполнителях ниже."
 
-#, fuzzy
-#~ msgid ""
-#~ "The permanent link for the MusicBrainz {type} {entity} is {uri|html_uri}."
-#~ msgstr ""
-#~ "Постоянная ссылка на {type} {entity} <a href=\"{uri}\">{html_uri}</a>."
+#~ msgid "The permanent link for the MusicBrainz {type} {entity} is {uri|html_uri}."
+#~ msgstr "Постоянная ссылка на {type} {entity} <a href=\"{uri}\">{html_uri}</a>."
 
-#, fuzzy
-#~ msgid ""
-#~ "The {quality|Data Quality} for {release} is currently set to: <strong>"
-#~ "{rel_qual}</strong>."
+#~ msgid "The {quality|Data Quality} for {release} is currently set to: <strong>{rel_qual}</strong>."
 #~ msgstr "Оценка качества для {artist}на данный момент:"
 
-#~ msgid ""
-#~ "To enter a non-album track you are <strong>required</strong> to provide "
-#~ "an {edit_note|edit note} which lets the voters know why you think this is "
-#~ "a {nonalbum_track|non-album track}."
-#~ msgstr ""
-#~ "Внося {nonalbum_track|вне-альбомные дорожки} в базу данных, "
-#~ "<strong>обязательно</string> добавьте пояснение, чтобы при голосовании "
-#~ "было ясно, почему вы считаете эту дорожку вне-альбомной."
+#~ msgid "To enter a non-album track you are <strong>required</strong> to provide an {edit_note|edit note} which lets the voters know why you think this is a {nonalbum_track|non-album track}."
+#~ msgstr "Внося {nonalbum_track|вне-альбомные дорожки} в базу данных, <strong>обязательно</string> добавьте пояснение, чтобы при голосовании было ясно, почему вы считаете эту дорожку вне-альбомной."
 
-#, fuzzy
 #~ msgid "Track Number"
 #~ msgstr "Количество дорожек"
 
 #~ msgid "Track count"
 #~ msgstr "Количество дорожек"
 
-#~ msgid ""
-#~ "Unless the release has attached {discids|Disc IDs}, you can remove tracks "
-#~ "by activating the remove button on the left of the track title fields."
-#~ msgstr ""
-#~ "Пока записи не присвоены {discids|идентификаторы диска}, можно удалять "
-#~ "отдельные дорожки нажав на кнопку \"удалить\" слева от них."
+#~ msgid "Unless the release has attached {discids|Disc IDs}, you can remove tracks by activating the remove button on the left of the track title fields."
+#~ msgstr "Пока записи не присвоены {discids|идентификаторы диска}, можно удалять отдельные дорожки нажав на кнопку \"удалить\" слева от них."
 
 #~ msgid "Various Artists"
 #~ msgstr "Разные исполнители"
@@ -5685,35 +5142,18 @@ msgstr ""
 #~ msgid "We found the following similar Release(s) already in our database:"
 #~ msgstr "Найдены похожие записи в базе данных"
 
-#~ msgid ""
-#~ "Were you adding one of the following Release(s) which already is in the "
-#~ "database?"
-#~ msgstr ""
-#~ "Проверьте, нет ли добавленной вами записи в этом списке уже существующих "
-#~ "в базе записей."
+#~ msgid "Were you adding one of the following Release(s) which already is in the database?"
+#~ msgstr "Проверьте, нет ли добавленной вами записи в этом списке уже существующих в базе записей."
 
-#~ msgid ""
-#~ "You are <strong>strongly encouraged</strong> to include the length of the "
-#~ "track, rather than leaving that field blank."
-#~ msgstr ""
-#~ "<strong>Крайне желательно</strong> указать длину дорожки, а не оставлять "
-#~ "поле пустым"
+#~ msgid "You are <strong>strongly encouraged</strong> to include the length of the track, rather than leaving that field blank."
+#~ msgstr "<strong>Крайне желательно</strong> указать длину дорожки, а не оставлять поле пустым"
 
 #~ msgid "You are about to manually add a {doc_release|Release}."
-#~ msgstr ""
-#~ "Вы собираетесь добавить новую {doc_release|музыкальную запись} в базу "
-#~ "данных"
+#~ msgstr "Вы собираетесь добавить новую {doc_release|музыкальную запись} в базу данных"
 
-#, fuzzy
-#~ msgid ""
-#~ "You are currently subscribed to <strong>{num_artist}</strong> artists, "
-#~ "<strong>{num_label}</strong> labels and <strong>{num_editor}</strong> "
-#~ "editors."
-#~ msgstr ""
-#~ "{user} подписан на <strong>{num_artist}</strong> исполнителей, <strong>"
-#~ "{num_label}</strong> лейблов и <strong>{num_editor}</strong> редакторов."
+#~ msgid "You are currently subscribed to <strong>{num_artist}</strong> artists, <strong>{num_label}</strong> labels and <strong>{num_editor}</strong> editors."
+#~ msgstr "{user} подписан на <strong>{num_artist}</strong> исполнителей, <strong>{num_label}</strong> лейблов и <strong>{num_editor}</strong> редакторов."
 
-#, fuzzy
 #~ msgid "Your Subscriptions"
 #~ msgstr "Подписки"
 
@@ -5723,27 +5163,17 @@ msgstr ""
 #~ msgid "{artist} currently has no non-album tracks."
 #~ msgstr "У {artist} на данный момент нет вне-альбомных дорожек."
 
-#, fuzzy
 #~ msgid "{dq} data quality"
 #~ msgstr "Оценка качества:"
 
-#~ msgid ""
-#~ "{user} is currently subscribed to <strong>{num_artist}</strong> artists, "
-#~ "<strong>{num_label}</strong> labels and <strong>{num_editor}</strong> "
-#~ "editors."
-#~ msgstr ""
-#~ "{user} подписан на <strong>{num_artist}</strong> исполнителей, <strong>"
-#~ "{num_label}</strong> лейблов и <strong>{num_editor}</strong> редакторов."
+#~ msgid "{user} is currently subscribed to <strong>{num_artist}</strong> artists, <strong>{num_label}</strong> labels and <strong>{num_editor}</strong> editors."
+#~ msgstr "{user} подписан на <strong>{num_artist}</strong> исполнителей, <strong>{num_label}</strong> лейблов и <strong>{num_editor}</strong> редакторов."
 
 #~ msgid "Subscriber Count:"
 #~ msgstr "Количество подписчиков:"
 
-#~ msgid ""
-#~ "Please search and select the correct artist.  If searching yields no "
-#~ "useful results, you can <a href=\"?add=1\">add a new artist</a>"
-#~ msgstr ""
-#~ "Найдите и выберите правильного исполнителя. Если его нет в базе, то его "
-#~ "можно туда <a href=\"?add=1\">добавить</a>."
+#~ msgid "Please search and select the correct artist.  If searching yields no useful results, you can <a href=\"?add=1\">add a new artist</a>"
+#~ msgstr "Найдите и выберите правильного исполнителя. Если его нет в базе, то его можно туда <a href=\"?add=1\">добавить</a>."
 
 #~ msgid "{num} relationship not shown"
 #~ msgid_plural "{num} relationships not shown"
@@ -5763,21 +5193,11 @@ msgstr ""
 #~ msgid "Merge {artist1} into {artist2}"
 #~ msgstr "Свести {artist1} в {artist2}"
 
-#~ msgid ""
-#~ "If you added recently added this Artist by mistake, please note that the "
-#~ "server automatically removes empty Artists once a day.  There is no need "
-#~ "to remove these manually."
-#~ msgstr ""
-#~ "Если вы недавно случайно добавили нового исполнителя, то его не "
-#~ "обязательно удалять вручную: исполнители без записей удаляются из базы "
-#~ "ежедневно."
+#~ msgid "If you added recently added this Artist by mistake, please note that the server automatically removes empty Artists once a day.  There is no need to remove these manually."
+#~ msgstr "Если вы недавно случайно добавили нового исполнителя, то его не обязательно удалять вручную: исполнители без записей удаляются из базы ежедневно."
 
-#~ msgid ""
-#~ "Please read the {doc_styleguide|Style Guidelines}, then provide the "
-#~ "necessary information about the new Artist below."
-#~ msgstr ""
-#~ "Прочтите {doc_styleguide|Указания по стилю} и затем введите ниже нужную "
-#~ "информацию о новом исполнителе."
+#~ msgid "Please read the {doc_styleguide|Style Guidelines}, then provide the necessary information about the new Artist below."
+#~ msgstr "Прочтите {doc_styleguide|Указания по стилю} и затем введите ниже нужную информацию о новом исполнителе."
 
 #~ msgid "tracks"
 #~ msgstr "дорожки"
