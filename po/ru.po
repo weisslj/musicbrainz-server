@@ -26,23 +26,23 @@ msgstr " Введите имя пользователя и адрес элект
 #: ../root/edit/details/delete_medium.tt:5
 #, perl-format
 msgid "\"{name}.\""
-msgstr ""
+msgstr "\"{name}.\""
 
 #: ../root/recording/index.tt:11 ../root/release/edit.tt:54
 #: ../root/release/edit.tt:96 ../root/tracklist/index.tt:30
 #, perl-format
 msgid "#"
-msgstr ""
+msgstr "№"
 
 #: ../root/edit/notes.tt:22
 #, perl-format
 msgid "(None)"
-msgstr ""
+msgstr "(отсутствуют)"
 
 #: ../root/user/profile.tt:35
 #, perl-format
 msgid "(hidden)"
-msgstr ""
+msgstr "(спрятан)"
 
 #: ../root/annotation/common.tt:22
 #, perl-format
@@ -53,37 +53,37 @@ msgstr "(список изменений отсутствует)"
 #: ../root/user/profile.tt:80
 #, perl-format
 msgid "(none)"
-msgstr ""
+msgstr "(отсутствует)"
 
 #: ../root/user/profile.tt:155 ../root/user/profile.tt:161
 #, perl-format
 msgid "({pc}%)"
-msgstr ""
+msgstr "({pc}%)"
 
 #: ../root/release/lookup.tt:31
 #, perl-format
 msgid "* Match indicates the total difference in seconds between the CD you requested and the matches we found."
-msgstr ""
+msgstr "* Колонка соввпадения указывает на общую разницу в секундах между запрошенным диском и совпадающими дисками из нашей базы."
 
 #: ../root/user/profile.tt:87
-#, perl-format
+#, perl-format, fuzzy
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: ../root/main/404.tt:4
 #, perl-format
 msgid "<abbr title=\"HyperText Transfer Protocol\">HTTP</abbr> code 404"
-msgstr ""
+msgstr "<abbr title=\"HyperText Transfer Protocol\">HTTP</abbr>-ошибка 404"
 
 #: ../root/main/500.tt:6
 #, perl-format
 msgid "<abbr title=\"HyperText Transfer Protocol\">HTTP</abbr> code 500"
-msgstr ""
+msgstr "<abbr title=\"HyperText Transfer Protocol\">HTTP</abbr>-ошибка 500"
 
 #: ../root/user/adjust_flags.tt:23
 #, perl-format
 msgid "<abbr title=\"MusicBrainz IDentifier\">MBID</abbr> Submitter"
-msgstr ""
+msgstr "Поставщик <abbr title=\"Уникальный идентификатор MusicBrainz\">MBID</abbr>"
 
 #: ../root/layout/menu.tt:275
 #, perl-format
