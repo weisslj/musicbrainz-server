@@ -2,7 +2,10 @@ package MusicBrainz::Server::Data::Alias;
 use Moose;
 
 use Class::MOP;
+use MooseX::Params::Validate;
+use MooseX::Types::Moose qw( HashRef Str );
 use MusicBrainz::Server::Data::Utils qw( load_subobjects placeholders query_to_list );
+use MusicBrainz::Server::MXTypes qw( RowID );
 
 extends 'MusicBrainz::Server::Data::Entity';
 
@@ -59,6 +62,10 @@ sub _entity_class
 sub find_by_entity_id
 {
     my ($self, @ids) = @_;
+    for (@ids) {
+        die "$_ is not a valid row ID"
+            unless is_RowID($_)
+    }
 
     my $key = $self->type;
 
@@ -74,7 +81,15 @@ sub find_by_entity_id
 
 sub has_alias
 {
-    my ($self, $entity_id, $alias_name, $filter) = @_;
+    my $self = shift;
+    my ($entity_id, $alias_name, $filter)
+        = pos_validated_list(
+            \@_,
+            { isa => RowID },
+            { isa => Str },
+            { isa => RowID, optional => 1 },
+        );
+
     my $sql  = Sql->new($self->c->dbh);
     my $type = $self->type;
     my $query = 'SELECT 1 FROM ' . $self->_table .
@@ -96,6 +111,10 @@ sub load
 sub delete
 {
     my ($self, @ids) = @_;
+    for (@ids) {
+        die "$_ is not a valid row ID" unless is_RowID($_)
+    }
+
     my $sql = Sql->new($self->c->dbh);
     my $query = "DELETE FROM " . $self->table .
                 " WHERE id IN (" . placeholders(@ids) . ")";
@@ -106,6 +125,10 @@ sub delete
 sub delete_entities
 {
     my ($self, @ids) = @_;
+    for (@ids) {
+        die "$_ is not a valid row ID" unless is_RowID($_)
+    }
+
     my $sql = Sql->new($self->c->dbh);
     my $query = "DELETE FROM " . $self->table .
                 " WHERE " . $self->type . " IN (" . placeholders(@ids) . ")";
@@ -116,6 +139,11 @@ sub delete_entities
 sub insert
 {
     my ($self, @alias_hashes) = @_;
+    for (@alias_hashes) {
+        die "All parameters to insert must be hash references"
+            unless is_HashRef($_);
+    }
+
     my $sql = Sql->new($self->c->dbh);
     my ($table, $type, $class) = ($self->table, $self->type, $self->entity);
     my %names = $self->parent->find_or_insert_names(map { $_->{name} } @alias_hashes);
@@ -135,6 +163,11 @@ sub insert
 sub merge
 {
     my ($self, $new_id, @old_ids) = @_;
+    for ($new_id, @old_ids) {
+        die "$_ is not a row id"
+            unless is_RowID($_)
+    }
+
     my $sql = Sql->new($self->c->dbh);
     my $table = $self->table;
     my $type = $self->type;
@@ -147,7 +180,13 @@ sub merge
 
 sub update
 {
-    my ($self, $alias_id, $alias_hash) = @_;
+    my $self = shift;
+    my ($alias_id, $alias_hash) = pos_validated_list(
+        \@_,
+        { isa => RowID },
+        { isa => HashRef }
+    );
+
     my $sql = Sql->new($self->c->dbh);
     my $table = $self->table;
     my $type = $self->type;
