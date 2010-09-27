@@ -3,6 +3,8 @@ use Moose;
 
 use Carp;
 use List::MoreUtils qw( uniq );
+use MooseX::Params::Validate;
+use MooseX::Types::Moose qw( HashRef Object );
 use MusicBrainz::Server::Entity::Artist;
 use MusicBrainz::Server::Data::ArtistCredit;
 use MusicBrainz::Server::Data::Edit;
@@ -16,6 +18,7 @@ use MusicBrainz::Server::Data::Utils qw(
     load_subobjects
     query_to_list_limited
 );
+use MusicBrainz::Server::MXTypes qw( ArtistEntity NatInt );
 
 extends 'MusicBrainz::Server::Data::CoreEntity';
 with 'MusicBrainz::Server::Data::Role::Annotation' => { type => 'artist' };
@@ -81,7 +84,14 @@ sub _entity_class
 
 sub find_by_subscribed_editor
 {
-    my ($self, $editor_id, $limit, $offset) = @_;
+    my $self = shift;
+    my ($editor_id, $limit, $offset) = pos_validated_list(
+        \@_,
+        { isa => NatInt },
+        { isa => NatInt },
+        { isa => NatInt, default => 0 },
+    );
+
     my $query = "SELECT " . $self->_columns . "
                  FROM " . $self->_table . "
                     JOIN editor_subscribe_artist s ON artist.id = s.artist
@@ -90,12 +100,19 @@ sub find_by_subscribed_editor
                  OFFSET ?";
     return query_to_list_limited(
         $self->c->dbh, $offset, $limit, sub { $self->_new_from_row(@_) },
-        $query, $editor_id, $offset || 0);
+        $query, $editor_id, $offset);
 }
 
 sub find_by_recording
 {
-    my ($self, $recording_id, $limit, $offset) = @_;
+    my $self = shift;
+    my ($recording_id, $limit, $offset) = pos_validated_list(
+        \@_,
+        { isa => NatInt },
+        { isa => NatInt },
+        { isa => NatInt, default => 0 }
+    );
+
     my $query = "SELECT " . $self->_columns . "
                  FROM " . $self->_table . "
                     JOIN artist_credit_name acn ON acn.artist = artist.id
@@ -110,7 +127,14 @@ sub find_by_recording
 
 sub find_by_release
 {
-    my ($self, $release_id, $limit, $offset) = @_;
+    my $self = shift;
+    my ($release_id, $limit, $offset) = pos_validated_list(
+        \@_,
+        { isa => NatInt },
+        { isa => NatInt },
+        { isa => NatInt, default => 0 }
+    );
+
     my $query = "SELECT " . $self->_columns . "
                  FROM " . $self->_table . "
                  WHERE artist.id IN (SELECT artist.id
@@ -133,7 +157,14 @@ sub find_by_release
 
 sub find_by_release_group
 {
-    my ($self, $recording_id, $limit, $offset) = @_;
+    my $self = shift;
+    my ($release_group_id, $limit, $offset) = pos_validated_list(
+        \@_,
+        { isa => NatInt },
+        { isa => NatInt },
+        { isa => NatInt, default => 0 }
+    );
+
     my $query = "SELECT " . $self->_columns . "
                  FROM " . $self->_table . "
                     JOIN artist_credit_name acn ON acn.artist = artist.id
@@ -143,12 +174,19 @@ sub find_by_release_group
                  OFFSET ?";
     return query_to_list_limited(
         $self->c->dbh, $offset, $limit, sub { $self->_new_from_row(@_) },
-        $query, $recording_id, $offset || 0);
+        $query, $release_group_id, $offset || 0);
 }
 
 sub find_by_work
 {
-    my ($self, $recording_id, $limit, $offset) = @_;
+    my $self = shift;
+    my ($work_id, $limit, $offset) = pos_validated_list(
+        \@_,
+        { isa => NatInt },
+        { isa => NatInt },
+        { isa => NatInt, default => 0 }
+    );
+    
     my $query = "SELECT " . $self->_columns . "
                  FROM " . $self->_table . "
                     JOIN artist_credit_name acn ON acn.artist = artist.id
@@ -158,18 +196,27 @@ sub find_by_work
                  OFFSET ?";
     return query_to_list_limited(
         $self->c->dbh, $offset, $limit, sub { $self->_new_from_row(@_) },
-        $query, $recording_id, $offset || 0);
+        $query, $work_id, $offset || 0);
 }
 
 sub load
 {
     my ($self, @objs) = @_;
+    for (@objs) { 
+        die 'load takes a list of object references'
+            unless is_Object($_);
+    }
     load_subobjects($self, 'artist', @objs);
 }
 
 sub insert
 {
     my ($self, @artists) = @_;
+    for (@artists) {
+        die 'Insert takes a list of hash references'
+            unless is_HashRef($_);
+    }
+
     my $sql = Sql->new($self->c->dbh);
     my %names = $self->find_or_insert_names(map { $_->{name}, $_->{sort_name} } @artists);
     my $class = $self->_entity_class;
@@ -189,8 +236,13 @@ sub insert
 
 sub update
 {
-    my ($self, $artist_id, $update) = @_;
-    croak '$artist_id must be present and > 0' unless $artist_id > 0;
+    my $self = shift;
+    my ($artist_id, $update) = pos_validated_list(
+        \@_,
+        { isa => NatInt },
+        { isa => HashRef }
+    );
+
     my $sql = Sql->new($self->c->dbh);
     my %names = $self->find_or_insert_names($update->{name}, $update->{sort_name});
     my $row = $self->_hash_to_row($update, \%names);
@@ -199,7 +251,9 @@ sub update
 
 sub can_delete
 {
-    my ($self, $artist_id) = @_;
+    my $self = shift;
+    my ($artist_id) = pos_validated_list(\@_, { isa => NatInt });
+
     my $sql = Sql->new($self->c->dbh);
     my $active_credits = $sql->select_single_column_array(
         'SELECT refcount FROM artist_credit, artist_credit_name name
@@ -212,6 +266,11 @@ sub can_delete
 sub delete
 {
     my ($self, @artist_ids) = @_;
+    for (@artist_ids) {
+        die "$_ is not a natural integer"
+            unless is_NatInt($_);
+    }
+
     @artist_ids = grep { $self->can_delete($_) } @artist_ids;
 
     $self->c->model('Relationship')->delete_entities('artist', @artist_ids);
@@ -230,6 +289,10 @@ sub delete
 sub merge
 {
     my ($self, $new_id, @old_ids) = @_;
+    for ($new_id, @old_ids) {
+        die "$_ is not a natural integer"
+            unless is_NatInt($_);
+    }
 
     $self->alias->merge($new_id, @old_ids);
     $self->tags->merge($new_id, @old_ids);
@@ -276,13 +339,18 @@ sub _hash_to_row
 
 sub load_meta
 {
-    my $self = shift;
+    my ($self, @artists) = @_;
+    for (@artists) {
+        die "Expected artist object, got $_"
+            unless is_ArtistEntity($_);
+    }
+
     MusicBrainz::Server::Data::Utils::load_meta($self->c, "artist_meta", sub {
         my ($obj, $row) = @_;
         $obj->rating($row->{rating}) if defined $row->{rating};
         $obj->rating_count($row->{ratingcount}) if defined $row->{ratingcount};
         $obj->last_update_date($row->{lastupdate}) if defined $row->{lastupdate};
-    }, @_);
+    }, @artists);
 }
 
 __PACKAGE__->meta->make_immutable;

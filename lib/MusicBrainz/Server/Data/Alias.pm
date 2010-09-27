@@ -5,7 +5,7 @@ use Class::MOP;
 use MooseX::Params::Validate;
 use MooseX::Types::Moose qw( HashRef Str );
 use MusicBrainz::Server::Data::Utils qw( load_subobjects placeholders query_to_list );
-use MusicBrainz::Server::MXTypes qw( RowID );
+use MusicBrainz::Server::MXTypes qw( NatInt );
 
 extends 'MusicBrainz::Server::Data::Entity';
 
@@ -64,7 +64,7 @@ sub find_by_entity_id
     my ($self, @ids) = @_;
     for (@ids) {
         die "$_ is not a valid row ID"
-            unless is_RowID($_)
+            unless is_NatInt($_)
     }
 
     my $key = $self->type;
@@ -85,9 +85,9 @@ sub has_alias
     my ($entity_id, $alias_name, $filter)
         = pos_validated_list(
             \@_,
-            { isa => RowID },
+            { isa => NatInt },
             { isa => Str },
-            { isa => RowID, optional => 1 },
+            { isa => NatInt, optional => 1 },
         );
 
     my $sql  = Sql->new($self->c->dbh);
@@ -112,7 +112,7 @@ sub delete
 {
     my ($self, @ids) = @_;
     for (@ids) {
-        die "$_ is not a valid row ID" unless is_RowID($_)
+        die "$_ is not a valid row ID" unless is_NatInt($_)
     }
 
     my $sql = Sql->new($self->c->dbh);
@@ -126,7 +126,7 @@ sub delete_entities
 {
     my ($self, @ids) = @_;
     for (@ids) {
-        die "$_ is not a valid row ID" unless is_RowID($_)
+        die "$_ is not a valid row ID" unless is_NatInt($_)
     }
 
     my $sql = Sql->new($self->c->dbh);
@@ -165,7 +165,7 @@ sub merge
     my ($self, $new_id, @old_ids) = @_;
     for ($new_id, @old_ids) {
         die "$_ is not a row id"
-            unless is_RowID($_)
+            unless is_NatInt($_)
     }
 
     my $sql = Sql->new($self->c->dbh);
@@ -183,7 +183,7 @@ sub update
     my $self = shift;
     my ($alias_id, $alias_hash) = pos_validated_list(
         \@_,
-        { isa => RowID },
+        { isa => NatInt },
         { isa => HashRef }
     );
 
