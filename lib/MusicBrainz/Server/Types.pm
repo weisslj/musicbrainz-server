@@ -81,7 +81,7 @@ subtype 'EditStatus'
     => where { $_ >= $STATUS_OPEN && $_ <= $STATUS_DELETED };
 
 subtype 'Quality'
-    => as 'Int'
+    => as 'Maybe[Int]'
     => where { $_ >= $QUALITY_LOW && $_ <= $QUALITY_HIGH || $_ == $QUALITY_UNKNOWN };
 
 1;

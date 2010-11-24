@@ -746,7 +746,8 @@ CREATE TABLE release (
     barcode             VARCHAR(255),
     comment             VARCHAR(255),
     edits_pending       INTEGER NOT NULL DEFAULT 0,
-    quality             SMALLINT NOT NULL DEFAULT -1,
+    quality             SMALLINT
+        CHECK ( quality IS NULL OR quality BETWEEN 0 AND 2 ),
     last_updated        TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

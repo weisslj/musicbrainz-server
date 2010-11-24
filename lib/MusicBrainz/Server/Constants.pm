@@ -39,7 +39,7 @@ Readonly our $VARTIST_ID  => 1;
 Readonly our $EXPIRE_ACCEPT => 1;
 Readonly our $EXPIRE_REJECT => 2;
 
-Readonly our $QUALITY_UNKNOWN        => -1;
+Readonly our $QUALITY_UNKNOWN        => undef;
 Readonly our $QUALITY_UNKNOWN_MAPPED => 1;
 Readonly our $QUALITY_LOW            => 0;
 Readonly our $QUALITY_NORMAL         => 1;
