@@ -187,9 +187,6 @@ sub recording_submit : Private
     my $client = $c->req->query_params->{client}
         or $self->_error($c, 'You must provide information about your client, by the client query parameter');
 
-        print STDERR "\n\n---\n";
-        print STDERR $c->request->body;
-        print STDERR "\n---\n\n";
     my $xp = MusicBrainz::Server::WebService::XML::XPath->new( xml => $c->request->body );
 
     my (%submit_puid, %submit_isrc, %submit_echoprint);
