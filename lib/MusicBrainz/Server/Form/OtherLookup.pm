@@ -6,6 +6,7 @@ has '+html_prefix'   => ( default => 0 );
 
 has_field 'catno'    => ( type => 'Text'    );
 has_field 'barcode'  => ( type => 'Text'    );
+has_field 'echoprint'=> ( type => 'Text'    );
 has_field 'mbid'     => ( type => 'Text'    );
 has_field 'isrc'     => ( type => 'Text'    );
 has_field 'iswc'     => ( type => 'Text'    );

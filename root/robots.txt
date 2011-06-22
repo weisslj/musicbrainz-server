@@ -14,6 +14,7 @@ Disallow: /otherlookup/
 Disallow: /partners/
 Disallow: /privileged/
 Disallow: /puid/
+Disallow: /echoprint/
 Disallow: /rating/
 Disallow: /recording/
 Disallow: /release/

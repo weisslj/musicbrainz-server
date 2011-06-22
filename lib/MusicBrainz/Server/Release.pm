@@ -510,12 +510,13 @@ sub LoadAlbumMetadata
         $this->{trackcount} = $row->{tracks};
         $this->{discidcount} = $row->{discids};
         $this->{puidcount} = $row->{puids};
+        $this->{echoprintcount} = $row->{echoprints};
         $this->{firstreleasedate} = $row->{firstreleasedate} || "";
         $this->{coverarturl} = $row->{coverarturl};
         $this->{asin} = $row->{asin};
     } else {
         cluck "No albummeta row for album #".$this->id;
-        delete @$this{qw( trackcount discidcount puidcount firstreleasedate )};
+        delete @$this{qw( trackcount discidcount puidcount echoprints firstreleasedate )};
         return 0;
     }
 
@@ -567,6 +568,21 @@ sub puid_count
    }
 
    return $this->{puidcount};
+}
+
+# Returns the number of Echoprints for this album or undef on error
+sub echoprint_count
+{
+   my ($this) = @_;
+   my ($sql);
+
+   return undef if (!exists $this->{id});
+   if (!exists $this->{echoprintcount} || !defined $this->{echoprintcount})
+   {
+       $this->LoadAlbumMetadata();
+   }
+
+   return $this->{echoprintcount};
 }
 
 # Returns the first release date for this album or undef on error
@@ -637,7 +653,7 @@ sub LoadFromId
     my $row = $sql->SelectSingleRowArray(
         "SELECT a.id, name, gid, modpending, artist, attributes, "
         . "       language, script, modpending_lang, quality, modpending_qual"
-        . ($loadmeta ? ", tracks, discids, firstreleasedate,coverarturl,asin,puids" : "")
+        . ($loadmeta ? ", tracks, discids, firstreleasedate,coverarturl,asin,puids,echoprints" : "")
         . " FROM album a"
         . ($loadmeta ? " INNER JOIN albummeta m ON m.id = a.id" : "")
         . " WHERE       a.$idcol = ?",
@@ -655,7 +671,7 @@ sub LoadFromId
         $row = $sql->SelectSingleRowArray(
                 "SELECT a.id, name, gid, modpending, artist, attributes, "
                 . "       language, script, modpending_lang, quality, modpending_qual"
-                . ($loadmeta ? ", tracks, discids, firstreleasedate,coverarturl,asin,puids" : "")
+                . ($loadmeta ? ", tracks, discids, firstreleasedate,coverarturl,asin,puids,echoprints" : "")
                 . " FROM album a"
                 . ($loadmeta ? " INNER JOIN albummeta m ON m.id = a.id" : "")
                 . " WHERE       a.id = ?",
@@ -675,7 +691,7 @@ sub LoadFromId
     $this->{quality}         = $row->[9];
     $this->{modpending_qual} = $row->[10];
 
-    delete @$this{qw( trackcount discidcount firstreleasedate asin coverarturl puidcount )};
+    delete @$this{qw( trackcount discidcount firstreleasedate asin coverarturl puidcount echoprintcount )};
     delete @$this{qw( _discids _tracks )};
 
     if ($loadmeta)
@@ -686,6 +702,7 @@ sub LoadFromId
         $this->{coverarturl}      = $row->[14] || "";
         $this->{asin}             = $row->[15] || "";
         $this->{puidcount}        = $row->[16];
+        $this->{echoprintcount}   = $row->[17];
     }
 
     1;
@@ -882,6 +899,30 @@ sub LoadPUIDCount
     };
 }
 
+# Fetch Echoprint counts for each track of the current album.
+# Returns a reference to a hash, where the keys are track IDs and the values
+# are the Echoprint counts.  Tracks with no Echoprints may or may not be in the hash.
+sub LoadEchoprintCount
+{
+     my $this = shift;
+    my $sql = Sql->new($this->dbh);
+
+    my $counts = $sql->SelectListOfLists(
+        "SELECT albumjoin.track, COUNT(echoprintjoin.track) AS num_echoprint
+        FROM    albumjoin, echoprintjoin
+        WHERE   albumjoin.album = ?
+        AND     albumjoin.track = echoprintjoin.track
+        GROUP BY albumjoin.track",
+        $this->id,
+    );
+
+    +{
+        map {
+                $_->[0] => $_->[1]
+        } @$counts
+    };
+}
+
 # Fetch annotations for each track of the current album.
 # Returns a reference to a hash, where the keys are track IDs and the values
 # are a 0 or 1 if track has annotation.  Tracks with no annotations may or may not be in the hash.
@@ -908,7 +949,7 @@ sub LoadLatestTrackAnnos
 }
 
 # Given a list of albums, this function will merge the list of albums into
-# the current album. All Discids and PUIDs are preserved in the process
+# the current album. All Discids, Echoprints and PUIDs are preserved in the process
 sub MergeReleases
 {
    my ($this, $opts) = @_;
@@ -970,6 +1011,9 @@ sub MergeReleases
 
                         my $puid = MusicBrainz::Server::PUID->new($this->dbh);
                         $puid->merge_tracks($old, $new);
+                        
+                        my $echoprint = MusicBrainz::Server::Echoprint->new($this->dbh);
+                        $echoprint->merge_tracks($old, $new);
                         
                         # Move relationships
                         $link->MergeTracks($old, $new);
@@ -1079,7 +1123,7 @@ sub browse_selection
 
     my $query = qq{
         SELECT a.id, a.gid, a.name, a.modpending, a.attributes, a.language, a.script,
-               m.firstreleasedate, m.tracks, m.puids, m.discids
+               m.firstreleasedate, m.tracks, m.puids, m.discids, m.echoprints
           FROM album a, albummeta m
          WHERE page BETWEEN ? AND ?
            AND m.id = a.id
@@ -1123,6 +1167,7 @@ sub browse_selection
         $release->{trackcount} = $row->{tracks};
         $release->{puidcount} = $row->{puidcount};
         $release->{attrs} = $row->{attributes};
+        $release->{echoprintcount} = $row->{echoprintcount};
         
         push @rows, $release;
     }

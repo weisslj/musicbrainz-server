@@ -2,6 +2,7 @@
     ['index', rdfa_seeAlso_link_recording(recording, 'show', l('Releases'))],
     ['tags', link_recording(recording, 'tags', l('Tags'))],
     ['puids', rdfa_seeAlso_link_recording(recording, 'puids', l('PUIDs'))],
+    ['echoprints', rdfa_seeAlso_link_recording(recording, 'echoprints', l('Echoprints'))],
     ['details', rdfa_seeAlso_link_recording(recording, 'details', l('Details'))],
     ['edit', link_recording(recording, 'edit', l('Edit'))],
 ] -%]

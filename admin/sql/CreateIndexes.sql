@@ -19,6 +19,8 @@ CREATE INDEX artist_tag_idx_artist ON artist_tag (artist);
 
 CREATE UNIQUE INDEX country_idx_iso_code ON country (iso_code);
 
+CREATE UNIQUE INDEX echoprint_idx_echoprint ON echoprint (echoprint);
+
 CREATE UNIQUE INDEX editor_idx_name ON editor (LOWER(name));
 
 CREATE INDEX editor_subscribe_artist_idx_uniq ON editor_subscribe_artist (editor, artist);
@@ -133,6 +135,9 @@ CREATE INDEX medium_cdtoc_idx_medium ON medium_cdtoc (medium);
 CREATE UNIQUE INDEX medium_cdtoc_idx_uniq ON medium_cdtoc (medium, cdtoc);
 
 CREATE UNIQUE INDEX puid_idx_puid ON puid (puid);
+
+CREATE UNIQUE INDEX recording_echoprint_idx_uniq ON recording_echoprint (recording, echoprint);
+CREATE INDEX recording_echoprint_idx_echoprint ON recording_echoprint (echoprint);
 
 CREATE UNIQUE INDEX recording_idx_gid ON recording (gid);
 CREATE INDEX recording_idx_name ON recording (name);

@@ -42,6 +42,7 @@ require Exporter;
         is_positive_integer
         is_valid_discid
         is_guid
+        is_echoprint
         normalise_strings
     )
 }
@@ -360,6 +361,18 @@ sub is_valid_isrc
 {
     my $isrc = $_[0];
     return $isrc =~ /[A-Z]{2}[A-Z0-9]{3}[0-9]{7}/;
+}
+
+sub is_echoprint
+{
+    my $t = $_[0];
+    defined($t) and not ref($t) or return undef;
+    length($t) eq 18 or return undef;
+
+    $t = lc $t;
+    $t =~ /\A([0-9a-z]{18})\z/x or return undef;
+    $_[0] = $1;
+    1;
 }
 
 ################################################################################
