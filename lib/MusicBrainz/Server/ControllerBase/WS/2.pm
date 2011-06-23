@@ -274,7 +274,7 @@ sub linked_recordings
 
     if ($c->stash->{inc}->echoprints)
     {
-        my @echoprints = $c->model('RecordingPUID')->find_by_recording(map { $_->id } @$recordings);
+        my @echoprints = $c->model('RecordingEchoprint')->find_by_recording(map { $_->id } @$recordings);
 
         my %echoprint_per_recording;
         for (@echoprints)
