@@ -215,7 +215,7 @@ sub recording_submit : Private
                 unless MusicBrainz::Server::Validation::is_echoprint($echoprint);
 
             $submit_echoprint{ $id } ||= [];
-            push @{ $submit_echoprint{$id} }, $echoprint;
+            push @{ $submit_echoprint{$id} }, uc($echoprint);
         }
 
         my @isrcs = $xp->find('mb:isrc-list/mb:isrc', $node)->get_nodelist;
