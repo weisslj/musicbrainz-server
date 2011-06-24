@@ -369,8 +369,8 @@ sub is_echoprint
     defined($t) and not ref($t) or return undef;
     length($t) eq 18 or return undef;
 
-    $t = lc $t;
-    $t =~ /\A([0-9a-z]{18})\z/x or return undef;
+    $t = uc $t;
+    $t =~ /\A([0-9A-Z]{18})\z/x or return undef;
     $_[0] = $1;
     1;
 }
