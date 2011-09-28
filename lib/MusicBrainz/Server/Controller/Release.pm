@@ -477,6 +477,8 @@ sub edit_relationships : Chained('load') PathPart('edit-relationships')
     $c->model('Recording')->load_meta(@recordings);
     $c->model('ArtistCredit')->load($release, @tracks);
 
+    $c->model('Relationship')->load($release, @recordings);
+
     $c->stash(
         show_artists => $release->has_multiple_artists,
     );

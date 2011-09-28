@@ -29,7 +29,7 @@
           -moz-border-radius: 5px;
           -webkit-border-radius: 5px;
 
-          background:#eee;
+          background:#fafafa;
 
           /* make sure it has the highest z-index */
           position:absolute;
@@ -65,6 +65,8 @@
       }
 
       table.editor table.tbl { margin: 0; }
+
+      .work-row { display: none; }
     </style>
 
     <script>
@@ -94,6 +96,23 @@
             event.preventDefault();
             $('#overlay').show();
             $('#dialog').show();
+        });
+
+        $('.target-type').change(function(event) {
+            if(this.value === 'recordings') {
+                $('table.editor .work-row').hide();
+                $('table.editor .work-row input').attr('disabled', 'disabled');
+
+                $('table.editor .recording-row').show();
+                $('table.editor .recording-row input').attr('disabled', null);
+            }
+            else if (this.value === 'works') {
+                $('table.editor .work-row').show();
+                $('table.editor .work-row input').attr('disabled', null);
+
+                $('table.editor .recording-row').hide();
+                $('table.editor .recording-row input').attr('disabled', 'disabled');
+            }
         });
     });
     </script>
@@ -135,7 +154,7 @@
           <tr class="[% row_class %]">
             <td class="pos t">[% track.position %]</td>
             <td>
-              [% link_recording(recording, 'show', track.name) -%]
+              [% link_recording(track.recording, 'show', track.name) -%]
             </td>
             [%- IF show_artists -%]
             <td>[% artist_credit(track.artist_credit) %]</td>
@@ -190,17 +209,17 @@
 
         <tr>
           <th>
-            <select>
-              <option>Recordings:</option>
-              <option>Works:</option>
+            <select class="target-type">
+              <option value="recordings">Recordings:</option>
+              <option value="works">Works:</option>
             </select>
           </th>
           <td>
-            <table class="tbl">
+            <table class="tbl recordings">
               <thead>
                 <tr>
-                  <th class="pos"></th>
                   <th class="pos t">#</th>
+                  <th class="pos"></th>
                   <th>[% l('Title') %]</th>
                   <th>[% l('Artist') %]</th>
                 </tr>
@@ -215,14 +234,24 @@
                 </tr>
                 [% FOR track=medium.tracklist.tracks %]
                   [% row_class = 'ev' IF loop.count % 2 == 0 %]
-                  <tr class="[% row_class %]">
-                    <td><input type="checkbox" /></td>
+                  <tr class="[% row_class %] recording-row">
                     <td class="pos t">[% track.position %]</td>
+                    <td><input type="checkbox" class="recording-checkbox" /></td>
                     <td>
                       [% link_recording(recording, 'show', track.name) -%]
                     </td>
                     <td>[% artist_credit(track.artist_credit) %]</td>
                   </tr>
+
+                  [% FOR work = track.recording.related_works %]
+                  <tr class="[% row_class %] work-row">
+                    <td>[% track.position IF loop.index == 0 %]</td>
+                    <td><input type="checkbox" /></td>
+                    <td colspan="2">
+                      [% link_entity(work) %]
+                    </td>
+                  </tr>
+                  [% END %]
                 [% END %]
               [%- END -%]
               </tbody>
@@ -262,7 +291,7 @@
       <div class="buttons ui-helper-clearfix" style="margin-top: 1em">
         <button class="negative gtfo">Cancel</button>
         <div class="buttons-right" style="float: right; text-align: right;">
-          <button class="positive BOOM">Make it so</button>
+          <button class="positive gtfo">Make it so</button>
         </div>
       </div>
     </div>
