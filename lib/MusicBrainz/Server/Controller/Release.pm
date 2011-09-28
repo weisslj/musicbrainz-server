@@ -462,6 +462,26 @@ with 'MusicBrainz::Server::Controller::Role::Delete' => {
     edit_type      => $EDIT_RELEASE_DELETE,
 };
 
+sub edit_relationships : Chained('load') PathPart('edit-relationships')
+{
+    my ($self, $c) = @_;
+
+    my $release = $c->stash->{release};
+
+    my @mediums = $release->all_mediums;
+    my @tracklists = grep { defined } map { $_->tracklist } @mediums;
+    $c->model('Track')->load_for_tracklists(@tracklists);
+
+    my @tracks = map { $_->all_tracks } @tracklists;
+    my @recordings = $c->model('Recording')->load(@tracks);
+    $c->model('Recording')->load_meta(@recordings);
+    $c->model('ArtistCredit')->load($release, @tracks);
+
+    $c->stash(
+        show_artists => $release->has_multiple_artists,
+    );
+}
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 1;

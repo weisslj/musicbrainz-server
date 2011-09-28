@@ -1,0 +1,269 @@
+[%- WRAPPER 'layout.tt' full_width=1 -%]
+    <style>
+      span.rel-edit { background: #FD9; }
+      span.rel-remove { background: #FF8F8F; }
+      span.rel-add { background: #B6FFA3; }
+
+      #overlay {
+        width: 100%;
+        height: 100%;
+        /* transparency for different browsers */
+        filter:alpha(opacity=50);
+        -moz-opacity:0.5;
+        -khtml-opacity: 0.5;
+        opacity: 0.5;
+        background: white;
+        display: none;
+
+        /* make sure it appear behind the dialog box but above everything else */
+        position:absolute;
+        top:0; left:0;
+      }
+
+      #dialog {
+          /* css3 drop shadow */
+          -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+          -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+
+          /* css3 border radius */
+          -moz-border-radius: 5px;
+          -webkit-border-radius: 5px;
+
+          background:#eee;
+
+          /* make sure it has the highest z-index */
+          position:absolute;
+          z-index:5000;
+          display: none;
+
+          min-width: 600px;
+
+          padding: 1em;
+      }
+
+      table.editor {
+          width: 100%;
+          margin-top: 1em;
+      }
+
+      table.editor > tbody > tr > th {
+        text-align: left;
+        vertical-align: top;
+        font-weight: bold;
+        padding-right: 1em;
+        width: 11em;
+      }
+
+      table.editor > tbody > tr > td {
+        vertical-align: top;
+      }
+
+      table.editor td span.autocomplete input,
+      table.editor td select,
+      table.editor td span.autocomplete {
+        width: 100%
+      }
+
+      table.editor table.tbl { margin: 0; }
+    </style>
+
+    <script>
+    $(function() {
+        function reflowDialog() {
+            // get the screen height and width
+            var maskHeight = $('#overlay').height();
+            var maskWidth = $('#overlay').width();
+
+            // calculate the values for center alignment
+            var dialogTop =  (maskHeight/3) - ($('#dialog').height());
+            var dialogLeft = (maskWidth/2) - ($('#dialog').width()/2);
+
+            $('#dialog').css({top:50, left:dialogLeft});
+        }
+
+        reflowDialog();
+        $(window).resize(reflowDialog);
+
+        $('.gtfo').click(function (event) {
+            event.preventDefault();
+            $('#overlay').hide();
+            $('#dialog').hide();
+        });
+
+        $('#add-relationship').click(function (event) {
+            event.preventDefault();
+            $('#overlay').show();
+            $('#dialog').show();
+        });
+    });
+    </script>
+
+    <div id="content">
+      [%- INCLUDE "release/header.tt" -%]
+
+      <p>
+        Relationships highlighted <span class="rel-edit">yellow</span> will be edited,
+        relationships highlighted <span class="rel-remove">red</span> will be removed and
+        relationships highlighted <span class="rel-add">green</span> will be added.
+      </p>
+
+      <h2>[% l('Tracklist') %]</h2>
+      [% col_span = show_artists ? 4 : 3 %]
+
+      <form>
+      <table class="tbl">
+        <thead>
+            <tr>
+                <th class="pos t">#</th>
+                <th>[% l('Title') %]</th>
+                [%- IF show_artists -%]
+                    <th>[% l('Artist') %]</th>
+                [%- END -%]
+                <th class="treleases">[% l('Length') %]</th>
+            </tr>
+        </thead>
+        [%- FOR medium=release.mediums -%]
+        <tbody>
+          <tr class="subh">
+            <td>&nbsp;</td>
+            <td colspan="[% col_span %]">
+              [% medium.format_name %] [% medium.position%]
+            </td>
+          </tr>
+          [% FOR track=medium.tracklist.tracks %]
+          [% row_class = 'ev' IF loop.count % 2 == 0 %]
+          <tr class="[% row_class %]">
+            <td class="pos t">[% track.position %]</td>
+            <td>
+              [% link_recording(recording, 'show', track.name) -%]
+            </td>
+            [%- IF show_artists -%]
+            <td>[% artist_credit(track.artist_credit) %]</td>
+            [%- END -%]
+            <td class="treleases">[% track.length | format_length %]</td>
+          </tr>
+          [% END %]
+        [%- END -%]
+        </tbody>
+      </table>
+
+      <h3>[% l('Tools') %]</h3>
+      <ul>
+        <li><button id="add-relationship">[% l('Add Relationship') %]</button></li>
+      </ul>
+
+      [% INCLUDE 'forms/edit-note.tt' %]
+      </form>
+    </div>
+
+    <div id="overlay"></div>
+    <div id="dialog">
+      <h1>[% l('Edit Relationship') %]</h1>
+      <table class="editor">
+        <tr>
+          <th>
+            <select>
+              <option>Artist:</option>
+              <option>Label:</option>
+              <option>Recording:</option>
+              <option>Release:</option>
+              <option>Release Group:</option>
+              <option>Work:</option>
+            </select>
+          </th>
+          <td>
+            <span class="[% type %] autocomplete">
+              <img class="search" src="[% c.uri_for("/static/images/icons/search.png") %]" />
+              <input type="hidden" class="gid" />
+              <input type="text" class="artist-name name" />
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th>[% l('Relationship type:') %]</th>
+          <td>
+            <select>
+              <option></option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <th>
+            <select>
+              <option>Recordings:</option>
+              <option>Works:</option>
+            </select>
+          </th>
+          <td>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th class="pos"></th>
+                  <th class="pos t">#</th>
+                  <th>[% l('Title') %]</th>
+                  <th>[% l('Artist') %]</th>
+                </tr>
+              </thead>
+              [%- FOR medium=release.mediums -%]
+              <tbody>
+                <tr class="subh">
+                  <td>&nbsp;</td>
+                  <td colspan="4">
+                    [% medium.format_name %] [% medium.position%]
+                  </td>
+                </tr>
+                [% FOR track=medium.tracklist.tracks %]
+                  [% row_class = 'ev' IF loop.count % 2 == 0 %]
+                  <tr class="[% row_class %]">
+                    <td><input type="checkbox" /></td>
+                    <td class="pos t">[% track.position %]</td>
+                    <td>
+                      [% link_recording(recording, 'show', track.name) -%]
+                    </td>
+                    <td>[% artist_credit(track.artist_credit) %]</td>
+                  </tr>
+                [% END %]
+              [%- END -%]
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" style="padding: 1em"></td>
+        </tr>
+
+        <tr>
+          <th>[% l('Begin date:') %]</th>
+          <td>
+            <input type="text" size="4" />&ndash;<input type="text" size="2" />&ndash;<input type="text" size="2" />
+          </td>
+        </tr>
+        <tr>
+          <th>[% l('End date:') %]</th>
+          <td>
+            <input type="text" size="4" />&ndash;<input type="text" size="2" />&ndash;<input type="text" size="2" />
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" style="padding: 1em"></td>
+        </tr>
+
+        <tr>
+          <th>[% l('Attributes:') %]</th>
+          <td>
+            Ye olde attribute browser.
+          </td>
+        </tr>
+      </table>
+
+      <div class="buttons ui-helper-clearfix" style="margin-top: 1em">
+        <button class="negative gtfo">Cancel</button>
+        <div class="buttons-right" style="float: right; text-align: right;">
+          <button class="positive BOOM">Make it so</button>
+        </div>
+      </div>
+    </div>
+[%- END -%]
