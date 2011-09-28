@@ -67,6 +67,9 @@
       table.editor table.tbl { margin: 0; }
 
       .work-row { display: none; }
+
+      a.delete { display: none; cursor: pointer; }
+      .relationship:hover a.delete { display: inline; }
     </style>
 
     <script>
@@ -114,6 +117,11 @@
                 $('table.editor .recording-row input').attr('disabled', 'disabled');
             }
         });
+
+        $('a.delete').click(function(event) {
+            event.preventDefault();
+            $(this).siblings('span.rel').addClass('rel-remove');
+        });
     });
     </script>
 
@@ -154,7 +162,15 @@
           <tr class="[% row_class %]">
             <td class="pos t">[% track.position %]</td>
             <td>
-              [% link_recording(track.recording, 'show', track.name) -%]
+              <p>[% link_recording(recording, 'show', track.name) -%]</p>
+              <ul>
+                [% FOR relationship=track.recording.relationships %]
+                <li class="relationship">
+                  <a class="delete">Delete</a>
+                  <span class="rel">[% display_relationship(relationship, 'verbose_phrase') %]</span>
+                </li>
+                [% END %]
+              </ul>
             </td>
             [%- IF show_artists -%]
             <td>[% artist_credit(track.artist_credit) %]</td>
