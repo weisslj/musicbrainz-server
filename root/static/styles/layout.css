@@ -800,3 +800,19 @@ p.cleanup {
     background: #FD9 !important;
     padding: 1em;
 }
+
+table.tbl td { vertical-align: top }
+dl.ars {
+    padding: 0;
+    margin: 0.5em 0;
+    margin-left: 1em;
+}
+dl.ars dt {
+	clear: left;
+    float: left;
+    margin-right: 0.5em;
+    color: #555;
+}
+dl.ars dd {
+    margin-bottom: 0.2em;
+}

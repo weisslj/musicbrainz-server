@@ -1,6 +1,7 @@
 package MusicBrainz::Server::Controller::Release;
 use Moose;
 use MusicBrainz::Server::Track;
+use 5.10.0;
 
 BEGIN { extends 'MusicBrainz::Server::Controller' }
 
@@ -24,6 +25,7 @@ use MusicBrainz::Server::Constants qw(
     $EDIT_RELEASE_CHANGE_QUALITY
     $EDIT_RELEASE_MOVE
     $EDIT_RELEASE_MERGE
+    $EDIT_RELATIONSHIP_DELETE
 );
 
 use aliased 'MusicBrainz::Server::Entity::Work';
@@ -482,6 +484,25 @@ sub edit_relationships : Chained('load') PathPart('edit-relationships')
     $c->stash(
         show_artists => $release->has_multiple_artists,
     );
+
+    my $form = $c->form( form => 'RelationshipEditor' );
+    if ($c->form_posted && $form->submitted_and_valid($c->req->params)) {
+        for my $relationship_field ($form->field('relationships')->fields) {
+            my $submission = $relationship_field->value;
+            given ($submission->{action}) {
+                when ('remove') {
+                    $self->_insert_edit(
+                        $c, $form,
+                        edit_type => $EDIT_RELATIONSHIP_DELETE,
+                        relationship => $c->model('Relationship')->get_by_id(
+                            @{ $submission->{types} },
+                            $submission->{id}
+                        )
+                    );
+                }
+            }
+        }
+    }
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -1,8 +1,8 @@
 [%- WRAPPER 'layout.tt' full_width=1 -%]
     <style>
-      span.rel-edit { background: #FD9; }
-      span.rel-remove { background: #FF8F8F; }
-      span.rel-add { background: #B6FFA3; }
+      .rel-edit { background: #FD9; }
+      .rel-remove { background: #FF8F8F; }
+      .rel-add { background: #B6FFA3; }
 
       #overlay {
         width: 100%;
@@ -64,12 +64,11 @@
         width: 100%
       }
 
+a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
+
       table.editor table.tbl { margin: 0; }
 
       .work-row { display: none; }
-
-      a.delete { display: none; cursor: pointer; }
-      .relationship:hover a.delete { display: inline; }
     </style>
 
     <script>
@@ -118,9 +117,20 @@
             }
         });
 
-        $('a.delete').click(function(event) {
+        $('a.remove').live('click', function(event) {
             event.preventDefault();
-            $(this).siblings('span.rel').addClass('rel-remove');
+            $(this).parent('dd').addClass('rel-remove');
+            $(this).removeClass('remove').addClass('undoRemove').html('undo');
+            $(this).siblings('a.edit').hide();
+            $(this).siblings('input.action').val('remove');
+        });
+
+        $('a.undoRemove').live('click', function(event) {
+            event.preventDefault();
+            $(this).parent('dd').removeClass('rel-remove');
+            $(this).removeClass('undoRemove').addClass('remove').html('remove');
+            $(this).siblings('a.edit').show();
+            $(this).siblings('input.action').val('');
         });
     });
     </script>
@@ -137,7 +147,8 @@
       <h2>[% l('Tracklist') %]</h2>
       [% col_span = show_artists ? 4 : 3 %]
 
-      <form>
+      <form action="[% c.req.uri %]" method="post">
+      [% i = 0 %]
       <table class="tbl">
         <thead>
             <tr>
@@ -162,15 +173,24 @@
           <tr class="[% row_class %]">
             <td class="pos t">[% track.position %]</td>
             <td>
-              <p>[% link_recording(recording, 'show', track.name) -%]</p>
-              <ul>
+              [% link_recording(recording, 'show', track.name) -%]<br />
+              <dl class="ars">
                 [% FOR relationship=track.recording.relationships %]
-                <li class="relationship">
-                  <a class="delete">Delete</a>
-                  <span class="rel">[% display_relationship(relationship, 'verbose_phrase') %]</span>
-                </li>
+                <dt>[% relationship.phrase %]:</dt>
+                <dd>
+                  [% link_entity(relationship.target) %]
+                  [ <a href="#" class="edit">edit</a><a href="#" class="remove">[% l('remove') %]</a> ]
+                  <input type="hidden" name="relationship-editor.relationships.[% i %].id"
+                         value="[% relationship.id %]" />
+                  <input type="hidden" name="relationship-editor.relationships.[% i %].action" class="action" />
+                  <input type="hidden" name="relationship-editor.relationships.[% i %].types.0"
+                         value="[% relationship.link.type.entity0_type %]" />
+                  <input type="hidden" name="relationship-editor.relationships.[% i %].types.1"
+                         value="[% relationship.link.type.entity1_type %]" />
+                </dd>
+                [% i = i + 1 %]
                 [% END %]
-              </ul>
+              </dl>
             </td>
             [%- IF show_artists -%]
             <td>[% artist_credit(track.artist_credit) %]</td>
@@ -188,6 +208,7 @@
       </ul>
 
       [% INCLUDE 'forms/edit-note.tt' %]
+      [% enter_edit() %]
       </form>
     </div>
 
