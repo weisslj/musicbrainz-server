@@ -20,7 +20,7 @@
         top:0; left:0;
       }
 
-      #dialog {
+      .dialog {
           /* css3 drop shadow */
           -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
           -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
@@ -29,7 +29,7 @@
           -moz-border-radius: 5px;
           -webkit-border-radius: 5px;
 
-          background:#fafafa;
+          background:#fff !important;
 
           /* make sure it has the highest z-index */
           position:absolute;
@@ -64,40 +64,54 @@
         width: 100%
       }
 
-a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
+      a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
 
       table.editor table.tbl { margin: 0; }
 
       .work-row { display: none; }
+
+      .work-relator { display: none; }
+      .create-work { display: none; }
     </style>
 
     <script>
     $(function() {
-        function reflowDialog() {
+        function reflowDialogs() {
             // get the screen height and width
             var maskHeight = $('#overlay').height();
             var maskWidth = $('#overlay').width();
 
-            // calculate the values for center alignment
-            var dialogTop =  (maskHeight/3) - ($('#dialog').height());
-            var dialogLeft = (maskWidth/2) - ($('#dialog').width()/2);
+            $('.dialog').each(function() {
+                // calculate the values for center alignment
+                var dialogTop =  (maskHeight/3) - ($(this).height());
+                var dialogLeft = (maskWidth/2) - ($(this).width()/2);
 
-            $('#dialog').css({top:50, left:dialogLeft});
+                $(this).css({top:50, left:dialogLeft});
+            });
         }
 
-        reflowDialog();
-        $(window).resize(reflowDialog);
+        reflowDialogs();
+        $(window).resize(reflowDialogs);
 
         $('.gtfo').click(function (event) {
             event.preventDefault();
             $('#overlay').hide();
-            $('#dialog').hide();
+            $('.dialog').hide();
         });
+
+        function showDialog(name) {
+            $('#overlay').show();
+            $(name).show();
+        }
 
         $('#add-relationship').click(function (event) {
             event.preventDefault();
-            $('#overlay').show();
-            $('#dialog').show();
+            showDialog('#add-relationship-dialog');
+        });
+
+        $('#add-works').click(function (event) {
+            event.preventDefault();
+            showDialog('#add-works-dialog');
         });
 
         $('.target-type').change(function(event) {
@@ -132,6 +146,81 @@ a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
             $(this).siblings('a.edit').show();
             $(this).siblings('input.action').val('');
         });
+
+        $('#add-works-dialog input.recording-checkbox').change(function(event) {
+            if ($(this).attr('checked')) {
+                $(this).parents('tr').find('.work-relator').show();
+            }
+            else {
+                $(this).parents('tr').find('.work-relator').hide();
+            }
+        });
+
+        $('#add-works-dialog input.add-work').change(function(event) {
+            $(this).parents('td').find('.create-work').show(
+                $(this).attr('checked') ? true : false
+            );
+        });
+
+        $('#add-works-dialog button.positive').click(function(event) {
+            var foo = $('#add-works-dialog input.recording-checkbox')
+                .filter(function() { return $(this).attr('checked') })
+                .parents('tr')
+                .map(function() {
+                    var workSelection = $('input[type=radio]:checked').val();
+                    var key = $(this).attr('class').split(/\s+/)
+                                  .filter(function(x) { return x.match(/^key/) })[0];
+                    if (workSelection === 'new') {
+                        return {
+                            key: key,
+                            name: $('input.work-name').val(),
+                            work: {
+                                name: $('input.work-name').val(),
+                                type: $('input.work-type').val()
+                            }
+                        };
+                    }
+                    else {
+                        return {
+                            key: key,
+                            id: workSelection
+                        }
+                    }
+                }).get();
+
+            $.each(foo, function() { addRelationship(this) });
+        });
+
+        function addRelationship(relData) {
+            var i = relData.key;
+            var field = function(name, value) {
+                return MB.html.input({
+                    type: 'hidden',
+                    name: 'relationship-editor.relationships.' + i + '.' + name,
+                    value: value
+                });
+            };
+
+            var inputs = [
+                field('action', 'add'),
+                field('type_id', '')
+            ];
+
+            if (relData.work) {
+                inputs.push(
+                    field('work.name', relData.work.name),
+                    field('work.type_id', relData.work.type)
+                );
+            }
+
+            $('#tracklist tr.' + relData.key).find('dl.ars').append(
+                MB.html.dt({}, 'performance of:'),
+                MB.html.dd(
+                    {},
+                    relData.name + inputs.join(' ')
+                )
+            );
+        }
     });
     </script>
 
@@ -149,7 +238,7 @@ a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
 
       <form action="[% c.req.uri %]" method="post">
       [% i = 0 %]
-      <table class="tbl">
+      <table class="tbl" id="tracklist">
         <thead>
             <tr>
                 <th class="pos t">#</th>
@@ -170,7 +259,7 @@ a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
           </tr>
           [% FOR track=medium.tracklist.tracks %]
           [% row_class = 'ev' IF loop.count % 2 == 0 %]
-          <tr class="[% row_class %]">
+          <tr class="[% row_class %] key-[% i %]">
             <td class="pos t">[% track.position %]</td>
             <td>
               [% link_recording(recording, 'show', track.name) -%]<br />
@@ -205,6 +294,7 @@ a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
       <h3>[% l('Tools') %]</h3>
       <ul>
         <li><button id="add-relationship">[% l('Add Relationship') %]</button></li>
+        <li><button id="add-works">[% l('Add/Relate to Works') %]</button></li>
       </ul>
 
       [% INCLUDE 'forms/edit-note.tt' %]
@@ -213,7 +303,7 @@ a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
     </div>
 
     <div id="overlay"></div>
-    <div id="dialog">
+    <div class="dialog" id="add-relationship-dialog">
       <h1>[% l('Edit Relationship') %]</h1>
       <table class="editor">
         <tr>
@@ -323,6 +413,84 @@ a.edit { padding-right: 5px; margin-right: 5px; border-right: 1px solid black; }
             Ye olde attribute browser.
           </td>
         </tr>
+      </table>
+
+      <div class="buttons ui-helper-clearfix" style="margin-top: 1em">
+        <button class="negative gtfo">Cancel</button>
+        <div class="buttons-right" style="float: right; text-align: right;">
+          <button class="positive gtfo">Make it so</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog" id="add-works-dialog">
+      <h1>[% l('Relate Recordings to Works') %]</h1>
+      <p>[% l('This dialog allows you to relate recordings to existing works, or
+               create new works. Select the recordings you wish to add works to
+               and search for an existing work. If you do not find the work you
+               are looking for, you can add a new work.') %]</p>
+      <table class="tbl recordings">
+        <thead>
+          <tr>
+            <th class="pos t">#</th>
+            <th class="pos"></th>
+            <th>[% l('Title') %]</th>
+          </tr>
+        </thead>
+        [%- i = 0 -%]
+        [%- FOR medium=release.mediums -%]
+        <tbody>
+          <tr class="subh">
+            <td>&nbsp;</td>
+            <td colspan="3">
+              [% medium.format_name %] [% medium.position%]
+            </td>
+          </tr>
+          [% FOR track=medium.tracklist.tracks %]
+          [% row_class = 'ev' IF loop.count % 2 == 0 %]
+          <tr class="[% row_class %] key-[% i %]">
+            <td class="pos t">[% track.position %]</td>
+            <td><input type="checkbox" class="recording-checkbox" /></td>
+            <td>
+              <form>
+              [% link_recording(recording, 'show', track.name) -%]<br />
+
+              <div class="work-relator">
+                <p>Work name: <input type="text" value="[% track.name | html %]"/></p>
+                <ul style="margin-bottom: 1em">
+                  <li>
+                    <input name="work-id" type="radio" /> Work name
+                    <dl class="ars" style="margin-left: 3em">
+                      <dt>composer:</dt>
+                      <dd>Oliver Charles</dd>
+                    </dl>
+                  </li>
+                  <li>
+                    <input type="radio" name="work-id" class="add-work" value="new" />
+                    [% l('Create a new work') %]
+                    <div class="create-work">
+                      <div class="row">
+                        <label class="required">[% l('Name:') %]</label>
+                        <input type="text" class="work-name" value="[% track.name | html%]" />
+                      </div>
+                      <div class="row">
+                        <label>[% l('Type:') %]</label>
+                        <select class="work-type">
+                          <option></option>
+                          <option>[% l('Song') %]</option>
+                        </select>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              </form>
+            </td>
+          </tr>
+          [%- i = i + 1 - %]
+          [% END %]
+          [%- END -%]
+        </tbody>
       </table>
 
       <div class="buttons ui-helper-clearfix" style="margin-top: 1em">
