@@ -17,7 +17,7 @@ use JSON;
 
 sub build_type_info
 {
-    my ($tree) = @_;
+    my ($self, $tree) = @_;
 
     sub _builder
     {
@@ -177,7 +177,7 @@ sub edit : Local RequireAuth Edit
     $c->model('Relationship')->load_entities($rel);
 
     my $tree = $c->model('LinkType')->get_tree($type0, $type1);
-    my %type_info = build_type_info($tree);
+    my %type_info = $self->build_type_info($tree);
 
     if (!%type_info) {
         $c->stash(
@@ -320,7 +320,7 @@ sub create : Local RequireAuth Edit
     }
 
     my $tree = $c->model('LinkType')->get_tree($type0, $type1);
-    my %type_info = build_type_info($tree);
+    my %type_info = $self->build_type_info($tree);
 
     if (!%type_info) {
         $c->stash(
@@ -439,7 +439,7 @@ sub create_batch : Path('/edit/relationship/create-recordings') RequireAuth Edit
     $ents[1 - $rec_idx] = $dest;
 
     my $tree = $c->model('LinkType')->get_tree(@types);
-    my %type_info = build_type_info($tree);
+    my %type_info = $self->build_type_info($tree);
 
     if (!%type_info) {
         $c->stash(
@@ -543,7 +543,7 @@ sub create_url : Local RequireAuth Edit
     }
 
     my $tree = $c->model('LinkType')->get_tree(@types);
-    my %type_info = build_type_info($tree);
+    my %type_info = $self->build_type_info($tree);
 
     if (!%type_info) {
         $c->stash(

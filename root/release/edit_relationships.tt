@@ -74,6 +74,10 @@
       .create-work { display: none; }
     </style>
 
+    <script type="text/javascript">//<![CDATA[
+      var typeInfo = [% USE JSON; JSON.encode(work_type_info) %];
+    //]]></script>
+
     <script>
     $(function() {
         function reflowDialogs() {
@@ -160,6 +164,21 @@
             $(this).parents('td').find('.create-work').show(
                 $(this).attr('checked') ? true : false
             );
+        });
+
+        $('.relationship-type').change(function() {
+            var container = $(this).parents('table');
+            container.find('.ar-attr').hide();
+            var allowedAttrs = typeInfo[ $(this).val() ].attrs;
+            var allowsAttributes = false;
+            for (id in allowedAttrs) {
+                allowsAttributes = true;
+                if (allowedAttrs.hasOwnProperty(id)) {
+                    container.find('.ar-attr-' + id).show();
+                }
+            }
+
+            container.find('tr.attrs').toggle(allowsAttributes);
         });
 
         $('#add-works-dialog button.positive').click(function(event) {
@@ -434,7 +453,7 @@
         <tr>
           <th>[% l('Relationship type:') %]</th>
           <td>
-            <select>
+            <select class="relationship-type">
               [%- MACRO expand_link_type(lt, indent) BLOCK -%]
                 <option value="[% lt.id %]">
                   [% indent %][% lt.link_phrase | html %]
@@ -444,6 +463,30 @@
               [% END %]
               [% expand_link_type(work_link_types, '') %]
             </select>
+          </td>
+        </tr>
+        <tr class="attrs" style="display: none">
+          <th>[% l('Attributes:') %]</th>
+          <td>
+            [% MACRO render_attribute_tree(attr, indent) BLOCK %]
+              <option>[% indent %][% attr.name | html %]</option>
+              [% render_attribute_tree(child, indent _ '&nbsp;&nbsp') FOR child=attr.children %]
+            [% END %]
+            [% FOR attr=rel_attr_tree.children %]
+              <div class="ar-attr ar-attr-[% attr.id %]" style="display: none">
+                [% IF attr.children.size %]
+                  <select>
+                    <option></option>
+                    [% render_attribute_tree(child) FOR child=attr.children %]
+                  </select>
+                [% ELSE %]
+                  <input type="checkbox" /> [% attr.name | html %]
+                [% END %]
+                <div class="ar-descr">
+                  [% attr.description %]
+                </div>
+              </div>
+            [% END %]
           </td>
         </tr>
       </table>

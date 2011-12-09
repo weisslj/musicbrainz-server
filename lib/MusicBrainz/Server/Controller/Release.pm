@@ -16,6 +16,7 @@ with 'MusicBrainz::Server::Controller::Role::Relationship';
 with 'MusicBrainz::Server::Controller::Role::EditListing';
 with 'MusicBrainz::Server::Controller::Role::Tag';
 
+use JSON;
 use List::MoreUtils qw( part );
 use List::UtilsBy 'nsort_by';
 use MusicBrainz::Server::Constants qw( $EDIT_RELEASE_DELETE );
@@ -484,11 +485,20 @@ sub edit_relationships : Chained('load') PathPart('edit-relationships')
     $c->model('Relationship')->load($release, @recordings,
                                     map { @{$possible_works{$_}} } keys %possible_works);
 
+    my $work_recording_lt_tree = $c->model('LinkType')->get_tree(qw( recording work ));
+
     $c->stash(
         show_artists => $release->has_multiple_artists,
         work_types => [ $c->model('WorkType')->get_all ],
-        work_link_types => $c->model('LinkType')->get_tree(qw( recording work )),
-        possible_works => \%possible_works
+        possible_works => \%possible_works,
+
+        work_link_types => $work_recording_lt_tree,
+        work_type_info => {
+            $c->controller('Edit::Relationship')->build_type_info(
+                $work_recording_lt_tree
+            )
+        },
+        rel_attr_tree => $c->model('LinkAttributeType')->get_tree()
     );
 
     my $form = $c->form( form => 'RelationshipEditor' );
