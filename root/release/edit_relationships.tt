@@ -429,6 +429,25 @@
                create new works. Select the recordings you wish to add works to
                and search for an existing work. If you do not find the work you
                are looking for, you can add a new work.') %]</p>
+
+      <table class="editor">
+        <tr>
+          <th>[% l('Relationship type:') %]</th>
+          <td>
+            <select>
+              [%- MACRO expand_link_type(lt, indent) BLOCK -%]
+                <option value="[% lt.id %]">
+                  [% indent %][% lt.link_phrase | html %]
+                </option>
+                [% expand_link_type(child, '&nbsp;&nbsp' _ indent)
+                     FOR child=lt.children %]
+              [% END %]
+              [% expand_link_type(work_link_types, '') %]
+            </select>
+          </td>
+        </tr>
+      </table>
+
       <table class="tbl recordings">
         <thead>
           <tr>

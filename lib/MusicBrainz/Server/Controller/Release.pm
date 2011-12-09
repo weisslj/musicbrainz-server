@@ -483,7 +483,8 @@ sub edit_relationships : Chained('load') PathPart('edit-relationships')
 
     $c->stash(
         show_artists => $release->has_multiple_artists,
-        work_types => [ $c->model('WorkType')->get_all ]
+        work_types => [ $c->model('WorkType')->get_all ],
+        work_link_types => $c->model('LinkType')->get_tree(qw( recording work ))
     );
 
     my $form = $c->form( form => 'RelationshipEditor' );
