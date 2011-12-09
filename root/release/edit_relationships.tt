@@ -477,13 +477,25 @@
               <div class="work-relator">
                 <p>Work name: <input type="text" value="[% track.name | html %]"/></p>
                 <ul style="margin-bottom: 1em">
+                  [% FOR work=possible_works.${ track.recording.name } %]
                   <li>
-                    <input name="work-id" type="radio" /> Work name
-                    <dl class="ars" style="margin-left: 3em">
-                      <dt>composer:</dt>
-                      <dd>Oliver Charles</dd>
+                    <input name="work-id" type="radio" value="[% work.id %]" />
+                    [% link_entity(work) %]
+                    <dl class="ars">
+                      [% FOR work_rel_group=work.grouped_relationships('artist') %]
+                        [% FOR type_rels=work_rel_group.value %]
+                          <dt>[% type_rels.key %]:</dt>
+                          <dd>
+                            [% FOR rel=type_rels.value %]
+                              [% link_entity(rel.target) %]
+                              [% '<br/>' UNLESS loop.last %]
+                            [% END %]
+                          </dd>
+                        [% END %]
+                      [% END %]
                     </dl>
                   </li>
+                  [% END %]
                   <li>
                     <input type="radio" name="work-id" class="add-work" value="new" />
                     [% l('Create a new work') %]
