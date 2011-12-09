@@ -477,7 +477,9 @@
                         <label>[% l('Type:') %]</label>
                         <select class="work-type">
                           <option></option>
-                          <option>[% l('Song') %]</option>
+                          [% FOR type=work_types %]
+                          <option value="[% type.id %]">[% type.name | html %]</option>
+                          [% END %]
                         </select>
                       </div>
                     </div>
