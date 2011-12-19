@@ -187,13 +187,13 @@
                 .parents('tr')
                 .map(function() {
                     var workSelection = $('input[type=radio]:checked').val();
-                    var key = $(this).attr('class').split(/\s+/)
-                                  .filter(function(x) { return x.match(/^key/) })[0];
+                    var trackId = $(this).attr('class').split(/\s+/)
+                        .filter(function(x) { return x.match(/^key/) })[0].replace('key-', '');
                     if (workSelection === 'new') {
                         return {
-                            key: key,
+                            trackId: trackId,
                             name: $('input.work-name').val(),
-                            work: {
+                            entity1: {
                                 name: $('input.work-name').val(),
                                 type: $('input.work-type').val()
                             }
@@ -201,42 +201,50 @@
                     }
                     else {
                         return {
-                            key: key,
+                            trackId: trackId,
                             id: workSelection
                         }
                     }
                 }).get();
 
-            $.each(foo, function() { addRelationship(this) });
+            $.each(foo, function() {
+                $.extend(this, {
+                    types: ['recording', 'work'],
+                    linkTypeId: $('#add-works-dialog .relationship-type').val(),
+                    attributes: [],
+                    linkPhrase: $('#add-works-dialog .relationship-type option[selected="selected"]').html()
+                });
+                addRelationship(this);
+            });
         });
 
         function addRelationship(relData) {
-            var i = relData.key;
+            var trackId = relData.trackId;
             var field = function(name, value) {
                 return MB.html.input({
                     type: 'hidden',
-                    name: 'relationship-editor.relationships.' + i + '.' + name,
+                    name: 'relationship-editor.relationships.' + trackId + '.' + name,
                     value: value
                 });
             };
 
             var inputs = [
                 field('action', 'add'),
-                field('type_id', '')
+                field('link_type_id', relData.linkTypeId)
             ];
 
-            if (relData.work) {
+            if (relData.entity1['id'] === undefined) {
                 inputs.push(
-                    field('work.name', relData.work.name),
-                    field('work.type_id', relData.work.type)
+                    field('work.name', relData.entity1.name),
+                    field('work.type_id', relData.entity1.type)
                 );
             }
 
-            $('#tracklist tr.' + relData.key).find('dl.ars').append(
-                MB.html.dt({}, 'performance of:'),
+            $('#tracklist tr.key-' + relData.trackId).find('dl.ars').append(
+                MB.html.dt({}, relData.linkPhrase),
                 MB.html.dd(
                     {},
-                    relData.name + inputs.join(' ')
+                    relData.entity1.name + inputs.join(' ')
                 )
             );
         }
@@ -256,7 +264,6 @@
       [% col_span = show_artists ? 4 : 3 %]
 
       <form action="[% c.req.uri %]" method="post">
-      [% i = 0 %]
       <table class="tbl" id="tracklist">
         <thead>
             <tr>
@@ -278,7 +285,7 @@
           </tr>
           [% FOR track=medium.tracklist.tracks %]
           [% row_class = 'ev' IF loop.count % 2 == 0 %]
-          <tr class="[% row_class %] key-[% i %]">
+          <tr class="[% row_class %] key-[% track.id %]">
             <td class="pos t">[% track.position %]</td>
             <td>
               [% link_recording(recording, 'show', track.name) -%]<br />
@@ -288,15 +295,14 @@
                 <dd>
                   [% link_entity(relationship.target) %]
                   [ <a href="#" class="edit">edit</a><a href="#" class="remove">[% l('remove') %]</a> ]
-                  <input type="hidden" name="relationship-editor.relationships.[% i %].id"
+                  <input type="hidden" name="relationship-editor.relationships.[% track.id %].id"
                          value="[% relationship.id %]" />
-                  <input type="hidden" name="relationship-editor.relationships.[% i %].action" class="action" />
-                  <input type="hidden" name="relationship-editor.relationships.[% i %].types.0"
+                  <input type="hidden" name="relationship-editor.relationships.[% track.id %].action" class="action" />
+                  <input type="hidden" name="relationship-editor.relationships.[% track.id %].types.0"
                          value="[% relationship.link.type.entity0_type %]" />
-                  <input type="hidden" name="relationship-editor.relationships.[% i %].types.1"
+                  <input type="hidden" name="relationship-editor.relationships.[% track.id %].types.1"
                          value="[% relationship.link.type.entity1_type %]" />
                 </dd>
-                [% i = i + 1 %]
                 [% END %]
               </dl>
             </td>
@@ -499,7 +505,6 @@
             <th>[% l('Title') %]</th>
           </tr>
         </thead>
-        [%- i = 0 -%]
         [%- FOR medium=release.mediums -%]
         <tbody>
           <tr class="subh">
@@ -510,7 +515,7 @@
           </tr>
           [% FOR track=medium.tracklist.tracks %]
           [% row_class = 'ev' IF loop.count % 2 == 0 %]
-          <tr class="[% row_class %] key-[% i %]">
+          <tr class="[% row_class %] key-[% track.id %]">
             <td class="pos t">[% track.position %]</td>
             <td><input type="checkbox" class="recording-checkbox" /></td>
             <td>
@@ -563,7 +568,6 @@
               </form>
             </td>
           </tr>
-          [%- i = i + 1 - %]
           [% END %]
           [%- END -%]
         </tbody>
