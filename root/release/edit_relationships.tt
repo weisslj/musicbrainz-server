@@ -248,6 +248,52 @@
                 )
             );
         }
+
+        WorkSearcher = function($query) {
+            var self = MB.Object();
+
+            self.$query = $query;
+            self.$results = $query.parents('form').find('ul');
+
+            self.lastSearch = undefined;
+
+            self.$query.keyup(function() {
+                var query = $(this).val();
+                if (query.length == 0 || self.lastSearch == query) return;
+
+                $.ajax({
+                    url: '/ws/js/work',
+                    data: { q: query, page: 0, direct: 0 },
+                    success: function (data, result, request) {
+                        var pageData = data.pop();
+                        lastSearch = self.lastSearch;
+                        self.$results.find('li.result').remove();
+                        self.$results.prepend(
+                            $.map(data, function(work) {
+                                return MB.html.li(
+                                    { class:'result' },
+                                    MB.html.input({
+                                        type: 'radio',
+                                        name: 'work-id',
+                                        value: work.id
+                                    }) + ' ' +
+                                        MB.html.a(
+                                            { href: '/work/' + work.gid },
+                                            work.name
+                                        )
+                                )
+                            }).join(' ')
+                        );
+                    }
+                });
+            });
+
+            return self;
+        }
+
+        $('input.work-query').each(function() {
+            WorkSearcher($(this));
+        });
     });
     </script>
 
@@ -523,7 +569,7 @@
               [% link_recording(recording, 'show', track.name) -%]<br />
 
               <div class="work-relator">
-                <p>Work name: <input type="text" value="[% track.name | html %]"/></p>
+                <p>Work name: <input type="text" class="work-query" value="[% track.name | html %]"/></p>
                 <ul style="margin-bottom: 1em">
                   [% FOR work=possible_works.${ track.recording.name } %]
                   <li>
