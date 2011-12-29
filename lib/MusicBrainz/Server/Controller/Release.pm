@@ -27,6 +27,8 @@ use MusicBrainz::Server::Constants qw(
     $EDIT_RELEASE_MOVE
     $EDIT_RELEASE_MERGE
     $EDIT_RELATIONSHIP_DELETE
+    $EDIT_WORK_CREATE
+    $EDIT_RELATIONSHIP_CREATE
 );
 
 use aliased 'MusicBrainz::Server::Entity::Work';
@@ -501,6 +503,7 @@ sub edit_relationships : Chained('load') PathPart('edit-relationships')
     if ($c->form_posted && $form->submitted_and_valid($c->req->params)) {
         for my $relationship_field ($form->field('relationships')->fields) {
             my $submission = $relationship_field->value;
+
             given ($submission->{action}) {
                 when ('remove') {
                     $self->_insert_edit(
@@ -510,6 +513,33 @@ sub edit_relationships : Chained('load') PathPart('edit-relationships')
                             @{ $submission->{types} },
                             $submission->{id}
                         )
+                    );
+                }
+
+                when ('add') {
+                    my $entity1_id = $submission->{entity1}{id};
+
+                    unless ($entity1_id) {
+                        my $edit = $self->_insert_edit(
+                            $c, $form,
+                            edit_type => $EDIT_WORK_CREATE,
+                            name => $submission->{work}{name},
+                            type_id => $submission->{work}{type_id}
+                        );
+
+                        $entity1_id = $edit->entity_id;
+                    }
+
+                    $self->_insert_edit(
+                        $c, $form,
+                        edit_type => $EDIT_RELATIONSHIP_CREATE,
+                        type0 => 'Recording',
+                        type1 => 'Work',
+                        link_type => $c->model('LinkType')->get_by_id(
+                            $submission->{link_type_id}
+                        ),
+                        entity0 => $c->model('Recording')->get_by_id($submission->{entity0}{id}),
+                        entity1 => $c->model('Work')->get_by_id($entity1_id)
                     );
                 }
             }

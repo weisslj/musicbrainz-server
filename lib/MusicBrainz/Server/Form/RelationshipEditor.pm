@@ -26,9 +26,26 @@ has_field 'relationships.types.contains' => (
     type => 'Text'
 );
 
+has_field 'relationships.entity0' => (
+    type => 'Compound'
+);
+
+has_field 'relationships.entity0.id' => (
+    type => 'Integer'
+);
+
+has_field 'relationships.work' => (
+    type => 'Compound',
+);
+
+has_field 'relationships.work.name' => (
+    type => 'Text'
+);
+
 sub options_relationships_action {
     return [
         'remove' => 'Remove',
+        'add' => 'Add'
     ]
 };
 

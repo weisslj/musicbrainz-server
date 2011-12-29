@@ -184,11 +184,13 @@
         });
 
         $('#add-works-dialog button.positive').click(function(event) {
+            var dialog = $('#add-works-dialog');
             var foo = $('#add-works-dialog input.recording-checkbox')
                 .filter(function() { return $(this).attr('checked') })
                 .parents('tr')
                 .map(function() {
-                    var workSelection = $('input[type=radio]:checked').val();
+                    var workRadio = $(this).find('input[type=radio]:checked');
+                    var workSelection = workRadio.val();
                     var trackId = $(this).attr('class').split(/\s+/)
                         .filter(function(x) { return x.match(/^key/) })[0].replace('key-', '');
                     if (workSelection === 'new') {
@@ -204,7 +206,10 @@
                     else {
                         return {
                             trackId: trackId,
-                            id: workSelection
+                            entity1: {
+                                name: workRadio.parents('li').find('a').text(),
+                                id : workSelection
+                            }
                         }
                     }
                 }).get();
@@ -214,7 +219,7 @@
                     types: ['recording', 'work'],
                     linkTypeId: $('#add-works-dialog .relationship-type').val(),
                     attributes: [],
-                    linkPhrase: $('#add-works-dialog .relationship-type option[selected="selected"]').html()
+                    linkPhrase: $('#add-works-dialog .relationship-type option[selected="selected"]').text()
                 });
                 addRelationship(this);
             });
@@ -241,13 +246,27 @@
                     field('work.type_id', relData.entity1.type)
                 );
             }
+            else {
+                inputs.push(
+                    field('entity1.id', relData.entity1.id)
+                );
+            }
 
-            $('#tracklist tr.key-' + relData.trackId).find('dl.ars').append(
-                MB.html.dt({}, relData.linkPhrase),
+            var dd = $(
                 MB.html.dd(
                     {},
                     relData.entity1.name + inputs.join(' ')
                 )
+            );
+
+            dd.append(
+                $('#tracklist tr.key-' + relData.trackId).find('input.entity0').clone()
+                    .attr('name', 'relationship-editor.relationships.' + trackId + '.entity0.id')
+            );
+
+            $('#tracklist tr.key-' + relData.trackId).find('dl.ars').append(
+                MB.html.dt({}, relData.linkPhrase),
+                dd
             );
         }
 
@@ -351,6 +370,7 @@
             <td class="pos t">[% track.position %]</td>
             <td>
               [% link_recording(recording, 'show', track.name) -%]<br />
+              <input type="hidden" class="entity0" value="[% track.recording_id %]" />
               <dl class="ars">
                 [% FOR relationship=track.recording.relationships %]
                 <dt>[% relationship.phrase %]:</dt>
