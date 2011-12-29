@@ -480,17 +480,13 @@ sub edit_relationships : Chained('load') PathPart('edit-relationships')
     $c->model('Recording')->load_meta(@recordings);
     $c->model('ArtistCredit')->load($release, @tracks);
 
-    my %possible_works = $c->model('Work')->find_by_names(map { $_->name } @recordings);
-
-    $c->model('Relationship')->load($release, @recordings,
-                                    map { @{$possible_works{$_}} } keys %possible_works);
+    $c->model('Relationship')->load($release, @recordings);
 
     my $work_recording_lt_tree = $c->model('LinkType')->get_tree(qw( recording work ));
 
     $c->stash(
         show_artists => $release->has_multiple_artists,
         work_types => [ $c->model('WorkType')->get_all ],
-        possible_works => \%possible_works,
 
         work_link_types => $work_recording_lt_tree,
         work_type_info => {

@@ -12,6 +12,7 @@ with 'MusicBrainz::Server::Entity::Role::Rating';
 
 use MooseX::Types::Structured qw( Dict );
 use MooseX::Types::Moose qw( ArrayRef Object Str );
+use List::UtilsBy qw( uniq_by );
 
 has 'type_id' => (
     is => 'rw',
@@ -64,6 +65,11 @@ has 'writers' => (
         all_writers => 'elements',
     }
 );
+
+sub writers_and_artists {
+    my $self = shift;
+    return [ uniq_by { $_->id } ($self->all_writers, $self->all_artists) ];
+}
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

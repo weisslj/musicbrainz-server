@@ -72,6 +72,8 @@
 
       .work-relator { display: none; }
       .create-work { display: none; }
+
+      p.artists { margin: 0.5em 0em 0.5em 3em; }
     </style>
 
     <script type="text/javascript">//<![CDATA[
@@ -258,6 +260,10 @@
             self.lastSearch = undefined;
 
             self.$query.keyup(function() {
+                self.$query.trigger('mb.performSearch');
+            });
+
+            self.$query.bind('mb.performSearch', function() {
                 var query = $(this).val();
                 if (query.length == 0 || self.lastSearch == query) return;
 
@@ -266,7 +272,7 @@
                     data: { q: query, page: 0, direct: 0 },
                     success: function (data, result, request) {
                         var pageData = data.pop();
-                        lastSearch = self.lastSearch;
+                        self.lastSearch = query;
                         self.$results.find('li.result').remove();
                         self.$results.prepend(
                             $.map(data, function(work) {
@@ -277,10 +283,14 @@
                                         name: 'work-id',
                                         value: work.id
                                     }) + ' ' +
-                                        MB.html.a(
-                                            { href: '/work/' + work.gid },
-                                            work.name
-                                        )
+                                    MB.html.a(
+                                        { href: '/work/' + work.gid },
+                                        work.name
+                                    ) + MB.html.br() +
+                                    MB.html.p(
+                                        { class: 'artists' },
+                                        work.artists.results.join(', ')
+                                    )
                                 )
                             }).join(' ')
                         );
@@ -293,6 +303,12 @@
 
         $('input.work-query').each(function() {
             WorkSearcher($(this));
+        });
+
+        $('#add-works-dialog .recording-checkbox').change(function() {
+            if ($(this).val()) {
+                $(this).parents('tr').find('.work-query').trigger('mb.performSearch');
+            }
         });
     });
     </script>
@@ -575,19 +591,9 @@
                   <li>
                     <input name="work-id" type="radio" value="[% work.id %]" />
                     [% link_entity(work) %]
-                    <dl class="ars">
-                      [% FOR work_rel_group=work.grouped_relationships('artist') %]
-                        [% FOR type_rels=work_rel_group.value %]
-                          <dt>[% type_rels.key %]:</dt>
-                          <dd>
-                            [% FOR rel=type_rels.value %]
-                              [% link_entity(rel.target) %]
-                              [% '<br/>' UNLESS loop.last %]
-                            [% END %]
-                          </dd>
-                        [% END %]
-                      [% END %]
-                    </dl>
+                    <p class="artists">
+                      [% work.writers_and_artists.join(', ') %]
+                    </p>
                   </li>
                   [% END %]
                   <li>

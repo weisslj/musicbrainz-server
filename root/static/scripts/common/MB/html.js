@@ -24,7 +24,7 @@
         var self = {};
 
         var supportedTags = (
-            'a br button dd div dt img input label li span strong ' +
+            'a br button dd div dt img input label li p span strong ' +
             'table tbody td th thead tr ul'
         ).split(' ');
 
