@@ -48,7 +48,7 @@ require MusicBrainz::Server::Filters;
 
 __PACKAGE__->config(
     name => 'MusicBrainz::Server',
-    default_view => 'Xslate',
+    default_view => 'Default',
     'View::Xslate' => {
         path => ['xslate']
     },
