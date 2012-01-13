@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -7,102 +7,350 @@
           title="<: l('MusicBrainz: Artist') :>"
           href="<: $c.uri_for('/static/search_plugins/opensearch/musicbrainz_artist.xml') :>" />
 
-    <link rel="stylesheet" type="text/css" href="/static/styles/layout.css" />
-    <style>
-      body {
-          margin: 0;
-          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-size: 13px;
-          background: #eee;
-      }
-      body, li { color: #303030; }
-      #header {
-          box-shadow: 0px 1px 3px 1px #eee;
-          background: #736DAB;
-      }
-      #logo {
-          background: url('/static/images/layout/sprites.png') no-repeat top left;
-          height: 58px;
-          margin-left: 5em;
-      }
-      #nav {
-          background: #FFBA58;
-          overflow: hidden;
-          font-weight: bold;
-          padding: 0 5em;
-      }
-      #nav ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-      }
-      #nav ul li {
-          float: left;
-          margin: 0;
-          padding: 0;
-      }
-      #nav ul li a {
-          color: #333;
-          display: block;
-          padding: 0.4em 0.5em;
-          text-decoration: none;
-          padding: 0.4em 0.6em;
-          font-weight: bold;
-      }
-      #nav ul li:first a {
-          margin-left: -0.6em;
-      }
-      #nav ul li a:hover {
-          background: #FC6714;
-          color: #fff;
-      }
-      #content {
-          padding: 2em 5em;
-          border-bottom: 1px solid #ddd;
-          background: #fff;
-      }
-    </style>
-    <style>
-table.tbl td { vertical-align: top }
+    <link rel="stylesheet" type="text/css" href="/static/styles/edit.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/entity.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/layout.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/release-editor.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/widgets.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/extra/homepage.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/debug.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/extra/user.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/extra/wikidocs.css">
 
-dl.ars, dl.ars dd, dl.ars dt {
-    padding: 0;
-    margin: 0;
-    font-size: 11px;
-}
+    <link type="text/css" rel="stylesheet" href="/static/lib/jquery.ui/themes/base/jquery.ui.all.css">
+    <link rel="search" type="application/opensearchdescription+xml" title="MusicBrainz: Artist"
+          href="/static/search_plugins/opensearch/musicbrainz_artist.xml">
+    <link rel="search" type="application/opensearchdescription+xml" title="MusicBrainz: Label"
+          href="/static/search_plugins/opensearch/musicbrainz_label.xml">
+    <link rel="search" type="application/opensearchdescription+xml" title="MusicBrainz: Release"
+          href="/static/search_plugins/opensearch/musicbrainz_release.xml">
+    <link rel="search" type="application/opensearchdescription+xml" title="MusicBrainz: Track"
+          href="/static/search_plugins/opensearch/musicbrainz_track.xml">
 
-dl.ars { margin-left: 2em; }
-dl.ars dd { margin: 0.2em 0; }
+    <script type="text/javascript">//<![CDATA[
+      document.cookie = "javascript=true; path=/";
+    //]]></script>
 
-dl.ars dt {
-    margin-right: 0.5em;
-    clear: left;
-    float: left;
-    color: #555;
-}
-
-</style>
+    <script src="/static/lib/jquery/jquery-1.5.1.js?t=1326473174"></script>
+    <script src="/static/lib/jquery/jquery.tablesorter.js?t=1326473174"></script>
+    <script src="/static/lib/jquery.ui/ui/jquery-ui-1.8.16.custom.js?t=1326473174"></script>
+    <script src="/static/lib/jquery.ui/external/jquery.cookie.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/AnnotationHistory.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/Autocomplete.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/EditList.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/EditSummary.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/Menu.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/RelateTo.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/SelectAll.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/Tablesorter.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/Control/TagEditor.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/edit_search.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/html.js?t=1326473174"></script>
+    <script src="/static/scripts/common/MB/utility.js?t=1326473174"></script>
+    <script src="/static/scripts/common/ar.js?t=1326473174"></script>
+    <script src="/static/scripts/common/global.js?t=1326473174"></script>
+    <script src="/static/scripts/common/mb_placeholder.js?t=1326473174"></script>
+    <script src="/static/scripts/common/ratings.js?t=1326473174"></script>
+    <script type="text/javascript" src="/text.js"></script>
+    <script type="text/javascript">//<![CDATA[
+      $(document).ready (function () {
+        $("[placeholder]").mb_placeholder ();
+        MB.Control.RelateTo ();
+      });
+    //]]></script>
   </head>
 
   <body>
     <div id="header">
-      <div id="logo">
+      <div id="header-logo">
+        <a href="/" class="logo" title="MusicBrainz"><strong>MusicBrainz</strong></a>
+        <div>
+          <form action="http://musicbrainz.org/search" method="get">
+            <input class="" id="headerid-query" name="query" placeholder="search" type="text" value="" />
+            <select id="headerid-type" name="type"><option value="artist">Artist</option><option value="release_group">Release Group</option><option value="release">Release</option><option value="recording">Recording</option><option value="work">Work</option><option value="label">Label</option><option value="annotation">Annotation</option><option value="cdstub">CD Stub</option><option value="editor">Editor</option><option value="freedb">FreeDB</option><option value="tag">Tag</option></select>
 
+            <span class="buttons header-search">
+              <button type="submit">Search</button>
+            </span>
+          </form>
+        </div>
       </div>
-      <div id="nav">
-        <ul>
-          <li><a href="#"><: l('About') :></a></li>
-          <li><a href="#"><: l('Blog') :></a></li>
-          <li><a href="#"><: l('Products') :></a></li>
-          <li><a href="#"><: l('Search') :></a></li>
-          <li><a href="#"><: l('Editing') :></a></li>
-          <li><a href="#"><: l('Documentation') :></a></li>
-          <li><a href="#"><: l('Contact Us') :></a></li>
+      <div id="header-menu">
+        <div>
+          <ul class="r">        <li class="account">
+              <a href="http://musicbrainz.org/user/acid2">acid2</a>
+              <ul>
+                <li>
+                    <a href="http://musicbrainz.org/account/edit">Edit Profile</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/account/change-password">Change Password</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/account/preferences">Preferences</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/user/acid2/subscriptions/artist">Subscriptions</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/logout">Log Out</a>
+                </li>
+            </ul>
+        </li>
+        <li class="data">
+            <a href="http://musicbrainz.org/user/acid2">My Data</a>
+            <ul>
+                <li>
+                    <a href="http://musicbrainz.org/user/acid2/collections">My Collections</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/user/acid2/ratings">My Ratings</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/user/acid2/tags">My Tags</a>
+                </li>
+                <li class="separator">
+                    <a href="http://musicbrainz.org/user/acid2/edits/open">My Open Edits</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/user/acid2/edits">All My Edits</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/edit/subscribed">Edits for Subscribed Entities</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/edit/subscribed_editors">Edits by Subscribed Editors</a>
+                </li>
+            </ul>
+        </li>
+        
+            <li class="admin">
+                <a href="http://musicbrainz.org/admin">Admin</a>
+                <ul>
+                    
+                        <li>
+                            <a href="http://musicbrainz.org/admin/linktype">Edit Relationship Types</a>
+                        </li>
+                        <li>
+                            <a href="http://musicbrainz.org/admin/linkattributetype">Edit Relationship Attributes</a>
+                        </li>
+                    
+                    
+                        <li>
+                            <a href="http://musicbrainz.org/admin/wikidoc">Transclude WikiDocs</a>
+                        </li>
+                    
+                </ul>
+            </li>
         </ul>
+
+<ul>
+    <li class="about">
+        <a href="http://musicbrainz.org/doc/About_MusicBrainz">About</a>
+        <ul>
+            <li>
+                <a href="http://musicbrainz.org/doc/MusicBrainz_Sponsors">Sponsors</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/People">People</a>
+            </li>
+            <li class="separator">
+                <a href="http://musicbrainz.org/doc/MusicBrainz_License">Data Licenses</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/Social_Contract">Social Contract</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/Code_of_Conduct">Code of Conduct</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/MusicBrainz_Privacy_Policy">Privacy Policy</a>
+            </li>
+            <li class="separator">
+                <a href="http://musicbrainz.org/elections">Auto-editor Elections</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/privileged">Privileged User Accounts</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/statistics">Statistics</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/statistics/timeline">Timeline Graph</a>
+            </li>
+        </ul>
+    </li>
+    <li class="blog">
+        <a href="http://blog.musicbrainz.org" class="internal">
+            Blog
+        </a>
+    </li>
+
+    <li class="products">
+        <a href="http://musicbrainz.org/doc/Products">Products</a>
+        <ul>
+            <li>
+                <a href="http://musicbrainz.org/doc/MusicBrainz_Picard">MusicBrainz Picard</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/Jaikoz">Jaikoz</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/Magic_MP3_Tagger">Magic MP3 Tagger</a>
+            </li>
+            <li class="separator">
+                <a href="http://musicbrainz.org/doc/MusicBrainz_for_Android">MusicBrainz for Android</a>
+            </li>
+            <li class="separator">
+                <a href="http://musicbrainz.org/doc/MusicBrainz_Server">MusicBrainz Server</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/MusicBrainz_Database">MusicBrainz Database</a>
+            </li>
+            <li class="separator">
+                <a href="http://musicbrainz.org/doc/Developer_Resources">Developer Resources</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/XML_Web_Service">XML Web Service</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/Live_Data_Feed">Live Data Feed</a>
+            </li>
+            <li class="separator">
+                <a href="http://musicbrainz.org/doc/FreeDB_Gateway">FreeDB Gateway</a>
+            </li>
+        </ul>
+    </li>
+    <li class="search">
+        <a href="http://musicbrainz.org/search">Search</a>
+        <ul>                <li>
+                    <a href="http://musicbrainz.org/search/edits">Search Edits</a>
+                </li>
+            
+            <li>
+                <a href="http://musicbrainz.org/browse">Browse</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/tags">Tags</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/cdstub/browse">Top CD Stubs</a>
+            </li>
+        </ul>
+    </li>        <li class="editing">
+            <a href="http://musicbrainz.org/doc/How_Editing_Works">Editing</a>
+            <ul>
+                <li>
+                    <a href="http://musicbrainz.org/artist/create">Add Artist</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/label/create">Add Label</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/release-group/create">Add Release Group</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/release/add">Add Release</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/release/add?artist=89ad4ac3-39f7-470e-963a-56509c546377">Add Various Artists Release</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/recording/create">Add Standalone Recording</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/work/create">Add Work</a>
+                </li>
+                <li class="separator">
+                    <a href="http://musicbrainz.org/edit/open">Vote on Edits</a>
+                </li>
+                <li>
+                    <a href="http://musicbrainz.org/reports">Reports</a>
+                </li>
+            </ul>
+        </li>    <li class="documentation">
+        <a href="http://musicbrainz.org/doc/MusicBrainz_Documentation">Documentation</a>
+        <ul>
+            <li>
+                <a href="http://musicbrainz.org/doc/Beginners_Guide">Beginners Guide</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/Style">Style Guidelines</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/Frequently_Asked_Questions">FAQs</a>
+            </li>
+            <li class="separator">
+                <a href="http://musicbrainz.org/doc/Edit_Types">Edit Types</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/admin/linktype">Relationship Types</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/admin/linkattributetype">Relationship Attributes</a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/admin/linkattributetype/instruments">Instrument Tree</a>
+            </li>
+            <li class="separator">
+                <a href="http://musicbrainz.org/doc/Development">Development</a>
+            </li>
+        </ul>
+    </li>
+    <li class="contact">
+        <a href="http://musicbrainz.org/doc/Contact_Us">Contact Us</a>
+        <ul>
+            <li>
+                <a href="http://musicbrainz.org/doc/Mailing_Lists">Mailing Lists</a>
+            </li>
+            <li>
+                <a href="http://forums.musicbrainz.org" class="internal">
+                    Forums
+                </a>
+            </li>
+            <li class="separator">
+                <a href="http://tickets.musicbrainz.org" class="internal">
+                    Report a Bug
+                </a>
+            </li>
+            <li>
+                <a href="http://musicbrainz.org/doc/Copyright_Violation_Notice">Report a Copyright Violation</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+                    <div class="r"></div><div class="l"></div>
+                </div>
+            </div>
+        </div>
+
+    <div id="page">
+      <div id="sidebar">
+        : block sidebar -> { }
       </div>
+      <div id="content">
+        : block content -> { }
+      </div>
+      <div class="br"></div><div class="bl"></div><div class="tr"></div><div class="tl"></div>
+      <div style="clear: both"></div>
     </div>
-    <div id="content">
-      : block content -> { }
+
+    <div id="footer">
+      <p class="left">
+        <a href="http://metabrainz.org/donate" class="internal">Donate</a> |
+        <a href="http://wiki.musicbrainz.org/" class="internal">Wiki</a> |
+        <a href="http://forums.musicbrainz.org/" class="internal">Forums</a> |
+        <a href="http://tickets.musicbrainz.org/" class="internal">Bug Tracker</a> |
+        <a href="http://twitter.com/MusicBrainz" class="internal">Twitter</a> |
+        <a href="http://www.cafepress.com/musicbrainz" class="internal">Schwag</a>
+      </p>
+
+      <p class="right">
+        Hosted by <a href="http://digitalwest.net/">Digital West</a>. Sponsored by: <a href="http://www.google.com/">Google</a>,
+        <a href="http://osuosl.org/">OSUOSL</a> and <a href="http://musicbrainz.org/doc/MusicBrainz_Sponsors">others…</a>
+      </p>
     </div>
   </body>
 </html>
