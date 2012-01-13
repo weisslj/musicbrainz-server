@@ -58,28 +58,64 @@
 
 : cascade layout
 : override content -> {
-<h1>
-  <a href="<: $c.uri_for_action('/release/show', [ $release.gid ]) :>">
-    <: $release.name :>
-  </a>
-</h1>
-<p class="subheader">
-  Release by <: artist_credit($release.artist_credit) :>
-  <span class="small">
-    (<a href="">see all versions of this release,
-      <: $release.release_group.release_count :> available</a>)
-  </span>
-</p>
+<style>
+  table.tbl td { vertical-align: top }
+
+  dl.ars, dl.ars dd, dl.ars dt {
+      padding: 0;
+      margin: 0;
+      font-size: 11px;
+  }
+
+  dl.ars { margin-left: 2em; }
+  dl.ars dd { margin: 0.2em 0; }
+
+  dl.ars dt {
+      margin-right: 0.5em;
+      clear: left;
+      float: left;
+      color: #555;
+  }
+</style>
+
+<div class="releaseheader">
+  <h1><: link_entity($release) :></h1>
+  <p class="subheader">
+    <span class="prefix">~</span>
+    Release by <: artist_credit($release.artist_credit) :>
+      <span class="small">
+        (<a href="">see all versions of this release,
+          <: $release.release_group.release_count :> available</a>)
+      </span>
+  </p>
+</div>
+
+: macro tab -> $page, $name, $opts {
+  <li class="<: $opts['selected'] ? 'sel' : '' :>">
+    <a href="<: $c.uri_for_action($page, [ $release.gid ]) :>"><: $name :></a>
+  </li>
+: }
+
+<div class="tabs">
+  <ul>
+    : tab('/release/show', 'Release', { selected => 1 })
+    : tab('/release/relationships', 'Relationships', {})
+    : tab('/release/discids', 'Disc IDs', {})
+    : tab('/release/tags', 'Tags', {})
+    : tab('/release/details', 'Details', {})
+    : tab('/release_editor/edit', 'Edit', {})
+  </ul>
+</div>
 
 <h2>Tracklist</h2>
 <table class="tbl">
   <thead>
     <tr>
-      <th>#</th>
+      <th class="pos t">#</th>
       <th>Title</th>
       <th>Artist</th>
-      <th>Rating</th>
-      <th>Length</th>
+      <th class="rating c">Rating</th>
+      <th class="treleases">Length</th>
     </tr>
   </thead>
   <tbody>
@@ -159,4 +195,85 @@
 <p><: link_entity($release) :> has no relationships.</p>
 : }
 
+: }
+
+: override sidebar -> {
+<div class="cover-art">
+  : if $release.cover_art_url {
+    <img src="<: $release.cover_art_url :>" alt="<: l('Cover Art') :>" />
+  : }
+  : else {
+    <em>[% l('No cover image available.') %]</em>
+  : }
+</div>
+
+: macro property -> $key, $value {
+:   if $value {
+      <dt><: $key :></dt>
+      <dd><: $value :></dd>
+:   }
+: }
+
+: macro quality_name -> $quality {
+:   given $quality {
+:     when 0 { html('Low') }
+:     when 1 { html('Normal') }
+:     when 2 { html('High') }
+:   }
+: }
+
+<h2><: l('Release information') :></h2>
+<dl class="properties">
+  : property(l('Date:'), $release.date.format);
+  : property(l('Country:'), $release.country.name);
+  : property(l('Barcode:'), $release.barcode);
+  : property(l('Format:'), $release.combined_format_name);
+</dl>
+
+<h2><: l('Additional details') :></h2>
+<dl class="properties">
+  : property(l('Type:'), $release.release_group.type.name);
+  : property(l('Packaging:'), $release.packaging.name);
+  : property(l('Status:'), $release.status.name);
+  : property(l('Language:'), $release.language.name);
+  : property(l('Script:'), $release.script.name);
+  : if $release.quality != -1 {
+  :   property(l('Data Quality:'), quality_name($release.quality))
+  : }
+</dl>
+
+: if $release.labels {
+  <h2><: l('Labels') :></h2>
+  <ul class="links">
+    : for $release.labels -> $release_label {
+    <li>
+      <: link_entity($release_label.label) :><br />
+      <: $release_label.catalog_number :>
+    : }
+  </ul>
+: }
+
+: macro action -> $path, $name {
+  <li>
+    <a href="<: $c.uri_for_action($path, [ $release.gid ]) :>"><: $name :></a>
+  </li>
+: }
+
+<h2><: l('Editing') :></h2>
+<ul class="links">
+  : if $c.user_exists {
+  :   action('/release/edit_annotation',
+  :          $release.latest_annotation
+  :            ? l('Edit annotation')
+  :            : l('Add Annotation'));
+  :   action('/release/change_quality', l('Change release quality'));
+  :   action('/release/move', l('Change release group'));
+      <li>
+        <a href="<: $c.uri_for_action('/release/merge_queue', { 'add-to-merge' => $release.id }) :>">
+          <: l('Merge release') :>
+        </a>
+      </li>
+  :   action('/release/delete', l('Remove release'));
+  : }
+</ul>
 : }
