@@ -114,21 +114,23 @@ sub artist_credit_to_ref
 sub load_subobjects
 {
     my ($data_access, $attr_obj, @objs) = @_;
-
-    @objs = grep { defined } @objs;
-    return unless @objs;
+    @objs = grep { defined } @objs or return;
 
     my $attr_id = $attr_obj . "_id";
-    @objs = grep { $_->meta->find_attribute_by_name($attr_id) } grep { defined } @objs;
-    my %ids = map { ($_->meta->find_attribute_by_name($attr_id)->get_value($_) || "") => 1 } @objs;
-    my @ids = grep { $_ } keys %ids;
+    my %ids;
+    for my $obj (@objs) {
+        my $id = $obj->$attr_id or next;
+        $ids{$id} ||= [];
+        push @{ $ids{$id} }, $obj;
+    }
+
     my $data;
-    if (@ids) {
+    if (my @ids = keys %ids) {
         $data = $data_access->get_by_ids(@ids);
-        foreach my $obj (@objs) {
-            my $id = $obj->meta->find_attribute_by_name($attr_id)->get_value($obj);
-            if (defined $id && exists $data->{$id}) {
-                $obj->meta->find_attribute_by_name($attr_obj)->set_value($obj, $data->{$id});
+        for my $id (@ids) {
+            my $val = $data->{$id} or next;
+            for my $obj (@{ $ids{$id} }) {
+                $obj->$attr_obj($val);
             }
         }
     }
