@@ -5,6 +5,7 @@ use 5.10.0;
 use MooseX::Types::Moose qw( Int Str Maybe );
 use MooseX::Types::Structured qw( Dict Optional );
 
+use aliased 'MusicBrainz::Server::Entity::Barcode';
 use MusicBrainz::Server::Constants qw( $EDIT_RELEASE_EDIT );
 use MusicBrainz::Server::Data::Utils qw(
     artist_credit_to_ref
@@ -132,7 +133,6 @@ sub build_display_data
         language  => [ qw( language_id Language )],
         script    => [ qw( script_id Script )],
         name      => 'name',
-        barcode   => 'barcode',
         comment   => 'comment',
     );
 
@@ -143,6 +143,13 @@ sub build_display_data
             new => artist_credit_from_loaded_definition($loaded, $self->data->{new}{artist_credit}),
             old => artist_credit_from_loaded_definition($loaded, $self->data->{old}{artist_credit})
         }
+    }
+
+    if (exists $self->data->{new}{barcode}) {
+        $data->{barcode} = {
+            new => Barcode->new($self->data->{new}{barcode}),
+            old => Barcode->new($self->data->{old}{barcode}),
+        };
     }
 
     if (exists $self->data->{new}{date}) {
@@ -166,25 +173,10 @@ sub _mapping
     );
 }
 
-around 'initialize' => sub
+before 'initialize' => sub
 {
-    my ($orig, $self, %opts) = @_;
+    my ($self, %opts) = @_;
     my $release = $opts{to_edit} or return;
-
-    warn "edit/release before initialize\n";
-
-    if ($opts{no_barcode})
-    {
-        # It is known this release does NOT have a barcode, should be "" in the database.
-        $opts{barcode} = "";
-    }
-    elsif (! $opts{barcode})
-    {
-        # It is unknown if this release has a barcode or not, should be NULL in the database.
-        $opts{barcode} = undef;
-    }
-
-    delete $opts{no_barcode};
 
     if (exists $opts{artist_credit})
     {
@@ -194,8 +186,6 @@ around 'initialize' => sub
     if (exists $opts{artist_credit} && !$release->artist_credit) {
         $self->c->model('ArtistCredit')->load($release);
     }
-
-    $self->$orig (%opts);
 };
 
 around extract_property => sub {
