@@ -160,13 +160,47 @@
   </span>
 : }
 
+: my $annotation = $release.latest_annotation;
+: if $annotation.text || $number_of_revisions > 1 {
+    <h2><: l('Annotation') :></h2>
+    <div class="annotation">
+      <div class="annotation-body">
+        : raw(format_wikitext($annotation.summary));
+        : if $annotation.summary_is_short {
+          <p><a href="<: $c.uri_for($c.controller.action_for('latest_annotation'), [ $entity.gid ]) :>">
+            <: l('Read more…') :></a></p>
+        : }
+      </div>
+      <div class="annotation-details">
+        : if $c.user_exists {
+        :   l('Annotation last modified by {user} on {date}.', {
+        :       user => link_entity($annotation.editor),
+        :       date => format_user_date($c.user, $annotation.creation_date),
+        :   });
+        :   if $number_of_revisions > 1 {
+              <a href="<: $c.uri_for_action($c.controller.action_for('annotation_history'), [ $entity.gid ]) :>">
+                <: l('View annotation history') :>
+              </a>
+        :   }
+        : }
+        : else {
+        :   l('Annotation last modified on {date}.', {
+        :       date => format_user_date($c.user, annotation.creation_date),
+        :   });
+        : }
+      </div>
+    </div>
+: }
+
 <h2>Tracklist</h2>
 <table class="tbl">
   <thead>
     <tr>
       <th class="pos t">#</th>
       <th>Title</th>
-      <th>Artist</th>
+      : if $show_artists {
+          <th>Artist</th>
+      : }
       <th class="rating c">Rating</th>
       <th class="treleases">Length</th>
     </tr>
@@ -219,7 +253,9 @@
           </div>
         : }
       </td>
-      <td><: artist_credit($track.artist_credit) :></td>
+      : if $show_artists {
+          <td><: artist_credit($track.artist_credit) :></td>
+      : }
       <td><: rating_stars($track.recording, 0) :></td>
       <td><: $track.length | format_duration :></td>
     </tr>

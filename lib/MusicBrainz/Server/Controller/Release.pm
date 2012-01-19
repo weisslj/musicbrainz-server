@@ -180,8 +180,15 @@ sub show : Chained('load') PathPart('')
         template     => 'release/index.tx',
         show_artists => $release->has_multiple_artists,
     );
-    $c->forward( $c->view('Xslate'));
 }
+
+# This is a bit weird, but while we are using both Template Toolkit and Xslate,
+# it's necessary. What this does is mean that the forwarding happens *after* any
+# role method modifiers are called.
+after show => sub {
+    my ($self, $c) = @_;
+    $c->forward( $c->view('Xslate'));
+};
 
 =head2 show
 
