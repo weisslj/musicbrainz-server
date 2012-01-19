@@ -41,7 +41,7 @@ sub serializer
 {
     my $entity = shift;
 
-    my $class = $ENTITY_TO_SERIALIZER{$entity->meta->name};
+    my $class = $ENTITY_TO_SERIALIZER{ref($entity)};
 
     Class::MOP::load_class($class);
 

@@ -1,51 +1,66 @@
 package MusicBrainz::Server::Entity::Relationship;
+use Moo;
 
-use Moose;
+use DateTime::Format::Pg;
 use Readonly;
+use Carp qw( croak );
 use MusicBrainz::Server::Entity::Types;
 use MusicBrainz::Server::Validation;
+use Sub::Quote;
+use Scalar::Util qw( looks_like_number );
 
 Readonly our $DIRECTION_FORWARD  => 1;
 Readonly our $DIRECTION_BACKWARD => 2;
 
-extends 'MusicBrainz::Server::Entity';
-with  'MusicBrainz::Server::Entity::Role::Editable';
-with  'MusicBrainz::Server::Entity::Role::LastUpdate';
+has 'last_updated' => (
+    is => 'rw',
+    coerce => sub { DateTime::Format::Pg->parse_datetime(shift) }
+);
+
+has 'id' => (
+    is => 'rw',
+    isa => sub { croak 'id muts be an Int' unless looks_like_number(shift) }
+);
+
+has 'edits_pending' => (
+    is => 'rw',
+    isa => sub { croak 'edits_pending muts be an Int' unless looks_like_number(shift) }
+);
 
 has 'link_id' => (
     is => 'rw',
-    isa => 'Int',
+    isa => sub { croak 'link_id must be an Int' unless looks_like_number(shift) }
 );
 
 has 'link' => (
     is => 'rw',
-    isa => 'Link',
+    isa => sub { croak 'link must be a Link object' unless shift->isa('MusicBrainz::Server::Entity::Link') },
 );
 
 has 'direction' => (
     is => 'rw',
-    isa => 'Int',
-    default => $DIRECTION_FORWARD
+    isa => sub { croak 'direction must be an Int' unless looks_like_number(shift) },
+    default => sub { $DIRECTION_FORWARD }
 );
 
 has 'entity0_id' => (
     is => 'rw',
-    isa => 'Int',
+    isa => sub { croak 'entity0_id must be an Int' unless looks_like_number(shift) },
 );
 
 has 'entity0' => (
     is => 'rw',
-    isa => 'Linkable',
+    isa => sub { croak 'entity0_id must be an Int' unless shift->does('MusicBrainz::Server::Entity::Role::Linkable') },
 );
 
 has 'entity1_id' => (
     is => 'rw',
-    isa => 'Int',
+    isa => sub { croak 'entity1_id must be an Int' unless looks_like_number(shift) },
 );
 
 has 'entity1' => (
     is => 'rw',
-    isa => 'Linkable',
+    isa => sub { croak 'entity1 must be an Int' unless shift->does('MusicBrainz::Server::Entity::Role::Linkable') },
 );
 
 has 'phrase' => (
@@ -171,8 +186,6 @@ sub _interpolate
     return $phrase;
 }
 
-__PACKAGE__->meta->make_immutable;
-no Moose;
 1;
 
 =head1 COPYRIGHT

@@ -119,6 +119,7 @@ sub load_subobjects
     my $attr_id = $attr_obj . "_id";
     my %ids;
     for my $obj (@objs) {
+        next unless $obj->can($attr_id);
         my $id = $obj->$attr_id or next;
         $ids{$id} ||= [];
         push @{ $ids{$id} }, $obj;

@@ -6,7 +6,7 @@ use MusicBrainz::Server::Entity::Types;
 extends 'MusicBrainz::Server::Entity::CoreEntity';
 
 has 'editor' => (
-    is => 'ro',
+    is => 'rw',
     isa => 'Editor',
 );
 
