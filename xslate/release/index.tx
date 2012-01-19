@@ -1,6 +1,9 @@
 : macro artist_credit -> $credit {
 :   for $credit.names -> $name {
-      <a href=""><: $name.name :></a><: $name.join_phrase :>
+:     raw('<a href="') ~ html($c.uri_for_action('/artist/show', [ $name.artist.gid ])) ~ raw('">');
+:     html($name.name);
+:     raw('</a>');
+:     html($name.join_phrase);
 :   }
 : }
 
@@ -17,42 +20,49 @@
 
 : macro link_entity -> $entity {
 :   if $entity.isa('MusicBrainz::Server::Entity::Artist') {
-      <a href="<: $c.uri_for_action('/artist/show', [ $entity.gid ]) :>">
-        <: $entity.name :>
-      </a>
+:     raw('<a href="') ~ html($c.uri_for_action('/artist/show', [ $entity.gid ])) ~ raw('">');
+:     html($entity.name);
+:     raw('</a>');
+:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
 :   }
 :   else if $entity.isa('MusicBrainz::Server::Entity::Label') {
-      <a href="<: $c.uri_for_action('/label/show', [ $entity.gid ]) :>">
-        <: $entity.name :>
-      </a>
+:     raw('<a href="') ~ html($c.uri_for_action('/label/show', [ $entity.gid ])) ~ raw('">');
+:     html($entity.name);
+:     raw('</a>');
+:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
 :   }
 :   else if $entity.isa('MusicBrainz::Server::Entity::Recording') {
-      <a href="<: $c.uri_for_action('/recording/show', [ $entity.gid ]) :>">
-        <: $entity.name :>
-      </a>
+:     raw('<a href="') ~ html($c.uri_for_action('/recording/show', [ $entity.gid ])) ~ raw('">');
+:     html($entity.name);
+:     raw('</a>');
+:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
 :   }
 :   else if $entity.isa('MusicBrainz::Server::Entity::Release') {
-      <a href="<: $c.uri_for_action('/release/show', [ $entity.gid ]) :>">
-        <: $entity.name :>
-      </a>
+:     raw('<a href="') ~ html($c.uri_for_action('/release/show', [ $entity.gid ])) ~ raw('">');
+:     html($entity.name);
+:     raw('</a>');
+:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
 :   }
 :   else if $entity.isa('MusicBrainz::Server::Entity::ReleaseGroup') {
-      <a href="<: $c.uri_for_action('/release_group/show', [ $entity.gid ]) :>">
-        <: $entity.name :>
-      </a>
+:     raw('<a href="') ~ html($c.uri_for_action('/release_group/show', [ $entity.gid ])) ~ raw('">');
+:     html($entity.name);
+:     raw('</a>');
+:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
 :   }
 :   else if $entity.isa('MusicBrainz::Server::Entity::Track') {
-      <a href="<: $c.uri_for_action('/recording/show', [ $entity.recording.gid ]) :>">
-        <: $entity.name :>
-      </a>
+:     raw('<a href="') ~ html($c.uri_for_action('/recording/show', [ $entity.recording.gid ])) ~ raw('">');
+:     html($entity.name);
+:     raw('</a>');
 :   }
 :   else if $entity.isa('MusicBrainz::Server::Entity::URL') {
-      <a href="<: $entity.url :>"><: $entity.pretty_name :></a>
+      <a href="<: $entity.affiliate_url :>"><: $entity.pretty_name :></a>
+      [<a href="<: $c.uri_for_action('/url/show', [ $entity.gid ]) :>"><: l('info') :></a>]
 :   }
 :   else if $entity.isa('MusicBrainz::Server::Entity::Work') {
-      <a href="<: $c.uri_for_action('/work/show', [ $entity.gid ]) :>">
-        <: $entity.name :>
-      </a>
+:     raw('<a href="') ~ html($c.uri_for_action('/work/show', [ $entity.gid ])) ~ raw('">');
+:     html($entity.name);
+:     raw('</a>');
+:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
 :   }
 : }
 
@@ -107,6 +117,49 @@
   </ul>
 </div>
 
+: macro rating_tooltip -> $rating {
+:   if $rating == 0 {
+:     l('Remove your rating');
+:   }
+:   else {
+:     ln('Rate: {rating} star', 'Rate: {rating} stars', $rating, { rating => $rating });
+:   }
+: }
+
+: macro rating_rate_url -> $entity, $rating {
+:   $c.uri_for_action("/rating/rate", {
+:       entity_type => entity_type($entity),
+:       entity_id   => $entity.id,
+:       rating      => $rating * 20,
+:   });
+: }
+
+: macro rating_stars -> $entity, $prevent_rating {
+  <span class="inline-rating">
+    <span class="star-rating small-star">
+      : my $current_star_rating = $entity.user_rating ? 5 * $entity.user_rating / 100 : 0;
+      : if $entity.user_rating {
+          <span class="current-user-rating" style="width:<: $entity.user_rating :>%;"><: $current_star_rating :></span>
+      : }
+      : else if $entity.rating_count {
+          <span class="current-rating" style="width:<: $entity.rating :>%;"><: 5 * $entity.rating / 100 :></span>
+      : }
+      : if $c.user_exists && !$prevent_rating {
+      :   for [1..5] -> $rating {
+      :     if $rating == $current_star_rating {
+              <a href="<: rating_rate_url($entity, 0) :>" class="stars-<: $rating :> remove-rating"
+                 title="<: rating_tooltip (0) :>"><: $rating :></a>
+      :     }
+      :     else {
+              <a href="<: rating_rate_url($entity, $rating) :>" class="stars-<: $rating :> set-rating"
+                 title="<: rating_tooltip ($rating) :>"><: $rating :></a>
+      :     }
+      :   }
+      : }
+    </span>
+  </span>
+: }
+
 <h2>Tracklist</h2>
 <table class="tbl">
   <thead>
@@ -121,12 +174,15 @@
   <tbody>
   : for $release.mediums -> $medium {
     <tr class="subh">
-      <th></th>
-      <th colspan="4"><: $medium.format_name :> <: $medium.position :></th>
+      <th> </th>
+      <th colspan="4">
+        <a href="<: $c.uri_for_action('/tracklist/show', [ $medium.tracklist_id ]) :>"
+           ><: $medium.format_name :> <: $medium.position :></a>
+      </th>
     </tr>
     : for $medium.tracklist.tracks -> $track {
     <tr class="<: $~track.cycle('odd', 'ev') :>">
-      <td><: $track.position :></td>
+      <td class="pos t"><: $track.position :></td>
       <td>
         <: link_entity($track) :>
         : if $track.recording.relationships {
@@ -137,13 +193,13 @@
             : if $rel_pair.key == 'work' {
             :   for $rel_pair.value.kv() -> $group {
             :     for $group.value -> $rel {
-                    <dt><: $group.key :></dt>
+                    <dt><: $group.key :>:</dt>
                     <dd>
                       <: link_entity($rel.target) :>
                       : for $rel.target.grouped_relationships('artist').kv() -> $work_rel_type {
                         <dl class="ars">
                         : for $work_rel_type.value.kv() -> $work_rel_group {
-                          <dt><: $work_rel_group.key :></dt>
+                          <dt><: $work_rel_group.key :>:</dt>
                           <: grouped_relationships($work_rel_group.value) :>
                         : }
                         </dl>
@@ -154,7 +210,7 @@
             : }
             : else {
             :  for $rel_pair.value.kv() -> $group {
-                 <dt><: $group.key :></dt>
+                 <dt><: $group.key :>:</dt>
                  <: grouped_relationships($group.value) :>
             :  }
             : }
@@ -164,8 +220,8 @@
         : }
       </td>
       <td><: artist_credit($track.artist_credit) :></td>
-      <td></td>
-      <td><: $track.length :></td>
+      <td><: rating_stars($track.recording, 0) :></td>
+      <td><: $track.length | format_duration :></td>
     </tr>
     : }
   : }
@@ -174,17 +230,35 @@
 
 <h2>Relationships</h2>
 : for $release.grouped_relationships().kv() -> $rel_group {
-<table class="details">
+<table class="details" style="width: 100%">
   <tbody>
     : for $rel_group.value.kv() -> $rel_type {
     <tr>
       <th><: $rel_type.key :>:</th>
       <td>
-        <ul>
-          : for $rel_type.value -> $relationship {
-          <li><: link_entity($relationship.target) :></li>
-          : }
-        </ul>
+        : for $rel_type.value -> $relationship {
+          <span>
+            <: link_entity($relationship.target) :>
+            <span style="float: right">
+              [
+                <a href="<: $c.uri_for_action('/edit/relationship/delete', {
+                                type0 => $relationship.link.type.entity0_type,
+                                type1 => $relationship.link.type.entity1_type,
+                                id => $relationship.id,
+                                returnto => html($c.req.uri)
+                            }) :>"><: l('Remove') :></a>
+              |
+                <a href="<: $c.uri_for_action('/edit/relationship/edit', {
+                                type0 => $relationship.link.type.entity0_type,
+                                type1 => $relationship.link.type.entity1_type,
+                                id => $relationship.id,
+                                returnto => html($c.req.uri)
+                            }) :>"><: l('Edit') :></a>
+              ]
+            </span>
+          </span>
+          <br />
+        : }
       </td>
     </tr>
     : }
@@ -203,7 +277,7 @@
     <img src="<: $release.cover_art_url :>" alt="<: l('Cover Art') :>" />
   : }
   : else {
-    <em>[% l('No cover image available.') %]</em>
+    <em><: l('No cover image available.') :></em>
   : }
 </div>
 
