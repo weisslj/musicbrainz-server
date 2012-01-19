@@ -363,6 +363,55 @@
   </ul>
 : }
 
+<h2><: l('Rating') :></h2>
+<p>
+  : rating_stars($release.release_group, 0);
+  : if $release.release_group.rating_count {
+  :   '(' ~ raw('<a href="' ~ $c.uri_for_action('/release_group/ratings', [ $entity.release_group.gid ]) ~ '">') ~
+  :           "see all ratings" ~ raw('</a>') ~
+  :   ')'
+  : }
+</p>
+
+: macro tag_list -> $tags, $more, $entity {
+:   for $tags -> $tag {
+:     if $~tag.index > 0 { ', ' }
+:     $tag.name
+:   }
+: }
+
+<script type="text/javascript">//<![CDATA[
+  $(function() {
+      MB.Control.TagEditor($('#sidebar-tags'), "<: raw($c.uri_for_action('/release/tag_async', [ $release.gid ])) :>",
+          "<: raw($c.uri_for('/tag/')) :>",
+          '<a href="<: raw($c.uri_for_action('/release/tags', [ $release.gid ])) :>">more…<\/a>');
+  });
+//]]></script>
+
+<div id="sidebar-tags">
+  <h2><: l('Tags') :></h2>
+  <p>
+    <span class="tags">
+      : tag_list($tags, $more, $entity);
+      : if !$tags.size {
+      :   l('(none)');
+      : }
+    </span>
+  </p>
+  : if $c.user_exists {
+  :   if $no_javascript {
+        <p><: link_entity($entity, 'tags', $tag_this_text) :></p>
+  :   }
+  :   else {
+        <form>
+          <input type="text" class="tag-input" value="<: $sidebar_user_tags.join(', ') :>" />
+          <input type="submit" value="<: l('Tag') :>" />
+        </form>
+  :   }
+  : }
+</div>
+
+
 : macro action -> $path, $name {
   <li>
     <a href="<: $c.uri_for_action($path, [ $release.gid ]) :>"><: $name :></a>
@@ -373,7 +422,7 @@
 <ul class="links">
   : if $c.user_exists {
   :   action('/release/edit_annotation',
-  :          $release.latest_annotation
+  :          $release.latest_annotation.text
   :            ? l('Edit annotation')
   :            : l('Add Annotation'));
   :   action('/release/change_quality', l('Change release quality'));
@@ -384,6 +433,76 @@
         </a>
       </li>
   :   action('/release/delete', l('Remove release'));
+
+      <hr />
+
+  :   if $c.session.relationship.id != $entity.id {
+  :     my $text = $c.session.relationship
+  :       ? l('Create relationship with {other}', { other => $c.session.relationship.name })
+  :       : l('Use in a relationship');
+  :     raw('<li>') ~ $text ~ raw('</li>');
+  :   }
+  :   if $c.session.relationship.id {
+  :     my $text = l('Cancel creating relationship with {name}', { name => $c.session.relationship.name });
+  :     raw('<li>') ~ $text ~ raw('</li>');
+  :   }
+
+      <li>
+        <a href="#relate_to"><: l('Relate to ...') :></a>
+        <div style="position: absolute;">
+          <div class="relate-to" style="display: none">
+            <input type="hidden" class="gid" value="<: $entity.gid :>" />
+            <input type="hidden" class="type" value="<: entity_type($entity) :>" />
+            <select style="width: 130px; margin-right: 4px;">
+              <option value="artist"><: l('Artist') :></option>
+              <option value="label"><: l('Label') :></option>
+              <option value="recording"><: l('Recording') :></option>
+              <option value="release-group"><: l('Release Group') :></option>
+              <option value="release"><: l('Release') :></option>
+              <option value="work"><: l('Work') :></option>
+            </select>
+            <span class="autocomplete">
+              <img class="search" src="<: $c.uri_for("/static/images/icons/search.png") :>" />
+              <input type="text" class="name" value="" style="width: 170px;" />
+              <input type="hidden" class="id" value=""  />
+              <input type="hidden" class="gid" value=""  />
+            </span>
+            <select class="endpoint">
+              : for ['release', 'recording'] -> $endpoint {
+                <option value="<: $endpoint :>">
+                  : given ($endpoint) {
+                  :   when('release') { l('Relate to release') }
+                  :   when('recording') { l('Relate to recordings') }
+                  : }
+                </option>
+                : }
+            </select>
+            <br />
+            <div class="buttons" style="margin-top: 0.5em; width: 100%;">
+              <input class="negative button cancel" type="button" value="<: l('Cancel') :>" style="float: left;" />
+              <input class="positive button create" type="button" value="<: l('Create relationship') :>" style="float: right;" />
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        : my $uri = $c.uri_for_action('/edit/relationship/create_url', {
+        :               type => entity_type($entity),
+        :               entity => $entity.gid
+        :           });
+        <: l('Relate to URL') :>
+      </li>
+
+      <hr />
+
+      : if $release.edits_pending {
+        <li><: l('Open edits') :></li>
+      : }
+      <li><: l('Editing history') :></li>
+  : }
+  : else {
+      <li><: l('Log in to edit') :></li>
   : }
 </ul>
 : }
