@@ -541,4 +541,23 @@
               $all_collections.size, { num => $all_collections.size }) :></li>
   </ul>
 : }
+
+: my $soundunwound='http://www.soundunwound.com/music/release' ~ $release.artist_credit.name ~
+:                                             '/' ~ $release.name ~
+:                                             '/mb:' ~ $release.gid;
+
+<div id="sidebar-affiliates">
+  <h2><: l('Affiliate links') :></h2>
+  <ul class="external_links">
+    <li id="sidebar-affiliates-soundunwound">
+      <: l('{uri|Search on SoundUnwound}', { uri => $soundunwound }) :>
+    </li>
+  </ul>
+</div>
+
+: if $entity.last_updated {
+    <p class="lastupdate">
+      <: l('Last updated on {date}', { date => format_user_date($entity.last_updated) }) :></p>
+: }
+
 : }
