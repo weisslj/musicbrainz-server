@@ -505,4 +505,40 @@
       <li><: l('Log in to edit') :></li>
   : }
 </ul>
+
+: if $c.user_exists {
+  <h2><: l('Collections') :></h2>
+  <ul class="links">
+    : for $collections -> $collection {
+      <li>
+        : if $containment[ $collection.id ] {
+          <a href="<: $c.uri_for_action("/collection/remove", [$collection.gid], { release => $release.id }) :>">
+            : if collections.size == 1 {
+            :   l('Remove from my collection');
+            : }
+            : else {
+            :   l('Remove from {collection}', { collection => $collection.name });
+            : }
+          </a>
+        : }
+        : else {
+          <a href="<: $c.uri_for_action("/collection/add", [$collection.gid], { release => $release.id }) :>">
+            : if $collections.size == 1 {
+            :   l('Add to my collection');
+            : }
+            : else {
+            :   l('Add to {collection}', {collection => $collection.name });
+            : }
+          </a>
+        : }
+      </li>
+    : }
+    : else {
+
+    : }
+    <li><a href="<: $c.uri_for_action("/collection/create") :>"><: l('Create a new collection') :></a></li>
+    <li><: ln('Found in {num} user collection', 'Found in {num} user collections',
+              $all_collections.size, { num => $all_collections.size }) :></li>
+  </ul>
+: }
 : }
