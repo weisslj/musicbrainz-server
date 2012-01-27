@@ -19794,6 +19794,98 @@
          },
          "version" : "1.07"
       },
+      "Moo" : {
+         "dist" : "Moo-0.009013",
+         "module" : "Moo",
+         "mymeta" : {
+            "abstract" : "Minimalist Object Orientation (with Moose compatiblity)",
+            "author" : [
+               "mst - Matt S. Trout (cpan:MSTROUT) <mst@shadowcat.co.uk>"
+            ],
+            "dynamic_config" : 0,
+            "generated_by" : "ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.112150",
+            "license" : [
+               "perl_5"
+            ],
+            "meta-spec" : {
+               "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+               "version" : "2"
+            },
+            "name" : "Moo",
+            "no_index" : {
+               "directory" : [
+                  "t",
+                  "inc"
+               ]
+            },
+            "prereqs" : {
+               "build" : {
+                  "requires" : {
+                     "Test::Fatal" : "0.003",
+                     "Test::More" : "0.96"
+                  }
+               },
+               "configure" : {
+                  "requires" : {
+                     "ExtUtils::MakeMaker" : 0
+                  }
+               },
+               "runtime" : {
+                  "requires" : {
+                     "Class::Method::Modifiers" : "1.07",
+                     "strictures" : "1.001001"
+                  }
+               }
+            },
+            "release_status" : "stable",
+            "version" : "0.009013"
+         },
+         "name" : "Moo",
+         "pathname" : "R/RI/RIBASUSHI/Moo-0.009013.tar.gz",
+         "provides" : {
+            "Method::Generate::Accessor" : {
+               "file" : "Method/Generate/Accessor.pm"
+            },
+            "Method::Generate::BuildAll" : {
+               "file" : "Method/Generate/BuildAll.pm"
+            },
+            "Method::Generate::Constructor" : {
+               "file" : "Method/Generate/Constructor.pm"
+            },
+            "Method::Generate::DemolishAll" : {
+               "file" : "Method/Generate/DemolishAll.pm"
+            },
+            "Method::Inliner" : {
+               "file" : "Method/Inliner.pm"
+            },
+            "Moo" : {
+               "file" : "Moo.pm",
+               "version" : "0.009013"
+            },
+            "Moo::Object" : {
+               "file" : "Moo/Object.pm"
+            },
+            "Moo::Role" : {
+               "file" : "Moo/Role.pm"
+            },
+            "Role::Tiny" : {
+               "file" : "Role/Tiny.pm"
+            },
+            "Role::Tiny::With" : {
+               "file" : "Role/Tiny/With.pm"
+            },
+            "Sub::Defer" : {
+               "file" : "Sub/Defer.pm"
+            },
+            "Sub::Quote" : {
+               "file" : "Sub/Quote.pm"
+            },
+            "oo" : {
+               "file" : "oo.pm"
+            }
+         },
+         "version" : "0.009013"
+      },
       "Moose" : {
          "dist" : "Moose-1.24",
          "module" : "Moose",
@@ -39404,6 +39496,58 @@
             }
          },
          "version" : "0.20"
+      },
+      "strictures" : {
+         "dist" : "strictures-1.002002",
+         "module" : "strictures",
+         "mymeta" : {
+            "abstract" : "turn on strict and make all warnings fatal",
+            "author" : [
+               "mst - Matt S. Trout (cpan:MSTROUT) <mst@shadowcat.co.uk>"
+            ],
+            "dynamic_config" : 0,
+            "generated_by" : "ExtUtils::MakeMaker version 6.56, CPAN::Meta::Converter version 2.112150",
+            "license" : [
+               "perl_5"
+            ],
+            "meta-spec" : {
+               "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+               "version" : "2"
+            },
+            "name" : "strictures",
+            "no_index" : {
+               "directory" : [
+                  "t",
+                  "inc"
+               ]
+            },
+            "prereqs" : {
+               "build" : {
+                  "requires" : {
+                     "ExtUtils::MakeMaker" : 0
+                  }
+               },
+               "configure" : {
+                  "requires" : {
+                     "ExtUtils::MakeMaker" : 0
+                  }
+               },
+               "runtime" : {
+                  "requires" : {}
+               }
+            },
+            "release_status" : "stable",
+            "version" : "1.002002"
+         },
+         "name" : "strictures",
+         "pathname" : "M/MS/MSTROUT/strictures-1.002002.tar.gz",
+         "provides" : {
+            "strictures" : {
+               "file" : "strictures.pm",
+               "version" : "1.002002"
+            }
+         },
+         "version" : "1.002002"
       }
    },
    "version" : "0.9"
