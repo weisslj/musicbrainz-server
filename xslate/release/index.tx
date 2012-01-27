@@ -1,3 +1,42 @@
+: macro favicon_class -> $url {
+:      if $url.url.host ~~ 'amazon'              { 'amazon' }
+: else if $url.url.host ~~ 'allmusic.com'        { 'allmusic' }
+: else if $url.url.host ~~ 'wikipedia.org$'      { 'wikipedia' }
+: else if $url.url.host ~~ 'facebook.com'        { 'facebook' }
+: else if $url.url.host ~~ 'last.fm'             { 'lastfm' }
+: else if $url.url.host ~~ 'myspace.com'         { 'myspace' }
+: else if $url.url.host ~~ 'twitter.com'         { 'twitter' }
+: else if $url.url.host ~~ 'youtube.com'         { 'youtube' }
+: else if $url.url.host ~~ 'discogs.com'         { 'discogs' }
+: else if $url.url.host ~~ 'secondhandsongs.com' { 'secondhandsongs' }
+: else if $url.url.host ~~ 'songfacts.com'       { 'songfacts' }
+: else if $url.url.host ~~ 'soundcloud.com'      { 'soundcloud' }
+: else                                                { '' }
+: }
+
+
+: macro display_favicon -> $url, $text, $class {
+  <li class="<: $class :>">
+    <a href="<: $url.url :>"><: $text :></a>
+  </li>
+: }
+
+: macro display_favicons -> $entity, $empty {
+:   my $favicons = $entity.relationships_by_type('url')
+:   my $homepage_relationships = $entity.relationships_by_link_type_names('official homepage', 'official site');
+:   for $homepage_relationships -> $favicon {
+:     display_favicon($favicon.target, l('Official homepage'), 'home');
+:   }
+:
+:   for $favicons -> $favicon {
+:     if $favicon.target.does('MusicBrainz::Server::Entity::URL::Sidebar') &&
+:        $favicon.target.show_in_sidebar {
+:       display_favicon($favicon.target, $favicon.target.sidebar_name, favicon_class($favicon.target));
+:     }
+:   }
+: }
+
+
 : macro artist_credit -> $credit {
 :   for $credit.names -> $name {
 :     raw('<a href="') ~ html($c.uri_for_action('/artist/show', [ $name.artist.gid ])) ~ raw('">');
@@ -540,6 +579,18 @@
     <li><: ln('Found in {num} user collection', 'Found in {num} user collections',
               $all_collections.size, { num => $all_collections.size }) :></li>
   </ul>
+: }
+
+<h2><: l('External links') :></h2>
+<ul class="external_links">
+  <: display_favicons($entity, 1) :>
+</ul>
+: if $entity.isa('MusicBrainz::Server::Entity::Release') {
+:   my $release_group_links = display_favicons($entity.release_group, 0);
+:   if $release_group_links {
+      <h2><: l('Release group external links') :></h2>
+      <ul class="external_links"><: $release_group_links :></ul>
+:   }
 : }
 
 : my $soundunwound='http://www.soundunwound.com/music/release' ~ $release.artist_credit.name ~
