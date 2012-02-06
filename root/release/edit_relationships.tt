@@ -219,7 +219,7 @@
                     types: ['recording', 'work'],
                     linkTypeId: $('#add-works-dialog .relationship-type').val(),
                     attributes: [],
-                    linkPhrase: $('#add-works-dialog .relationship-type option[selected="selected"]').text()
+                    linkPhrase: $('#add-works-dialog .relationship-type option:selected').text()
                 });
                 addRelationship(this);
             });
@@ -265,7 +265,7 @@
             );
 
             $('#tracklist tr.key-' + relData.trackId).find('dl.ars').append(
-                MB.html.dt({}, relData.linkPhrase),
+                MB.html.dt({}, relData.linkPhrase + ":"),
                 dd
             );
         }
@@ -544,7 +544,7 @@
             <select class="relationship-type">
               [%- MACRO expand_link_type(lt, indent) BLOCK -%]
                 <option value="[% lt.id %]">
-                  [% indent %][% lt.link_phrase | html %]
+                  [% indent %][% lt.name | html %]
                 </option>
                 [% expand_link_type(child, '&nbsp;&nbsp' _ indent)
                      FOR child=lt.children %]

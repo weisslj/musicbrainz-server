@@ -34,6 +34,14 @@ has_field 'relationships.entity0.id' => (
     type => 'Integer'
 );
 
+has_field 'relationships.entity1' => (
+    type => 'Compound'
+);
+
+has_field 'relationships.entity1.id' => (
+    type => 'Integer'
+);
+
 has_field 'relationships.work' => (
     type => 'Compound',
 );
