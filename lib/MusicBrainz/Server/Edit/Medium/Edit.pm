@@ -15,7 +15,7 @@ use MusicBrainz::Server::Edit::Types qw(
     Nullable
     NullableOnPreview
 );
-use MusicBrainz::Server::Edit::Utils qw( verify_artist_credits );
+use MusicBrainz::Server::Edit::Utils qw( verify_artist_credits hash_artist_credit );
 use MusicBrainz::Server::Log qw( log_assertion log_debug );
 use MusicBrainz::Server::Validation 'normalise_strings';
 use MusicBrainz::Server::Translation qw( l ln );
@@ -160,7 +160,9 @@ sub initialize
             my $old = tracks_to_hash($entity->tracklist->tracks);
             my $new = tracks_to_hash($tracklist);
 
-            unless (Compare($old, $new)) {
+            unless (Compare(filter_subsecond_differences ($old),
+                            filter_subsecond_differences ($new)))
+            {
                 $data->{old}{tracklist} = $old;
                 $data->{new}{tracklist} = $new;
                 $data->{separate_tracklists} = $separate_tracklists;
@@ -297,19 +299,6 @@ my $UNDEF_MARKER = time();
 sub track_column {
     my ($column, $tracklist) = @_;
     return [ map { $_->{$column} // $UNDEF_MARKER } @$tracklist ];
-}
-
-sub hash_artist_credit {
-    my ($artist_credit) = @_;
-    return join(', ', map {
-        '[' .
-            join(',',
-                 $_->{name},
-                 $_->{artist}{id},
-                 $_->{join_phrase} || '')
-            .
-        ']'
-    } @{ $artist_credit->{names} });
 }
 
 sub accept {
@@ -449,7 +438,7 @@ sub allow_auto_edit
                         $track->{name},
                         format_track_length($track->{length}),
                         hash_artist_credit($track->{artist_credit}),
-                        $track->{recording_id}
+                        $track->{recording_id} // 'new'
                     );
                 }
             ) };

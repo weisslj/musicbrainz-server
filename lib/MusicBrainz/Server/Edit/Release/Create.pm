@@ -3,6 +3,7 @@ use Carp;
 use Moose;
 use MooseX::Types::Moose qw( Int Str );
 use MooseX::Types::Structured qw( Dict );
+use aliased 'MusicBrainz::Server::Entity::Barcode';
 use MusicBrainz::Server::Constants qw( $EDIT_RELEASE_CREATE );
 use MusicBrainz::Server::Edit::Types qw( 
     ArtistCreditDefinition
@@ -67,9 +68,10 @@ sub foreign_keys
         Language         => [ $self->data->{language_id} ],
     };
 
+    $fks->{ReleaseGroup} = { $self->data->{release_group_id} => [ 'ArtistCredit' ] }
+        if $self->data->{release_group_id};
+
     unless ($self->preview) {
-        # May be undef if previewing and creating a new release group
-        $fks->{ReleaseGroup} = { $self->data->{release_group_id} => [ 'ArtistCredit' ] };
         $fks->{Release} = { $self->entity_id => [ 'ArtistCredit' ] };
     }
 
@@ -98,7 +100,7 @@ sub build_display_data
                            $loaded->{Script}{ $script },
         language      => defined($lang) &&
                            $loaded->{Language}{ $lang },
-        barcode       => $self->data->{barcode} || '',
+        barcode       => Barcode->new ($self->data->{barcode}),
         release_group => (defined($self->data->{release_group_id}) &&
                            $loaded->{ReleaseGroup}{ $self->data->{release_group_id} }) ||
                                ReleaseGroup->new( name => '[removed]' ),

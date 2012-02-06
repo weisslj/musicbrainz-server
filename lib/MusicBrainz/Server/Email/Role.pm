@@ -29,7 +29,7 @@ has 'from' => (
 has 'server' => (
     isa => Str,
     is => 'ro',
-    default => sprintf 'http://%s', DBDefs::WEB_SERVER
+    default => sprintf 'http://%s', DBDefs::WEB_SERVER_USED_IN_EMAIL
 );
 
 sub text { '' }
@@ -52,12 +52,14 @@ around 'text' => sub {
 
 sub create_email {
     my $self = shift;
+    my @headers = (
+        To => $self->to,
+        From => $self->from,
+        Subject => $self->subject,
+    );
+    push @headers, $self->extra_headers;
     return Email::MIME->create(
-        header => [
-            To => $self->to,
-            From => $self->from,
-            Subject => $self->subject
-        ],
+        header => \@headers,
         body => encode('utf-8', $self->body),
         attributes => {
             content_type => "text/plain",

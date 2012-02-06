@@ -1,5 +1,6 @@
 package MusicBrainz::Server::Data::ArtistCredit;
 use Moose;
+use namespace::autoclean -also => [qw( _clean )];
 
 use Data::Compare;
 use MusicBrainz::Server::Entity::Artist;
@@ -16,7 +17,8 @@ sub get_by_ids
     my ($self, @ids) = @_;
     my $query = "SELECT artist, artist_name.name, join_phrase, artist_credit,
                         artist.id, gid, n2.name AS artist_name,
-                        n3.name AS sort_name " .
+                        n3.name AS sort_name,
+                        comment " .
                 "FROM artist_credit_name " .
                 "JOIN artist_name ON artist_name.id=artist_credit_name.name " .
                 "JOIN artist ON artist.id=artist_credit_name.artist " .
@@ -38,13 +40,14 @@ sub get_by_ids
             artist_id => $row->{artist},
             name => $row->{name}
         );
-        $info{join_phrase} = $row->{join_phrase} if defined $row->{join_phrase};
+        $info{join_phrase} = $row->{join_phrase} // '';
         my $obj = MusicBrainz::Server::Entity::ArtistCreditName->new(%info);
         $obj->artist(MusicBrainz::Server::Entity::Artist->new(
             id => $row->{id},
             gid => $row->{gid},
             name => $row->{artist_name},
-            sort_name => $row->{sort_name}
+            sort_name => $row->{sort_name},
+            comment => $row->{comment}
         ));
         my $id = $row->{artist_credit};
         $result{$id}->add_name($obj);
@@ -61,6 +64,18 @@ sub load
 {
     my ($self, @objs) = @_;
     load_subobjects($self, 'artist_credit', @objs);
+}
+
+sub find_by_artist_id
+{
+    my ($self, $artist_id) = @_;
+
+    my $query = 'SELECT artist_credit FROM artist_credit_name WHERE artist = ?';
+    my @ids = @{ $self->sql->select_single_column_array($query, $artist_id) };
+
+    my @artist_credits = sort { $a->name cmp $b->name }
+                         values %{ $self->get_by_ids(@ids) };
+    return \@artist_credits;
 }
 
 sub _find
@@ -230,9 +245,9 @@ sub replace {
 
     return if Compare($old_ac, $new_ac);
 
-
     my $old_credit_id = $self->find ($old_ac) or return;
     my $new_credit_id = $self->find_or_insert($new_ac);
+    return if $old_credit_id == $new_credit_id;
 
     for my $table (qw( recording release release_group track )) {
         $self->c->sql->do(

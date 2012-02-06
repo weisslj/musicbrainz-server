@@ -1,12 +1,14 @@
 package MusicBrainz::Server::Data::Release;
 
 use Moose;
+use namespace::autoclean -also => [qw( _where_status_in _where_type_in )];
 
 use Carp 'confess';
 use MusicBrainz::Server::Constants qw( :quality );
 use MusicBrainz::Server::Entity::Release;
 use MusicBrainz::Server::Data::Utils qw(
     add_partial_date_to_row
+    barcode_from_row
     generate_gid
     hash_to_row
     load_subobjects
@@ -69,7 +71,7 @@ sub _column_mapping
         date => sub { partial_date_from_row(shift, shift() . 'date_') },
         edits_pending => 'edits_pending',
         comment => 'comment',
-        barcode => 'barcode',
+        barcode => sub { barcode_from_row (shift, shift) },
         script_id => 'script',
         language_id => 'language',
         quality => sub {
@@ -147,18 +149,23 @@ sub find_by_label
     my $where_statuses = _where_status_in (@$statuses);
     my ($join_types, $where_types) = _where_type_in (@$types);
 
-    my $query = "SELECT " . $self->_columns . ", country.name AS country_name
-                 FROM " . $self->_table . "
-                     JOIN release_label
-                         ON release_label.release = release.id
-                     $join_types
-                     LEFT JOIN country ON release.country = country.id
-                 WHERE release_label.label = ?
-                 $where_statuses
-                 $where_types
-                 ORDER BY date_year, date_month, date_day,
-                          country.name, barcode
-                 OFFSET ?";
+    my $query =
+        "SELECT * FROM (
+           SELECT DISTINCT ON (release.id) " . $self->_columns . " 
+             , country.name AS country_name, catalog_number
+           FROM " . $self->_table . "
+           JOIN release_label
+             ON release_label.release = release.id
+           $join_types
+           LEFT JOIN country ON release.country = country.id
+           WHERE release_label.label = ?
+           $where_statuses
+           $where_types
+         ) s
+         ORDER BY date_year, date_month, date_day, catalog_number,
+                  musicbrainz_collate(name), country_name,
+                  barcode
+         OFFSET ?";
     return query_to_list_limited(
         $self->c->sql, $offset, $limit, sub { $self->_new_from_row(@_) },
         $query, $label_id, @$statuses, @$types, $offset || 0);
@@ -195,6 +202,7 @@ sub find_by_release_group
                  ORDER BY date_year, date_month, date_day,
                           country.name, barcode
                  OFFSET ?";
+
     return query_to_list_limited(
         $self->c->sql, $offset, $limit, sub { $self->_new_from_row(@_) },
         $query, @ids, @$statuses, $offset || 0);
@@ -606,6 +614,56 @@ sub can_merge {
     }
 }
 
+sub determine_recording_merges
+{
+    my ($self, @releases) = @_;
+
+    my %medium_by_position;
+    foreach my $release (@releases) {
+        foreach my $medium ($release->all_mediums) {
+            if (exists $medium_by_position{$medium->position}) {
+                push @{ $medium_by_position{$medium->position} }, $medium;
+			}
+            else {
+                $medium_by_position{$medium->position} = [ $medium ];
+            }
+        }
+    }
+
+    my %recording_by_position;
+    for my $m_pos (keys %medium_by_position) {
+        # must have at least two mediums
+        my @mediums = @{ $medium_by_position{$m_pos} };
+        next if @mediums <= 1;
+        # all mediums must have the same number of tracks
+        my $track_count = $mediums[0]->tracklist->track_count;
+        next if grep { $_->tracklist->track_count != $track_count } @mediums;
+        # group recordings by track position 
+        $recording_by_position{$m_pos} = {};
+        for my $medium (@mediums) {
+            for my $tr ($medium->tracklist->all_tracks) {
+                my $tr_pos = $tr->position;
+                if (exists $recording_by_position{$m_pos}->{$tr_pos}) {
+                    push @{ $recording_by_position{$m_pos}->{$tr_pos} }, $tr->recording;
+                }
+                else {
+                    $recording_by_position{$m_pos}->{$tr_pos} = [ $tr->recording ];
+                }   
+            }
+        }
+    }
+
+    my @merges;
+    for my $m_pos (sort { $a <=> $b } keys %recording_by_position) {
+        for my $tr_pos (sort { $a <=> $b } keys %{ $recording_by_position{$m_pos} }) {
+            my $recordings = $recording_by_position{$m_pos}->{$tr_pos};
+            push @merges, $recordings if scalar @$recordings;
+        }
+    }
+
+    return @merges;
+}
+
 sub merge
 {
     my ($self, %opts) = @_;
@@ -800,6 +858,21 @@ sub find_similar
         # Make sure the artist credit has the same amount of artists
         grep { $_->artist_credit->artist_count == keys %artist_ids }
             @releases;
+}
+
+sub filter_barcode_changes {
+    my ($self, @barcodes) = @_;
+    return unless @barcodes;
+    return @{
+        $self->c->sql->select_list_of_hashes(
+            'SELECT DISTINCT change.release, change.barcode
+             FROM (VALUES ' . join(', ', ("(?::uuid, ?)") x @barcodes) . ') change (release, barcode)
+             LEFT JOIN release_gid_redirect rgr ON rgr.gid = change.release
+             JOIN release ON (release.gid = change.release OR rgr.new_id = release.id)
+             WHERE change.barcode IS DISTINCT FROM release.barcode',
+            map { $_->{release}, $_->{barcode} } @barcodes
+        )
+    };
 }
 
 __PACKAGE__->meta->make_immutable;

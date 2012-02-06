@@ -1,6 +1,7 @@
 package MusicBrainz::Server::Data::Collection;
 
 use Moose;
+use namespace::autoclean;
 
 use Carp;
 use Sql;
@@ -149,6 +150,21 @@ sub find_all_by_editor
     my $query = "SELECT " . $self->_columns . "
                  FROM " . $self->_table . "
                  WHERE editor=? ";
+
+    $query .= "ORDER BY musicbrainz_collate(name)";
+    return query_to_list(
+        $self->c->sql, sub { $self->_new_from_row(@_) },
+        $query, $id);
+}
+
+sub find_all_by_release
+{
+    my ($self, $id) = @_;
+    my $query = "SELECT " . $self->_columns . "
+                 FROM " . $self->_table . "
+                    JOIN editor_collection_release cr
+                        ON editor_collection.id = cr.collection
+                 WHERE cr.release = ? ";
 
     $query .= "ORDER BY musicbrainz_collate(name)";
     return query_to_list(

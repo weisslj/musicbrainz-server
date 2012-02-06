@@ -1,5 +1,6 @@
 package MusicBrainz::Server::Data::EntityAnnotation;
 use Moose;
+use namespace::autoclean;
 
 use HTML::Entities qw( decode_entities );
 use MusicBrainz::Server::Constants qw(
@@ -62,7 +63,7 @@ sub _column_mapping {
         id => 'id',
         text => sub {
             my $row = shift;
-            decode_entities($row->{text});
+            $row->{text} && decode_entities($row->{text});
         },
         changelog => 'changelog',
         editor_id => 'editor_id',

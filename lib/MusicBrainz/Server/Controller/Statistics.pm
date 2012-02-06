@@ -23,7 +23,7 @@ sub statistics : Path('')
     );
 }
 
-sub timeline : Local
+sub timeline : Path('timeline/main')
 {
     my ($self, $c) = @_;
 
@@ -34,10 +34,29 @@ sub timeline : Local
     )
 }
 
+sub timeline_redirect : Path('timeline')
+{
+    my ($self, $c) = @_;
+    $c->response->redirect($c->uri_for("/statistics/timeline/main"), 303);
+}
+
+sub individual_timeline : Path('timeline') Args(1)
+{
+    my ($self, $c, $stat) = @_;
+
+    my @stats = ($stat);
+    $c->stash(
+        template => 'statistics/timeline.tt',
+        stats => \@stats,
+        show_all => 1,
+    )
+}
+
 sub dataset : Local Args(1)
 {
     my ($self, $c, $dataset) = @_;
 
+    $c->res->content_type('application/json; charset=utf-8');
     my $tomorrow = Date_to_Time(Add_Delta_Days(Today(1), 1), 0, 0, 0);
     $c->res->headers->expires($tomorrow);
     $c->stash(
@@ -100,6 +119,32 @@ sub languages_scripts : Path('languages-scripts')
         language_stats  => $language_stats,
         script_stats    => $script_stats,
         date_collected => $stats->{date_collected}
+    );
+}
+
+sub formats : Path('formats')
+{
+    my ($self, $c) = @_;
+
+    my $stats = $c->model('Statistics::ByDate')->get_latest_statistics();
+    my $format_stats = [];
+    my $release_format_prefix = 'count.release.format';
+    my $medium_format_prefix = 'count.medium.format';
+    my %formats = map { $_->id => $_ } $c->model('MediumFormat')->get_all();
+
+    foreach my $stat_name
+         (rev_nsort_by { $stats->statistic($_) } $stats->statistic_names) {
+        if (my ($format_id) = $stat_name =~ /^$medium_format_prefix\.(.*)$/) {
+            my $release_stat = $stat_name;
+	    $release_stat =~ s/$medium_format_prefix/$release_format_prefix/;
+            push(@$format_stats, ({'entity' => $formats{$format_id}, 'medium_count' => $stats->statistic($stat_name), 'medium_stat' => $stat_name, 'release_count' => $stats->statistic($release_stat), 'release_stat' => $release_stat}));
+	}
+    }
+
+    $c->stash(
+        template => 'statistics/formats.tt',
+	format_stats => $format_stats,
+	stats => $stats
     );
 }
 

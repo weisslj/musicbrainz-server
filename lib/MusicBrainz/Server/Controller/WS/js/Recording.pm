@@ -21,9 +21,10 @@ with 'MusicBrainz::Server::WebService::Validator' =>
 
 sub type { 'recording' }
 
-sub serialization_routine { 'autocomplete_recording' }
+sub serialization_routine { '_recording' }
 
-sub search : Path('/ws/js/recording') {
+sub search : Chained('root') PathPart('recording')
+{
     my ($self, $c) = @_;
     $self->dispatch_search($c);
 }
@@ -32,7 +33,7 @@ sub _do_direct_search {
     my ($self, $c, $query, $offset, $limit) = @_;
 
     my $where = {};
-    if (my $artist = $c->req->query_params->{artist}) {
+    if (my $artist = $c->req->query_params->{a}) {
         $where->{artist} = $artist;
     }
 

@@ -1,3 +1,24 @@
+<style>
+table.tbl td { vertical-align: top }
+
+dl.ars, dl.ars dd, dl.ars dt {
+    padding: 0;
+    margin: 0;
+    font-size: 11px;
+}
+
+dl.ars { margin-left: 2em; }
+dl.ars dd { margin: 0.2em 0; }
+
+dl.ars dt {
+    margin-right: 0.5em;
+    clear: left;
+    float: left;
+    color: #555;
+}
+
+</style>
+
 [% MACRO group_dd(group) BLOCK;
      links = [];
      links.push(link_entity(rel.target)) FOR rel=group.value;
@@ -17,18 +38,19 @@
       [%- END -%]
       [% IF recording.relationships.size %]
         <br/>
+        <div class="ars" style="display: none;">
         [% FOR type_relationships=recording.grouped_relationships %]
           <dl class="ars">
           [% IF type_relationships.key == 'work' %]
             [% FOR group=type_relationships.value %]
               [% FOR rel=group.value %]
-                <dt>[% group.key %]:</dt>
+                <dt>[% l(group.key) %]:</dt>
                 <dd>
                   [% link_entity(rel.target) %]
                   [% FOR work_rel_type=rel.target.grouped_relationships('artist') %]
                     <dl class="ars">
                       [% FOR work_rel_group=work_rel_type.value %]
-                        <dt>[% work_rel_group.key %]:</dt>
+                        <dt>[% l(work_rel_group.key) %]:</dt>
                         <dd>[% group_dd(work_rel_group) %]</dd>
                       [% END %]
                     </dl>
@@ -38,12 +60,13 @@
             [% END %]
           [% ELSE %]
             [% FOR group=type_relationships.value %]
-              <dt>[% group.key %]:</dt>
+              <dt>[% l(group.key) %]:</dt>
               <dd>[% group_dd(group) %]</dd>
             [% END %]
           [% END %]
         </dl>
         [% END %]
+        </div>
       [% END %]
     </td>
     [%- IF show_artists -%]

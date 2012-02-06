@@ -1,6 +1,7 @@
 package MusicBrainz::Server::Data::Track;
 
 use Moose;
+use namespace::autoclean;
 use MusicBrainz::Server::Entity::Track;
 use MusicBrainz::Server::Entity::Tracklist;
 use MusicBrainz::Server::Data::Medium;
@@ -100,7 +101,8 @@ sub find_by_recording
                 release.date_day AS r_date_day,
                 release.country AS r_country, release.status AS r_status,
                 release.packaging AS r_packaging,
-                release.edits_pending AS r_edits_pending
+                release.edits_pending AS r_edits_pending,
+                release.comment AS r_comment
         FROM
             track
             JOIN tracklist ON tracklist.id = track.tracklist
@@ -137,6 +139,7 @@ sub insert
     my $class = $self->_entity_class;
     my @created;
     for my $track_hash (@track_hashes) {
+        delete $track_hash->{id};
         my $row = $self->_create_row($track_hash, \%names);
         push @created, $class->new(
             id => $self->sql->insert_row('track', $row, 'id')
@@ -166,6 +169,10 @@ sub _create_row
     } keys %$track_hash;
 
     $row{name} = $names->{ $track_hash->{name} } if exists $track_hash->{name};
+
+    if (exists $row{length} && defined($row{length})) {
+        $row{length} = undef if $row{length} == 0;
+    }
 
     return { %row };
 }

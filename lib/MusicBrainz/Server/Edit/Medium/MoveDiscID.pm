@@ -72,7 +72,7 @@ sub foreign_keys
     my $self = shift;
     return {
         Release => { map { $_ => [ 'ArtistCredit' ] } $self->release_ids },
-        MediumCDTOC => { $self->data->{medium_cdtoc_id} => [ 'CDTOC' ] },
+        MediumCDTOC => { $self->data->{medium_cdtoc}{id} => [ 'CDTOC' ] },
         Medium => {
             $self->data->{new_medium}{id} => [ 'MediumFormat', 'Release' ],
             $self->data->{old_medium}{id} => [ 'MediumFormat', 'Release' ]
@@ -139,6 +139,12 @@ sub accept
 
     my $medium_cdtoc = $self->c->model('MediumCDTOC')->get_by_id($self->data->{medium_cdtoc}{id});
     $self->c->model('CDTOC')->load($medium_cdtoc);
+
+    if (!$medium_cdtoc || !$medium_cdtoc->cdtoc) {
+        MusicBrainz::Server::Edit::Exceptions::FailedDependency->throw(
+            'This disc ID no longer exists'
+        )
+    }
 
     if ($self->c->model('MediumCDTOC')->medium_has_cdtoc(
         $medium->id,
