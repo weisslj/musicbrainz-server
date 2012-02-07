@@ -4,13 +4,14 @@ use Moose;
 use MusicBrainz::Server::Data::Utils qw( ref_to_type );
 use MusicBrainz::Server::Filters;
 use MusicBrainz::Server::Track;
+use MusicBrainz::Server::Translation qw( l ln );
 
 extends 'Catalyst::View::Xslate';
 
 has '+function' => (
     default => sub { +{
-        l => sub { shift },
-        ln => sub { shift },
+        l => sub { l(@_) },
+        ln => sub { ln(@_) },
         format_duration => \&MusicBrainz::Server::Track::FormatTrackLength,
         entity_type => \&ref_to_type,
         format_wikitext => \&MusicBrainz::Server::Filters::format_wikitext,
