@@ -7,16 +7,7 @@
           title="<: l('MusicBrainz: Artist') :>"
           href="<: $c.uri_for('/static/search_plugins/opensearch/musicbrainz_artist.xml') :>" />
 
-    <link rel="stylesheet" type="text/css" href="/static/styles/edit.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/entity.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/forms.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/layout.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/release-editor.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/widgets.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/extra/homepage.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/debug.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/extra/user.css">
-    <link rel="stylesheet" type="text/css" href="/static/styles/extra/wikidocs.css">
+    <: css_manifest('common.css.manifest') :>
 
     <link type="text/css" rel="stylesheet" href="/static/lib/jquery.ui/themes/base/jquery.ui.all.css">
     <link rel="search" type="application/opensearchdescription+xml" title="MusicBrainz: Artist"
@@ -32,28 +23,8 @@
       document.cookie = "javascript=true; path=/";
     //]]></script>
 
-    <script src="/static/lib/jquery/jquery-1.5.1.js?t=1326473174"></script>
-    <script src="/static/lib/jquery/jquery.tablesorter.js?t=1326473174"></script>
-    <script src="/static/lib/jquery.ui/ui/jquery-ui-1.8.16.custom.js?t=1326473174"></script>
-    <script src="/static/lib/jquery.ui/external/jquery.cookie.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/AnnotationHistory.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/Autocomplete.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/EditList.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/EditSummary.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/Menu.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/RelateTo.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/SelectAll.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/Tablesorter.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/Control/TagEditor.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/edit_search.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/html.js?t=1326473174"></script>
-    <script src="/static/scripts/common/MB/utility.js?t=1326473174"></script>
-    <script src="/static/scripts/common/ar.js?t=1326473174"></script>
-    <script src="/static/scripts/common/global.js?t=1326473174"></script>
-    <script src="/static/scripts/common/mb_placeholder.js?t=1326473174"></script>
-    <script src="/static/scripts/common/ratings.js?t=1326473174"></script>
-    <script type="text/javascript" src="/text.js"></script>
+    <: script_manifest('common.js.manifest') :>
+    <script type="text/javascript" src="<: $c.uri_for('/text.js') :>"></script>
     <script type="text/javascript">//<![CDATA[
       $(document).ready (function () {
         $("[placeholder]").mb_placeholder ();

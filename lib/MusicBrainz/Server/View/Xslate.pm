@@ -1,6 +1,8 @@
 package MusicBrainz::Server::View::Xslate;
 use Moose;
 
+use DateTime;
+use DBDefs;
 use Encode qw( decode );
 use MusicBrainz::Server::Data::Utils qw( ref_to_type );
 use MusicBrainz::Server::Filters;
@@ -124,8 +126,30 @@ has '+function' => (
                      '</a>'
                  ));
             }
+        },
+        script_manifest => sub {
+            my $manifest = shift;
+            if (DBDefs::DEVELOPMENT_SERVER) {
+                mark_raw(join('', map {
+                    '<script src="' . c()->uri_for("/static/") . $_ . '?t=' . DateTime->now->epoch . '"></script>'
+                } @{ c()->model('FileCache')->manifest_files($manifest, 'js') }));
+            }
+            else {
+                mark_raw('<script src="' .  c()->uri_for("/static/") . c()->model('FileCache')->manifest_signature($manifest, 'js') . '.js"></script>');
+            }
+        },
+        css_manifest => sub {
+            my $manifest = shift;
+            if (DBDefs::DEVELOPMENT_SERVER) {
+                mark_raw(join('', map {
+                    '<link rel="stylesheet" type="text/css" href="' . c()->uri_for("/static/") . $_ . '?t=' . DateTime->now->epoch . '" />'
+                } @{ c()->model('FileCache')->manifest_files($manifest, 'css') }));
+            }
+            else {
+                mark_raw('<link rel="stylesheet" type="text/css" href="' .  c()->uri_for("/static/") . c()->model('FileCache')->manifest_signature($manifest, 'css') . '.css" />');
+            }
         }
-    }},
+    } }
 );
 
 sub c { return Text::Xslate->current_vars->{c} }
