@@ -484,11 +484,11 @@
   :     my $text = $c.session.relationship
   :       ? l('Create relationship with {other}', { other => $c.session.relationship.name })
   :       : l('Use in a relationship');
-  :     raw('<li>') ~ $text ~ raw('</li>');
+  :     raw('<li><a href="' ~ $c.uri_for_action('/release/relate', [ $release.gid ]) ~ '">') ~ $text ~ raw('</a></li>');
   :   }
   :   if $c.session.relationship.id {
   :     my $text = l('Cancel creating relationship with {name}', { name => $c.session.relationship.name });
-  :     raw('<li>') ~ $text ~ raw('</li>');
+  :     raw('<li><a href="' ~ $c.uri_for_action('/release/cancel_relate', [ $release.gid ]) ~ '">') ~ $text ~ raw('</a></li>');
   :   }
 
       <li>
@@ -535,7 +535,8 @@
         :               type => entity_type($entity),
         :               entity => $entity.gid
         :           });
-        <: l('Relate to URL') :>
+        <a href="<: $c.uri_for_action('/edit/relationship/create_url',
+                        { type => 'release', entity => $release.gid }) :>"><: l('Relate to URL') :></a>
       </li>
 
       <li>
@@ -554,12 +555,20 @@
       <hr />
 
       : if $release.edits_pending {
-        <li><: l('Open edits') :></li>
+        <li>
+          <a href="<: $c.uri_for_action('/release/open_edits', [ $release.gid ]) :>"><: l('Open edits') :></a>
+        </li>
       : }
-      <li><: l('Editing history') :></li>
+      <li>
+        <a href="<: $c.uri_for_action('/release/edits', [ $release.gid ]) :>"><: l('Editing history') :></a>
+      </li>
   : }
   : else {
-      <li><: l('Log in to edit') :></li>
+      <li>
+        <a href="<: $c.uri_for_action('/user/login', { uri => $c.req.query_params.uri ||
+                                                              $c.relative_uri }) :>"
+           ><: l('Log in to edit') :></a>
+      </li>
   : }
 </ul>
 
@@ -570,7 +579,7 @@
       <li>
         : if $containment[ $collection.id ] {
           <a href="<: $c.uri_for_action("/collection/remove", [$collection.gid], { release => $release.id }) :>">
-            : if collections.size == 1 {
+            : if $collections.size == 1 {
             :   l('Remove from my collection');
             : }
             : else {
@@ -591,11 +600,15 @@
       </li>
     : }
     : else {
-
+      <li><: l("You have no collections!") :></li>
     : }
     <li><a href="<: $c.uri_for_action("/collection/create") :>"><: l('Create a new collection') :></a></li>
-    <li><: ln('Found in {num} user collection', 'Found in {num} user collections',
-              $all_collections.size || 0, { num => $all_collections.size || 0 }) :></li>
+    <li>
+      <a href="<: $c.uri_for_action('/release/collections', [ $release.gid ]) :>">
+        <: ln('Found in {num} user collection', 'Found in {num} user collections',
+              $all_collections.size || 0, { num => $all_collections.size || 0 }) :>
+      </a>
+    </li>
   </ul>
 : }
 
