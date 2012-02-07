@@ -146,7 +146,7 @@ has '+function' => (
                 } @{ c()->model('FileCache')->manifest_files($manifest, 'css') }));
             }
             else {
-                mark_raw('<link rel="stylesheet" type="text/css" href="' .  c()->uri_for("/static/") . c()->model('FileCache')->manifest_signature($manifest, 'css') . '.css" />');
+                mark_raw('<link rel="stylesheet" type="text/css" href="' .  c()->uri_for("/static/styles/") . c()->model('FileCache')->manifest_signature($manifest, 'css') . '.css" />');
             }
         }
     } }
