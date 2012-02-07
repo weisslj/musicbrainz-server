@@ -1,17 +1,17 @@
 : macro favicon_class -> $url {
-:      if $url.url.host ~~ 'amazon'              { 'amazon' }
-: else if $url.url.host ~~ 'allmusic.com'        { 'allmusic' }
-: else if $url.url.host ~~ 'wikipedia.org$'      { 'wikipedia' }
-: else if $url.url.host ~~ 'facebook.com'        { 'facebook' }
-: else if $url.url.host ~~ 'last.fm'             { 'lastfm' }
-: else if $url.url.host ~~ 'myspace.com'         { 'myspace' }
-: else if $url.url.host ~~ 'twitter.com'         { 'twitter' }
-: else if $url.url.host ~~ 'youtube.com'         { 'youtube' }
-: else if $url.url.host ~~ 'discogs.com'         { 'discogs' }
-: else if $url.url.host ~~ 'secondhandsongs.com' { 'secondhandsongs' }
-: else if $url.url.host ~~ 'songfacts.com'       { 'songfacts' }
-: else if $url.url.host ~~ 'soundcloud.com'      { 'soundcloud' }
-: else                                                { '' }
+:      if match($url.url.host, rx('amazon'))              { 'amazon' }
+: else if match($url.url.host, rx('allmusic.com'))        { 'allmusic' }
+: else if match($url.url.host, rx('wikipedia.org$'))      { 'wikipedia' }
+: else if match($url.url.host, rx('facebook.com'))        { 'facebook' }
+: else if match($url.url.host, rx('last.fm'))             { 'lastfm' }
+: else if match($url.url.host, rx('myspace.com'))         { 'myspace' }
+: else if match($url.url.host, rx('twitter.com'))         { 'twitter' }
+: else if match($url.url.host, rx('youtube.com'))         { 'youtube' }
+: else if match($url.url.host, rx('discogs.com'))         { 'discogs' }
+: else if match($url.url.host, rx('secondhandsongs.com')) { 'secondhandsongs' }
+: else if match($url.url.host, rx('songfacts.com'))       { 'songfacts' }
+: else if match($url.url.host, rx('soundcloud.com'))      { 'soundcloud' }
+: else                                                    { '' }
 : }
 
 
@@ -102,6 +102,11 @@
 :     html($entity.name);
 :     raw('</a>');
 :     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
+:   }
+:   else if $entity.isa('MusicBrainz::Server::Entity::Editor') {
+:     raw('<a href="') ~ html($c.uri_for_action('/user/show', [ $entity.name ])) ~ raw('">');
+:     html($entity.name);
+:     raw('</a>');
 :   }
 : }
 
@@ -212,10 +217,10 @@
       </div>
       <div class="annotation-details">
         : if $c.user_exists {
-        :   l('Annotation last modified by {user} on {date}.', {
+        :   raw(l('Annotation last modified by {user} on {date}.', {
         :       user => link_entity($annotation.editor),
         :       date => format_user_date($c.user, $annotation.creation_date),
-        :   });
+        :   }));
         :   if $number_of_revisions > 1 {
               <a href="<: $c.uri_for_action($c.controller.action_for('annotation_history'), [ $entity.gid ]) :>">
                 <: l('View annotation history') :>
@@ -463,7 +468,7 @@
   :   action('/release/edit_annotation',
   :          $release.latest_annotation.text
   :            ? l('Edit annotation')
-  :            : l('Add Annotation'));
+  :            : l('Add annotation'));
   :   action('/release/change_quality', l('Change release quality'));
   :   action('/release/move', l('Change release group'));
       <li>
@@ -533,6 +538,19 @@
         <: l('Relate to URL') :>
       </li>
 
+      <li>
+        <a href="<:
+            $c.uri_for_action('/edit/relationship/create_batch', {
+                type => $c.session.relationship.type0,
+                gid => $c.session.relationship.entity0,
+                release => $release.gid
+            })
+          :>">
+          <: l('Relate {what} to recordings',
+          { what => $c.session.relationship.name || '' }) :>
+        </a>
+      </li>
+
       <hr />
 
       : if $release.edits_pending {
@@ -577,7 +595,7 @@
     : }
     <li><a href="<: $c.uri_for_action("/collection/create") :>"><: l('Create a new collection') :></a></li>
     <li><: ln('Found in {num} user collection', 'Found in {num} user collections',
-              $all_collections.size, { num => $all_collections.size }) :></li>
+              $all_collections.size || 0, { num => $all_collections.size || 0 }) :></li>
   </ul>
 : }
 
@@ -601,14 +619,14 @@
   <h2><: l('Affiliate links') :></h2>
   <ul class="external_links">
     <li id="sidebar-affiliates-soundunwound">
-      <: l('{uri|Search on SoundUnwound}', { uri => $soundunwound }) :>
+      <: raw(l('{uri|Search on SoundUnwound}', { uri => $soundunwound })) :>
     </li>
   </ul>
 </div>
 
 : if $entity.last_updated {
     <p class="lastupdate">
-      <: l('Last updated on {date}', { date => format_user_date($entity.last_updated) }) :></p>
+      <: l('Last updated on {date}', { date => format_user_date($c.user, $entity.last_updated) }) :></p>
 : }
 
 : }

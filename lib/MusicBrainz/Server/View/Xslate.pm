@@ -34,4 +34,10 @@ has '+function' => (
     }},
 );
 
+has '+module' => (
+    default => sub {
+        ['Text::Xslate::Bridge::Star']
+    }
+);
+
 1;
