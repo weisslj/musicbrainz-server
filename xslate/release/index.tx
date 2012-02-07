@@ -14,7 +14,6 @@
 : else                                                    { '' }
 : }
 
-
 : macro display_favicon -> $url, $text, $class {
   <li class="<: $class :>">
     <a href="<: $url.url :>"><: $text :></a>
@@ -55,59 +54,6 @@
     :   }
     : }
   </dd>
-: }
-
-: macro link_entity -> $entity {
-:   if $entity.isa('MusicBrainz::Server::Entity::Artist') {
-:     raw('<a href="') ~ html($c.uri_for_action('/artist/show', [ $entity.gid ])) ~ raw('">');
-:     html($entity.name);
-:     raw('</a>');
-:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
-:   }
-:   else if $entity.isa('MusicBrainz::Server::Entity::Label') {
-:     raw('<a href="') ~ html($c.uri_for_action('/label/show', [ $entity.gid ])) ~ raw('">');
-:     html($entity.name);
-:     raw('</a>');
-:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
-:   }
-:   else if $entity.isa('MusicBrainz::Server::Entity::Recording') {
-:     raw('<a href="') ~ html($c.uri_for_action('/recording/show', [ $entity.gid ])) ~ raw('">');
-:     html($entity.name);
-:     raw('</a>');
-:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
-:   }
-:   else if $entity.isa('MusicBrainz::Server::Entity::Release') {
-:     raw('<a href="') ~ html($c.uri_for_action('/release/show', [ $entity.gid ])) ~ raw('">');
-:     html($entity.name);
-:     raw('</a>');
-:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
-:   }
-:   else if $entity.isa('MusicBrainz::Server::Entity::ReleaseGroup') {
-:     raw('<a href="') ~ html($c.uri_for_action('/release_group/show', [ $entity.gid ])) ~ raw('">');
-:     html($entity.name);
-:     raw('</a>');
-:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
-:   }
-:   else if $entity.isa('MusicBrainz::Server::Entity::Track') {
-:     raw('<a href="') ~ html($c.uri_for_action('/recording/show', [ $entity.recording.gid ])) ~ raw('">');
-:     html($entity.name);
-:     raw('</a>');
-:   }
-:   else if $entity.isa('MusicBrainz::Server::Entity::URL') {
-      <a href="<: $entity.affiliate_url :>"><: $entity.pretty_name :></a>
-      [<a href="<: $c.uri_for_action('/url/show', [ $entity.gid ]) :>"><: l('info') :></a>]
-:   }
-:   else if $entity.isa('MusicBrainz::Server::Entity::Work') {
-:     raw('<a href="') ~ html($c.uri_for_action('/work/show', [ $entity.gid ])) ~ raw('">');
-:     html($entity.name);
-:     raw('</a>');
-:     if $entity.comment { ' (' ~ html($entity.comment) ~ ')' };
-:   }
-:   else if $entity.isa('MusicBrainz::Server::Entity::Editor') {
-:     raw('<a href="') ~ html($c.uri_for_action('/user/show', [ $entity.name ])) ~ raw('">');
-:     html($entity.name);
-:     raw('</a>');
-:   }
 : }
 
 : cascade layout
@@ -229,7 +175,7 @@
         : }
         : else {
         :   l('Annotation last modified on {date}.', {
-        :       date => format_user_date($c.user, annotation.creation_date),
+        :       date => format_user_date($c.user, $annotation.creation_date),
         :   });
         : }
       </div>

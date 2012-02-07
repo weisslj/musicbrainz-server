@@ -6,6 +6,7 @@ use MusicBrainz::Server::Data::Utils qw( ref_to_type );
 use MusicBrainz::Server::Filters;
 use MusicBrainz::Server::Track;
 use MusicBrainz::Server::Translation qw( l ln );
+use Text::Xslate qw (mark_raw html_escape);
 
 extends 'Catalyst::View::Xslate';
 
@@ -31,9 +32,103 @@ has '+function' => (
             }
 
             return $dt->strftime($format);
+        },
+        doc_link => sub { c()->uri_for('/doc', shift) },
+        link_entity => sub {
+            my $entity = shift;
+            my $c = c();
+
+            if ($entity->isa('MusicBrainz::Server::Entity::Artist')) {
+                mark_raw(join('',
+                     '<a href="',
+                     html_escape($c->uri_for_action('/artist/show', [ $entity->gid ])),
+                     '">',
+                     html_escape($entity->name),
+                     '</a>',
+                     $entity->comment ? ( ' (' . html_escape($entity->comment) . ')') : ()
+                 ));
+            }
+            elsif ($entity->isa('MusicBrainz::Server::Entity::Label')) {
+                mark_raw(join('',
+                     '<a href="',
+                     html_escape($c->uri_for_action('/label/show', [ $entity->gid ])),
+                     '">',
+                     html_escape($entity->name),
+                     '</a>',
+                     $entity->comment ? ( ' (' . html_escape($entity->comment) . ')') : ()
+                 ));
+            }
+            elsif ($entity->isa('MusicBrainz::Server::Entity::Recording')) {
+                mark_raw(join('',
+                     '<a href="',
+                     html_escape($c->uri_for_action('/recording/show', [ $entity->gid ])),
+                     '">',
+                     html_escape($entity->name),
+                     '</a>',
+                     $entity->comment ? ( ' (' . html_escape($entity->comment) . ')') : ()
+                 ));
+            }
+            elsif ($entity->isa('MusicBrainz::Server::Entity::Release')) {
+                mark_raw(join('',
+                     '<a href="',
+                     html_escape($c->uri_for_action('/release/show', [ $entity->gid ])),
+                     '">',
+                     html_escape($entity->name),
+                     '</a>',
+                     $entity->comment ? ( ' (' . html_escape($entity->comment) . ')') : ()
+                 ));
+            }
+            elsif ($entity->isa('MusicBrainz::Server::Entity::ReleaseGroup')) {
+                mark_raw(join('',
+                     '<a href="',
+                     html_escape($c->uri_for_action('/release_group/show', [ $entity->gid ])),
+                     '">',
+                     html_escape($entity->name),
+                     '</a>',
+                     $entity->comment ? ( ' (' . html_escape($entity->comment) . ')') : ()
+                 ));
+            }
+            elsif ($entity->isa('MusicBrainz::Server::Entity::Track')) {
+                mark_raw(join('',
+                     '<a href="',
+                     html_escape($c->uri_for_action('/recording/show', [ $entity->recording->gid ])),
+                     '">',
+                     html_escape($entity->name),
+                     '</a>',
+                 ));
+            }
+            elsif ($entity->isa('MusicBrainz::Server::Entity::URL')) {
+                mark_raw(join('',
+                     '<a href="' . $entity->affiliate_url . '">',
+                     html_escape($entity->pretty_name),
+                     '</a>',
+                     '[<a href="' . $c->uri_for_action('/url/show', [ $entity->gid ]) . '">',
+                     html_escape(l('info')),
+                     '</a>]'
+                 ));
+            }
+            elsif ($entity->isa('MusicBrainz::Server::Entity::Work')) {
+                mark_raw(join('',
+                     '<a href="',
+                     html_escape($c->uri_for_action('/work/show', [ $entity->gid ])),
+                     '">',
+                     html_escape($entity->name),
+                     '</a>',
+                     $entity->comment ? ( ' (' . html_escape($entity->comment) . ')') : ()
+                 ));
+            }
+            elsif ($entity.isa('MusicBrainz::Server::Entity::Editor')) {
+                mark_raw(join('',
+                     '<a href="' . html_escape($c->uri_for_action('/user/show', [ $entity->name ])) . '">',
+                     html_escape($entity->name),
+                     '</a>'
+                 ));
+            }
         }
     }},
 );
+
+sub c { return Text::Xslate->current_vars->{c} }
 
 has '+module' => (
     default => sub {
