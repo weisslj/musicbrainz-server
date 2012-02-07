@@ -1,3 +1,5 @@
+: macro doc_link -> $to { $c.uri_for('/doc', $to) }
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -67,7 +69,7 @@
       <div id="header-logo">
         <a href="/" class="logo" title="MusicBrainz"><strong>MusicBrainz</strong></a>
         <div>
-          <form action="http://musicbrainz.org/search" method="get">
+          <form action="<: $c.uri_for_action('/search') :>" method="get">
             <input class="" id="headerid-query" name="query" placeholder="search" type="text" value="" />
             <select id="headerid-type" name="type"><option value="artist">Artist</option><option value="release_group">Release Group</option><option value="release">Release</option><option value="recording">Recording</option><option value="work">Work</option><option value="label">Label</option><option value="annotation">Annotation</option><option value="cdstub">CD Stub</option><option value="editor">Editor</option><option value="freedb">FreeDB</option><option value="tag">Tag</option></select>
 
@@ -79,252 +81,269 @@
       </div>
       <div id="header-menu">
         <div>
-          <ul class="r">        <li class="account">
-              <a href="http://musicbrainz.org/user/acid2">acid2</a>
+          <ul class="r">
+            : if $c.user_exists {
+              <li class="account">
+                <: link_entity($c.user) :>
+                  <ul>
+                    <li>
+                      <a href="<: $c.uri_for('/account/edit') :>"><: l('Edit Profile') :></a>
+                    </li>
+                    <li>
+                      <a href="<: $c.uri_for_action('/account/change_password') :>"><: l('Change Password') :></a>
+                    </li>
+                    <li>
+                      <a href="<: $c.uri_for_action('/account/preferences') :>"><: l('Preferences') :></a>
+                    </li>
+                    <li>
+                      <a href="<: $c.uri_for_action('/user/subscriptions/artist', [ $c.user.name ]) :>"><: l('Subscriptions') :></a>
+                    </li>
+                    <li>
+                      <a href="<: $c.uri_for_action('/user/logout') :>"><: l('Log Out') :></a>
+                    </li>
+                  </ul>
+              </li>
+              <li class="data">
+                <a href="<: $c.uri_for_action('/user/profile', [ $c.user.name ]) :>"><: l('My Data') :></a>
+                <ul>
+                  <li>
+                    <a href="<: $c.uri_for_action('/user/collections', [ $c.user.name ]) :>"><: l('My Collections') :></a>
+                  </li>
+                  <li>
+                    <a href="<: $c.uri_for_action('/user/ratings', [ $c.user.name ]) :>"><: l('My Ratings') :></a>
+                  </li>
+                  <li>
+                    <a href="<: $c.uri_for_action('/user/tags', [ $c.user.name ]) :>"><: l('My Tags') :></a>
+                  </li>
+                  <li class="separator">
+                    <a href="<: $c.uri_for_action('/user/edits/open', [ $c.user.name ]) :>"><: l('My Open Edits') :></a>
+                  </li>
+                  <li>
+                    <a href="<: $c.uri_for_action('/user/edits/all', [ $c.user.name ]) :>"><: l('All My Edits') :></a>
+                  </li>
+                  <li>
+                    <a href="<: $c.uri_for_action('/edit/subscribed') :>"><: l('Edits for Subscribed Entities') :></a>
+                  </li>
+                  <li>
+                    <a href="<: $c.uri_for_action('/edit/subscribed_editors') :>"><: l('Edits by Subscribed Editors') :></a>
+                  </li>
+                </ul>
+              </li>
+              : if $c.user_exists && $c.user.is_admin {
+              <li class="admin">
+                <a href="<: $c.uri_for_action('/admin/index') :>"><: l('Admin') :></a>
+                <ul>
+                  : if $c.user.is_relationship_editor {
+                  <li>
+                    <a href="<: $c.uri_for_action('/admin/linktype/index') :>"><: l('Edit Relationship Types') :></a>
+                  </li>
+                  <li>
+                    <a href="<: $c.uri_for_action('/admin/linkattributetype/index') :>"><: l('Edit Relationship Attributes') :></a>
+                  </li>
+                  : }
+                  : if $c.user.is_wiki_transcluder {
+                  <li>
+                    <a href="<: $c.uri_for_action('/admin/wikidoc/index') :>"><: l('Transclude WikiDocs') :></a>
+                  </li>
+                  : }
+                </ul>
+              </li>
+              : }
+              : }
+              : else {
+              <li>
+                <a href="<: $c.uri_for_action('/user/login', { uri => $c.req.query_params.uri ||
+                         $c.relative_uri }) :>"><: l('Log In') :></a>
+              </li>
+              <li><a href="<: $c.uri_for_action('/account/register') :>"><: l('Create Account') :></a></li>
+              : }
+          </ul>
+
+          <ul>
+            <li class="about">
+              <a href="<: doc_link('About_MusicBrainz') :>"><: l('About') :></a>
               <ul>
                 <li>
-                    <a href="http://musicbrainz.org/account/edit">Edit Profile</a>
+                  <a href="<: doc_link('MusicBrainz_Sponsors') :>"><: l('Sponsors') :></a>
                 </li>
                 <li>
-                    <a href="http://musicbrainz.org/account/change-password">Change Password</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/account/preferences">Preferences</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/user/acid2/subscriptions/artist">Subscriptions</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/logout">Log Out</a>
-                </li>
-            </ul>
-        </li>
-        <li class="data">
-            <a href="http://musicbrainz.org/user/acid2">My Data</a>
-            <ul>
-                <li>
-                    <a href="http://musicbrainz.org/user/acid2/collections">My Collections</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/user/acid2/ratings">My Ratings</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/user/acid2/tags">My Tags</a>
+                  <a href="<: doc_link('People') :>"><: l('People') :></a>
                 </li>
                 <li class="separator">
-                    <a href="http://musicbrainz.org/user/acid2/edits/open">My Open Edits</a>
+                  <a href="<: doc_link('MusicBrainz_License') :>"><: l('Data Licenses') :></a>
                 </li>
                 <li>
-                    <a href="http://musicbrainz.org/user/acid2/edits">All My Edits</a>
+                  <a href="<: doc_link('Social_Contract') :>"><: l('Social Contract') :></a>
                 </li>
                 <li>
-                    <a href="http://musicbrainz.org/edit/subscribed">Edits for Subscribed Entities</a>
+                  <a href="<: doc_link('Code_of_Conduct') :>"><: l('Code of Conduct') :></a>
                 </li>
                 <li>
-                    <a href="http://musicbrainz.org/edit/subscribed_editors">Edits by Subscribed Editors</a>
-                </li>
-            </ul>
-        </li>
-        
-            <li class="admin">
-                <a href="http://musicbrainz.org/admin">Admin</a>
-                <ul>
-                    
-                        <li>
-                            <a href="http://musicbrainz.org/admin/linktype">Edit Relationship Types</a>
-                        </li>
-                        <li>
-                            <a href="http://musicbrainz.org/admin/linkattributetype">Edit Relationship Attributes</a>
-                        </li>
-                    
-                    
-                        <li>
-                            <a href="http://musicbrainz.org/admin/wikidoc">Transclude WikiDocs</a>
-                        </li>
-                    
-                </ul>
-            </li>
-        </ul>
-
-<ul>
-    <li class="about">
-        <a href="http://musicbrainz.org/doc/About_MusicBrainz">About</a>
-        <ul>
-            <li>
-                <a href="http://musicbrainz.org/doc/MusicBrainz_Sponsors">Sponsors</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/People">People</a>
-            </li>
-            <li class="separator">
-                <a href="http://musicbrainz.org/doc/MusicBrainz_License">Data Licenses</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/Social_Contract">Social Contract</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/Code_of_Conduct">Code of Conduct</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/MusicBrainz_Privacy_Policy">Privacy Policy</a>
-            </li>
-            <li class="separator">
-                <a href="http://musicbrainz.org/elections">Auto-editor Elections</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/privileged">Privileged User Accounts</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/statistics">Statistics</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/statistics/timeline">Timeline Graph</a>
-            </li>
-        </ul>
-    </li>
-    <li class="blog">
-        <a href="http://blog.musicbrainz.org" class="internal">
-            Blog
-        </a>
-    </li>
-
-    <li class="products">
-        <a href="http://musicbrainz.org/doc/Products">Products</a>
-        <ul>
-            <li>
-                <a href="http://musicbrainz.org/doc/MusicBrainz_Picard">MusicBrainz Picard</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/Jaikoz">Jaikoz</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/Magic_MP3_Tagger">Magic MP3 Tagger</a>
-            </li>
-            <li class="separator">
-                <a href="http://musicbrainz.org/doc/MusicBrainz_for_Android">MusicBrainz for Android</a>
-            </li>
-            <li class="separator">
-                <a href="http://musicbrainz.org/doc/MusicBrainz_Server">MusicBrainz Server</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/MusicBrainz_Database">MusicBrainz Database</a>
-            </li>
-            <li class="separator">
-                <a href="http://musicbrainz.org/doc/Developer_Resources">Developer Resources</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/XML_Web_Service">XML Web Service</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/Live_Data_Feed">Live Data Feed</a>
-            </li>
-            <li class="separator">
-                <a href="http://musicbrainz.org/doc/FreeDB_Gateway">FreeDB Gateway</a>
-            </li>
-        </ul>
-    </li>
-    <li class="search">
-        <a href="http://musicbrainz.org/search">Search</a>
-        <ul>                <li>
-                    <a href="http://musicbrainz.org/search/edits">Search Edits</a>
-                </li>
-            
-            <li>
-                <a href="http://musicbrainz.org/browse">Browse</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/tags">Tags</a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/cdstub/browse">Top CD Stubs</a>
-            </li>
-        </ul>
-    </li>        <li class="editing">
-            <a href="http://musicbrainz.org/doc/How_Editing_Works">Editing</a>
-            <ul>
-                <li>
-                    <a href="http://musicbrainz.org/artist/create">Add Artist</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/label/create">Add Label</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/release-group/create">Add Release Group</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/release/add">Add Release</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/release/add?artist=89ad4ac3-39f7-470e-963a-56509c546377">Add Various Artists Release</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/recording/create">Add Standalone Recording</a>
-                </li>
-                <li>
-                    <a href="http://musicbrainz.org/work/create">Add Work</a>
+                  <a href="<: doc_link('MusicBrainz_Privacy_Policy') :>"><: l('Privacy Policy') :></a>
                 </li>
                 <li class="separator">
-                    <a href="http://musicbrainz.org/edit/open">Vote on Edits</a>
+                  <a href="<: $c.uri_for_action('/elections/index') :>"><: l('Auto-editor Elections') :></a>
                 </li>
                 <li>
-                    <a href="http://musicbrainz.org/reports">Reports</a>
+                  <a href="<: $c.uri_for('/privileged') :>"><: l('Privileged User Accounts') :></a>
                 </li>
-            </ul>
-        </li>    <li class="documentation">
-        <a href="http://musicbrainz.org/doc/MusicBrainz_Documentation">Documentation</a>
-        <ul>
-            <li>
-                <a href="http://musicbrainz.org/doc/Beginners_Guide">Beginners Guide</a>
+                <li>
+                  <a href="<: $c.uri_for('/statistics') :>"><: l('Statistics') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for('/statistics/timeline') :>"><: l('Timeline Graph') :></a>
+                </li>
+              </ul>
             </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/Style">Style Guidelines</a>
+            <li class="blog">
+              <a href="http://blog.musicbrainz.org" class="internal">
+                <: l('Blog') :>
+              </a>
             </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/Frequently_Asked_Questions">FAQs</a>
+
+            <li class="products">
+              <a href="<: doc_link('Products') :>"><:  l('Products') :></a>
+              <ul>
+                <li>
+                  <a href="<: doc_link('MusicBrainz_Picard') :>"><: l('MusicBrainz Picard') :></a>
+                </li>
+                <li>
+                  <a href="<: doc_link('Jaikoz') :>"><: l('Jaikoz') :></a>
+                </li>
+                <li>
+                  <a href="<: doc_link('Magic_MP3_Tagger') :>"><: l('Magic MP3 Tagger') :></a>
+                </li>
+                <li class="separator">
+                  <a href="<: doc_link('MusicBrainz_for_Android') :>"><: l('MusicBrainz for Android') :></a>
+                </li>
+                <li class="separator">
+                  <a href="<: doc_link('MusicBrainz_Server') :>"><: l('MusicBrainz Server') :></a>
+                </li>
+                <li>
+                  <a href="<: doc_link('MusicBrainz_Database') :>"><: l('MusicBrainz Database') :></a>
+                </li>
+                <li class="separator">
+                  <a href="<: doc_link('Developer_Resources') :>"><: l('Developer Resources') :></a>
+                </li>
+                <li>
+                  <a href="<: doc_link('XML_Web_Service') :>"><: l('XML Web Service') :></a>
+                </li>
+                <li>
+                  <a href="<: doc_link('Live_Data_Feed') :>"><: l('Live Data Feed') :></a>
+                </li>
+                <li class="separator">
+                  <a href="<: doc_link('FreeDB_Gateway') :>"><: l('FreeDB Gateway') :></a>
+                </li>
+              </ul>
             </li>
-            <li class="separator">
-                <a href="http://musicbrainz.org/doc/Edit_Types">Edit Types</a>
+            <li class="search">
+              <a href="<: $c.uri_for('/search') :>"><: l('Search') :></a>
+              <ul>
+                : if $c.user_exists {
+                <li>
+                  <a href="<: $c.uri_for_action('/edit/search') :>"><: l('Search Edits') :></a>
+                </li>
+                : }
+                <li>
+                  <a href="<: $c.uri_for('/browse') :>"><: l('Browse') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for('/tags') :>"><: l('Tags') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for('/cdstub/browse') :>"><: l('Top CD Stubs') :></a>
+                </li>
+              </ul>
             </li>
-            <li>
-                <a href="http://musicbrainz.org/admin/linktype">Relationship Types</a>
+            : if $c.user_exists {
+            <li class="editing">
+              <a href="<: doc_link('How_Editing_Works') :>"><: l('Editing') :></a>
+              <ul>
+                <li>
+                  <a href="<: $c.uri_for('/artist/create') :>"><: l('Add Artist') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for('/label/create') :>"><: l('Add Label') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for_action('/release_group/create') :>"><: l('Add Release Group') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for_action('/release_editor/add') :>"><: l('Add Release') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for_action('/release_editor/add', { artist => $various_artist_mbid }) :>"><: l('Add Various Artists Release') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for_action('/recording/create') :>"><: l('Add Standalone Recording') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for_action('/work/create') :>"><: l('Add Work') :></a>
+                </li>
+                <li class="separator">
+                  <a href="<: $c.uri_for('/edit/open') :>"><: l('Vote on Edits') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for_action('/report/index') :>"><: l('Reports') :></a>
+                </li>
+              </ul>
             </li>
-            <li>
-                <a href="http://musicbrainz.org/admin/linkattributetype">Relationship Attributes</a>
+            : }
+            <li class="documentation">
+              <a href="<: doc_link('MusicBrainz_Documentation') :>"><: l('Documentation') :></a>
+              <ul>
+                <li>
+                  <a href="<: doc_link('Beginners_Guide') :>"><: l('Beginners Guide') :></a>
+                </li>
+                <li>
+                  <a href="<: doc_link('Style') :>"><: l('Style Guidelines') :></a>
+                </li>
+                <li>
+                  <a href="<: doc_link('Frequently_Asked_Questions') :>"><: l('FAQs') :></a>
+                </li>
+                <li class="separator">
+                  <a href="<: $c.uri_for_action('/edit/edit_types') :>"><: l('Edit Types') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for('/admin/linktype') :>"><: l('Relationship Types') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for('/admin/linkattributetype') :>"><: l('Relationship Attributes') :></a>
+                </li>
+                <li>
+                  <a href="<: $c.uri_for('/admin/linkattributetype/instruments') :>"><: l('Instrument Tree') :></a>
+                </li>
+                <li class="separator">
+                  <a href="<: doc_link('Development') :>"><: l('Development') :></a>
+                </li>
+              </ul>
             </li>
-            <li>
-                <a href="http://musicbrainz.org/admin/linkattributetype/instruments">Instrument Tree</a>
+            <li class="contact">
+              <a href="<: doc_link('Contact_Us') :>"><: l('Contact Us') :></a>
+              <ul>
+                <li>
+                  <a href="<: doc_link('Mailing_Lists') :>"><: l('Mailing Lists') :></a>
+                </li>
+                <li>
+                  <a href="http://forums.musicbrainz.org" class="internal">
+                    <: l('Forums') :>
+                  </a>
+                </li>
+                <li class="separator">
+                  <a href="http://tickets.musicbrainz.org" class="internal">
+                    <: l('Report a Bug') :>
+                  </a>
+                </li>
+                <li>
+                  <a href="<: doc_link('Copyright_Violation_Notice') :>"><: l('Report a Copyright Violation') :></a>
+                </li>
+              </ul>
             </li>
-            <li class="separator">
-                <a href="http://musicbrainz.org/doc/Development">Development</a>
-            </li>
-        </ul>
-    </li>
-    <li class="contact">
-        <a href="http://musicbrainz.org/doc/Contact_Us">Contact Us</a>
-        <ul>
-            <li>
-                <a href="http://musicbrainz.org/doc/Mailing_Lists">Mailing Lists</a>
-            </li>
-            <li>
-                <a href="http://forums.musicbrainz.org" class="internal">
-                    Forums
-                </a>
-            </li>
-            <li class="separator">
-                <a href="http://tickets.musicbrainz.org" class="internal">
-                    Report a Bug
-                </a>
-            </li>
-            <li>
-                <a href="http://musicbrainz.org/doc/Copyright_Violation_Notice">Report a Copyright Violation</a>
-            </li>
-        </ul>
-    </li>
-</ul>
-                    <div class="r"></div><div class="l"></div>
-                </div>
-            </div>
+          </ul>
+          <div class="r"></div><div class="l"></div>
         </div>
+      </div>
+    </div>
 
     <div id="page">
       <div id="sidebar">
@@ -349,7 +368,7 @@
 
       <p class="right">
         Hosted by <a href="http://digitalwest.net/">Digital West</a>. Sponsored by: <a href="http://www.google.com/">Google</a>,
-        <a href="http://osuosl.org/">OSUOSL</a> and <a href="http://musicbrainz.org/doc/MusicBrainz_Sponsors">others…</a>
+        <a href="http://osuosl.org/">OSUOSL</a> and <a href="/doc/MusicBrainz_Sponsors">others…</a>
       </p>
     </div>
   </body>
