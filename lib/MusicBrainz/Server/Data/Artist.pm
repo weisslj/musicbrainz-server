@@ -61,6 +61,23 @@ sub _columns
            'end_date_year, end_date_month, end_date_day, artist.comment, artist.last_updated';
 }
 
+use LWP::UserAgent;
+
+use MusicBrainz::Server::WebService::XML::XPath;
+sub get_by_gid {
+    my ($self, $gid) = @_;
+    my $ua = LWP::UserAgent->new;
+    my $xml = $ua->get("http://musicbrainz.org/ws/2/artist/$gid")->decoded_content;
+    my $xp = MusicBrainz::Server::WebService::XML::XPath->new( xml => $xml );
+
+    return MusicBrainz::Server::Entity::Artist->new(
+        mbid => $xp->find('//@mb:id')->string_value,
+        id => 42,
+        name => $xp->find('//mb:name')->string_value,
+        sort_name => $xp->find('//mb:sort-name')->string_value,
+    );
+}
+
 sub _id_column
 {
     return 'artist.id';
