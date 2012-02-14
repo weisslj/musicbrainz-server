@@ -4,6 +4,7 @@ use Moose;
 use DateTime;
 use DBDefs;
 use Encode qw( decode );
+use File::Find;
 use MusicBrainz::Server::Data::Utils qw( ref_to_type );
 use MusicBrainz::Server::Filters;
 use MusicBrainz::Server::Track;
@@ -184,6 +185,26 @@ sub process {
     $c->res->body($output);
 
     return 1;
+}
+
+
+
+after _build_xslate => sub {
+    my $self = shift;
+    my $path = 'xslate';
+    find sub {
+        if(/\.tx$/) {
+            my $file = $File::Find::name;
+            $file =~ s/\Q$path\E .//xsm; # fix path names
+            $self->xslate->load_file($file);
+        }
+    }, $path;
+};
+
+sub COMPONENT {
+    my ($class, $c, $args) = @_;
+    my $self = $class->new($args);
+    $self->ACCEPT_CONTEXT($c);
 }
 
 1;
