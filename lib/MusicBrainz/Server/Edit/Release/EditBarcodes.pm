@@ -4,6 +4,7 @@ use namespace::autoclean;
 
 use MusicBrainz::Server::Constants qw( :expire_action :quality );
 use MusicBrainz::Server::Constants qw( $EDIT_RELEASE_EDIT_BARCODES );
+use MusicBrainz::Server::Edit::Types qw( Nullable );
 use MusicBrainz::Server::Translation qw( l ln );
 use MooseX::Types::Moose qw( ArrayRef Int Str );
 use MooseX::Types::Structured qw( Dict );
@@ -25,7 +26,8 @@ has '+data' => (
                 name => Str
             ],
             barcode => Str,
-        ]]
+        ]],
+        client_version => Nullable[Str]
     ]
 );
 
@@ -75,6 +77,7 @@ sub build_display_data
 {
     my ($self, $loaded) = @_;
     return {
+        client_version => $self->data->{client_version},
         submissions => [
             map +{
                 release => $loaded->{Release}->{ $_->{release}{id} }

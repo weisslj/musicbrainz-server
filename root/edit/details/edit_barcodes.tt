@@ -1,4 +1,9 @@
 <table class="details edit-barcodes">
+    <tr>
+        <th>[% l('Client:') %]</th>
+        <td>[% edit.data.client_version | html %]</td>
+    </tr>
+
     [% FOR submission=edit.display_data.submissions %]
     <tr>
         <th>[% l('Release:') %]</th>

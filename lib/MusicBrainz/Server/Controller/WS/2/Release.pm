@@ -257,6 +257,11 @@ sub release_submit : Private
     my ($self, $c) = @_;
 
     $self->deny_readonly($c);
+
+    my $client = $c->req->query_params->{client}
+        or $self->_error($c, 'You must provide information about your client, by the client query parameter');
+    $self->bad_req($c, 'Invalid argument "client"') if ref($client);
+
     my $xp = MusicBrainz::Server::WebService::XML::XPath->new( xml => $c->request->body );
 
     my @submit;
@@ -292,6 +297,7 @@ sub release_submit : Private
                 editor_id => $c->user->id,
                 privileges => $c->user->privileges,
                 edit_type => $EDIT_RELEASE_EDIT_BARCODES,
+                cient_version => $client,
                 submissions => [ map +{
                     release => {
                         id => $gid_map{ $_->{release} }->id,
