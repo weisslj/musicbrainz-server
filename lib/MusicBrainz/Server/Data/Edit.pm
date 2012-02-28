@@ -11,7 +11,7 @@ use MusicBrainz::Server::Constants qw( $QUALITY_UNKNOWN_MAPPED $EDITOR_MODBOT );
 use MusicBrainz::Server::Data::Editor;
 use MusicBrainz::Server::EditRegistry;
 use MusicBrainz::Server::Edit::Exceptions;
-use MusicBrainz::Server::Types qw( :edit_status $VOTE_YES $AUTO_EDITOR_FLAG $UNTRUSTED_FLAG );
+use MusicBrainz::Server::Constants qw( :edit_status $VOTE_YES $AUTO_EDITOR_FLAG $UNTRUSTED_FLAG );
 use MusicBrainz::Server::Data::Utils qw( placeholders query_to_list query_to_list_limited );
 use JSON::Any;
 
@@ -385,8 +385,6 @@ sub create
     $edit->quality($quality);
 
     Sql::run_in_transaction(sub {
-        $edit->insert;
-
         my $now = DateTime->now;
         my $duration = DateTime::Duration->new( days => $conditions->{duration} );
 
@@ -404,6 +402,7 @@ sub create
 
         my $edit_id = $self->c->sql->insert_row('edit', $row, 'id');
         $edit->id($edit_id);
+        $edit->insert;
 
         my $ents = $edit->related_entities;
         while (my ($type, $ids) = each %$ents) {

@@ -17,13 +17,14 @@ with 'MusicBrainz::Server::Controller::Role::Tag';
 
 use List::MoreUtils qw( part uniq );
 use List::UtilsBy 'nsort_by';
-use MusicBrainz::Server::Constants qw( $EDIT_RELEASE_DELETE );
+use MusicBrainz::Server::Constants qw( $EDIT_RELEASE_DELETE $EDIT_RELEASE_ADD_COVER_ART );
 use MusicBrainz::Server::Translation qw ( l ln );
 
 use MusicBrainz::Server::Constants qw(
     $EDIT_RELEASE_CHANGE_QUALITY
     $EDIT_RELEASE_MOVE
     $EDIT_RELEASE_MERGE
+    $EDIT_RELEASE_REMOVE_COVER_ART
 );
 
 use aliased 'MusicBrainz::Server::Entity::Work';
@@ -372,6 +373,71 @@ sub collections : Chained('load') RequireAuth
     );
 }
 
+sub cover_art_uploaded : Chained('load') PathPart('cover-art-uploaded')
+{
+    my ($self, $c) = @_;
+
+    # FIXME: remove Chained('load') ?
+    $c->stash->{filename} = $c->req->params->{key};
+}
+
+sub cover_art_uploader : Chained('load') PathPart('cover-art-uploader') RequireAuth
+{
+    my ($self, $c) = @_;
+
+    my $entity = $c->stash->{$self->{entity_name}};
+    my $id = $c->req->query_params->{id} or die "Need destination ID";
+
+    my $bucket = $c->model ('CoverArtArchive')->initialize_release ($entity->gid);
+    my $redirect = $c->uri_for_action('/release/cover_art_uploaded',
+                                      [ $entity->gid ],
+                                      { id => $id })->as_string ();
+
+    $c->stash->{form_action} = DBDefs::COVER_ART_ARCHIVE_UPLOAD_PREFIXER($bucket);
+    $c->stash->{s3fields} = $c->model ('CoverArtArchive')->post_fields ($bucket, $entity->gid, $id, $redirect);
+}
+
+sub add_cover_art : Chained('load') PathPart('add-cover-art') RequireAuth
+{
+    my ($self, $c) = @_;
+    my $entity = $c->stash->{$self->{entity_name}};
+
+    $c->model('Release')->load_meta($entity);
+
+    if (!$entity->may_have_cover_art) {
+        $c->stash( template => 'release/caa_darkened.tt' );
+        $c->detach;
+    }
+
+    my $id = $c->model('CoverArtArchive')->fresh_id;
+    $c->stash( id => $id );
+    $c->stash( index_url => (DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX . "/release/" . $entity->gid . "/") );
+
+    my $form = $c->form(
+        form => 'Release::AddCoverArt',
+        item => {
+            id => $id
+        }
+    );
+    if ($c->form_posted && $form->submitted_and_valid($c->req->params)) {
+
+        $self->_insert_edit(
+            $c, $form,
+            edit_type => $EDIT_RELEASE_ADD_COVER_ART,
+
+            # FIXME: rename to "to_edit"
+            release => $entity,
+            cover_art_url => $form->field ("filename")->value,
+            cover_art_types => $form->field ("type_id")->value,
+            cover_art_position => $form->field ("position")->value,
+            cover_art_id => $form->field('id')->value
+        );
+
+        $c->response->redirect($c->uri_for_action('/release/cover_art', [ $entity->gid ]));
+        $c->detach;
+    }
+}
+
 with 'MusicBrainz::Server::Controller::Role::Merge' => {
     edit_type => $EDIT_RELEASE_MERGE,
     confirmation_template => 'release/merge_confirm.tt',
@@ -509,6 +575,40 @@ around _merge_submit => sub {
 with 'MusicBrainz::Server::Controller::Role::Delete' => {
     edit_type      => $EDIT_RELEASE_DELETE,
 };
+
+sub remove_cover_art : Chained('load') PathPart('remove-cover-art') Args(1) Edit RequireAuth {
+    my ($self, $c, $id) = @_;
+
+    my $release = $c->stash->{entity};
+    my ($artwork) = grep { $_->id == $id }
+        @{ $c->model ('CoverArtArchive')->find_available_artwork($release->gid, $id) }
+            or $c->detach('/error_404');
+
+    $c->stash( artwork => $artwork );
+
+    $self->edit_action($c,
+        form        => 'Confirm',
+        type        => $EDIT_RELEASE_REMOVE_COVER_ART,
+        edit_args   => {
+            release       => $release,
+            cover_art_id  => $id
+        },
+        on_creation => sub {
+            $c->response->redirect($c->uri_for_action('/release/cover_art', [ $release->gid ]));
+            $c->detach;
+        }
+    )
+}
+
+sub cover_art : Chained('load') PathPart('cover-art') {
+    my ($self, $c) = @_;
+    my $release = $c->stash->{entity};
+    $c->model('Release')->load_meta($release);
+
+    $c->stash(
+        cover_art => $c->model('CoverArtArchive')->find_available_artwork($release->gid)
+    );
+}
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
