@@ -6,6 +6,7 @@ use MusicBrainz::Server::PagedReport;
 my @all = qw(
     DuplicateArtists
     ReleasesToConvert
+    ArtistsContainingDisambiguationComments
     ArtistsThatMayBeGroups
     ArtistsThatMayBePersons
     ASINsWithMultipleReleases
@@ -26,6 +27,7 @@ my @all = qw(
     NoScript
     PartOfSetRelationships
     PossibleCollaborations
+    RecordingsCreativeCommonsRelationships
     RecordingsWithEarliestReleaseRelationships
     ReleasedTooEarly
     SeparateDiscs
@@ -38,6 +40,7 @@ my @all = qw(
     MediumsWithSequenceIssues
 );
 
+use MusicBrainz::Server::Report::ArtistsContainingDisambiguationComments;
 use MusicBrainz::Server::Report::DuplicateArtists;
 use MusicBrainz::Server::Report::ReleasesToConvert;
 use MusicBrainz::Server::Report::ArtistsThatMayBeGroups;
@@ -61,6 +64,7 @@ use MusicBrainz::Server::Report::NoLanguage;
 use MusicBrainz::Server::Report::NoScript;
 use MusicBrainz::Server::Report::PartOfSetRelationships;
 use MusicBrainz::Server::Report::PossibleCollaborations;
+use MusicBrainz::Server::Report::RecordingsCreativeCommonsRelationships;
 use MusicBrainz::Server::Report::RecordingsWithEarliestReleaseRelationships;
 use MusicBrainz::Server::Report::ReleasedTooEarly;
 use MusicBrainz::Server::Report::SeparateDiscs;
