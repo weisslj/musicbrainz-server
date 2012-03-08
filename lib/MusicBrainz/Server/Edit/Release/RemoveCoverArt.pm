@@ -2,9 +2,10 @@ package MusicBrainz::Server::Edit::Release::RemoveCoverArt;
 use Moose;
 
 use List::MoreUtils qw( any );
-use MooseX::Types::Moose qw( Str Int );
+use MooseX::Types::Moose qw( Str Int ArrayRef );
 use MooseX::Types::Structured qw( Dict );
 use MusicBrainz::Server::Constants qw( $EDIT_RELEASE_REMOVE_COVER_ART );
+use MusicBrainz::Server::Constants qw( :expire_action :quality );
 use MusicBrainz::Server::Edit::Exceptions;
 use Net::CoverArtArchive;
 
@@ -25,7 +26,9 @@ has '+data' => (
             name => Str,
             mbid => Str
         ],
-        cover_art_id => Int
+        cover_art_id => Int,
+        cover_art_types => ArrayRef[Int],
+        cover_art_comment => Str,
     ]
 );
 
@@ -41,9 +44,37 @@ has bucket_name => (
     }
 );
 
+sub edit_conditions
+{
+    return {
+        $QUALITY_LOW => {
+            duration      => 4,
+            votes         => 1,
+            expire_action => $EXPIRE_ACCEPT,
+            auto_edit     => 0,
+        },
+        $QUALITY_NORMAL => {
+            duration      => 14,
+            votes         => 3,
+            expire_action => $EXPIRE_ACCEPT,
+            auto_edit     => 0,
+        },
+        $QUALITY_HIGH => {
+            duration      => 14,
+            votes         => 4,
+            expire_action => $EXPIRE_REJECT,
+            auto_edit     => 0,
+        },
+    };
+}
+
 sub initialize {
     my ($self, %opts) = @_;
     my $release = $opts{release} or die 'Release missing';
+    my $cover_art = $opts{to_delete} or die "Required 'to_delete' object";
+
+    my %type_map = map { $_->name => $_ }
+        $self->c->model ('CoverArtType')->get_by_name(@{ $cover_art->types });
 
     $self->data({
         entity => {
@@ -51,7 +82,11 @@ sub initialize {
             name => $release->name,
             mbid => $release->gid
         },
-        cover_art_id => $opts{cover_art_id},
+        cover_art_id => $cover_art->id,
+        cover_art_comment => $cover_art->comment,
+        cover_art_types => [
+            grep defined, map { $type_map{$_}->id } @{ $cover_art->types }
+        ]
     });
 }
 
@@ -71,7 +106,8 @@ sub foreign_keys {
     return {
         Release => {
             $self->data->{entity}{id} => [ 'ArtistCredit' ]
-        }
+        },
+        CoverArtType => $self->data->{cover_art_types}
     };
 }
 
@@ -80,6 +116,10 @@ sub build_display_data {
     return {
         release => $loaded->{Release}{ $self->data->{entity}{id} }
             || Release->new( name => $self->data->{entity}{name} ),
+        types => [
+            map { $loaded->{CoverArtType}{ $_ } } @{ $self->data->{cover_art_types} }
+        ],
+        comment => $self->data->{cover_art_comment}
     };
 }
 

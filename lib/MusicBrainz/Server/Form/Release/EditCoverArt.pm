@@ -1,20 +1,10 @@
-package MusicBrainz::Server::Form::Release::AddCoverArt;
+package MusicBrainz::Server::Form::Release::EditCoverArt;
 
 use HTML::FormHandler::Moose;
 extends 'MusicBrainz::Server::Form::CoverArt';
 with 'MusicBrainz::Server::Form::Role::Edit';
 
-has '+name' => ( default => 'add-cover-art' );
-
-has_field 'filename' => (
-    type      => 'Text',
-    required  => 1,
-);
-
-has_field 'id' => (
-    type      => '+MusicBrainz::Server::Form::Field::Integer',
-    required  => 1,
-);
+has '+name' => ( default => 'edit-cover-art' );
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

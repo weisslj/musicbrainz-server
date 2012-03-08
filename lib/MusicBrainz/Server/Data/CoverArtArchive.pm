@@ -27,8 +27,46 @@ has s3 => (
 
 my $caa = Net::CoverArtArchive->new (cover_art_archive_prefix => &DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX);
 
+sub bytype
+{
+    # sort front first.
+    return -1 if $a->is_front;
+    return  1 if $b->is_front;
+
+    my $a_has_front = (grep { lc ($_) eq "front" } @{ $a->{types} });
+    my $b_has_front = (grep { lc ($_) eq "front" } @{ $b->{types} });
+
+    return -1 if $a_has_front && !$b_has_front;
+    return  1 if !$a_has_front && $b_has_front;
+
+    # sort back after front.
+    return -1 if $a->is_back;
+    return  1 if $b->is_back;
+
+    my $a_has_back = (grep { lc ($_) eq "back" } @{ $a->{types} });
+    my $b_has_back = (grep { lc ($_) eq "back" } @{ $b->{types} });
+
+    return -1 if $a_has_back && !$b_has_back;
+    return  1 if !$a_has_back && $b_has_back;
+
+    my $a_has_other = (grep { lc ($_) eq "other" } @{ $a->{types} });
+    my $b_has_other = (grep { lc ($_) eq "other" } @{ $b->{types} });
+
+    # sort other at the end.
+    return  1 if $a_has_other && !$b_has_other;
+    return -1 if !$a_has_other && $b_has_other;
+
+    # none of the special cases match, so use the existing position.
+    return 0;
+}
+
 sub find_artwork { shift; return $caa->find_artwork(@_); };
-sub find_available_artwork { shift; return $caa->find_available_artwork(@_); };
+sub find_available_artwork {
+    my $self = shift;
+    my $artwork = $caa->find_available_artwork(@_);
+
+    return [ sort bytype @$artwork ];
+};
 
 sub delete_releases {
     my ($self, @mbids) = @_;
@@ -197,14 +235,12 @@ sub insert_cover_art {
         ' UPDATE cover_art_archive.cover_art
              SET ordering = ordering + 1
            WHERE release = ? and ordering >= ?;',
-        $release_id, $position
-    );
+        $release_id, $position);
 
     $self->sql->do(
         'INSERT INTO cover_art_archive.cover_art (release, edit, ordering, id, comment)
          VALUES (?, ?, ?, ?, ?)',
-        $release_id, $edit, $position, $cover_art_id, $comment
-    );
+        $release_id, $edit, $position, $cover_art_id, $comment);
 
     for my $type_id (@$types)
     {
@@ -212,6 +248,52 @@ sub insert_cover_art {
             'INSERT INTO cover_art_archive.cover_art_type (id, type_id) VALUES (?, ?)',
             $cover_art_id, $type_id);
     };
+}
+
+sub update_cover_art {
+    my ($self, $release_id, $edit, $cover_art_id, $position, $types, $comment) = @_;
+
+    # What to do with the edit?  it shouldn't replace the current edit should it?
+
+    if (defined $position)
+    {
+        # make sure the $cover_art_position slot is available.
+        $self->sql->do(
+            ' UPDATE cover_art_archive.cover_art
+                 SET ordering = ordering + 1
+               WHERE release = ? and ordering >= ?;',
+            $release_id, $position);
+    }
+
+    my @update_columns;
+    push @update_columns, 'ordering' if defined $position;
+    push @update_columns, 'comment' if defined $comment;
+
+    my @update_values;
+    push @update_values, $position if defined $position;
+    push @update_values, $comment if defined $comment;
+
+    if (scalar @update_columns)
+    {
+        $self->sql->do(
+            'UPDATE cover_art_archive.cover_art SET ' .
+            join (", ", map { $_ . " = ?" } @update_columns) .
+            'WHERE id = ?', @update_values, $cover_art_id);
+    }
+
+    if (defined $types)
+    {
+        $self->sql->do(
+            'DELETE FROM cover_art_archive.cover_art_type WHERE id = ?',
+            $cover_art_id);
+
+        for my $type_id (@$types)
+        {
+            $self->sql->do(
+                'INSERT INTO cover_art_archive.cover_art_type (id, type_id) VALUES (?, ?)',
+                $cover_art_id, $type_id);
+        };
+    }
 }
 
 sub delete {

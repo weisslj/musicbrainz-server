@@ -15,15 +15,17 @@ with 'MusicBrainz::Server::Controller::Role::Relationship';
 with 'MusicBrainz::Server::Controller::Role::EditListing';
 with 'MusicBrainz::Server::Controller::Role::Tag';
 
+use List::Util qw( first );
 use List::MoreUtils qw( part uniq );
 use List::UtilsBy 'nsort_by';
-use MusicBrainz::Server::Constants qw( $EDIT_RELEASE_DELETE $EDIT_RELEASE_ADD_COVER_ART );
 use MusicBrainz::Server::Translation qw ( l ln );
-
 use MusicBrainz::Server::Constants qw(
+    $EDIT_RELEASE_ADD_COVER_ART
     $EDIT_RELEASE_CHANGE_QUALITY
-    $EDIT_RELEASE_MOVE
+    $EDIT_RELEASE_DELETE
+    $EDIT_RELEASE_EDIT_COVER_ART
     $EDIT_RELEASE_MERGE
+    $EDIT_RELEASE_MOVE
     $EDIT_RELEASE_REMOVE_COVER_ART
 );
 
@@ -309,7 +311,7 @@ sub move : Chained('load') RequireAuth Edit ForbiddenOnSlaves
         }
 
         $c->stash(
-            template => 'release/move_confirm.tt', 
+            template => 'release/move_confirm.tt',
             release_group => $release_group
         );
 
@@ -377,7 +379,6 @@ sub cover_art_uploaded : Chained('load') PathPart('cover-art-uploaded')
 {
     my ($self, $c) = @_;
 
-    # FIXME: remove Chained('load') ?
     $c->stash->{filename} = $c->req->params->{key};
 }
 
@@ -410,8 +411,10 @@ sub add_cover_art : Chained('load') PathPart('add-cover-art') RequireAuth
     }
 
     my $id = $c->model('CoverArtArchive')->fresh_id;
-    $c->stash( id => $id );
-    $c->stash( index_url => (DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX . "/release/" . $entity->gid . "/") );
+    $c->stash({
+        id => $id,
+        index_url => DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX . "/release/" . $entity->gid . "/"
+    });
 
     my $form = $c->form(
         form => 'Release::AddCoverArt',
@@ -424,8 +427,6 @@ sub add_cover_art : Chained('load') PathPart('add-cover-art') RequireAuth
         $self->_insert_edit(
             $c, $form,
             edit_type => $EDIT_RELEASE_ADD_COVER_ART,
-
-            # FIXME: rename to "to_edit"
             release => $entity,
             cover_art_url => $form->field ("filename")->value,
             cover_art_types => $form->field ("type_id")->value,
@@ -577,12 +578,63 @@ with 'MusicBrainz::Server::Controller::Role::Delete' => {
     edit_type      => $EDIT_RELEASE_DELETE,
 };
 
+sub edit_cover_art : Chained('load') PathPart('edit-cover-art') Args(1) Edit RequireAuth
+{
+    my ($self, $c, $id) = @_;
+
+    my $entity = $c->stash->{entity};
+
+    # FIXME: this does both a clientside and a serverside lookup of the available artwork.
+    # integrate the two.
+
+    my @artwork = @{
+        $c->model ('CoverArtArchive')->find_available_artwork($entity->gid)
+    } or $c->detach('/error_404');
+
+    my $artwork = first { $_->id == $id } @artwork;
+    my $artwork_position = 1 + first { $artwork[$_]->id == $id } 0..$#artwork;
+
+    $c->stash({
+        artwork => $artwork,
+        index_url => DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX . "/release/" . $entity->gid . "/"
+    });
+
+    my @type_ids = map { $_->id } $c->model ('CoverArtType')->get_by_name (@{ $artwork->types });
+
+    my $form = $c->form(
+        form => 'Release::EditCoverArt',
+        item => {
+            id => $id,
+            type_id => \@type_ids,
+            comment => $artwork->comment,
+        }
+    );
+    if ($c->form_posted && $form->submitted_and_valid($c->req->params))
+    {
+        $self->_insert_edit(
+            $c, $form,
+            edit_type => $EDIT_RELEASE_EDIT_COVER_ART,
+            release => $entity,
+            artwork_id => $artwork->id,
+            old_types => [ @type_ids ],
+            old_comment => $artwork->comment,
+            old_position => $artwork_position,
+            new_types => $form->field ("type_id")->value,
+            new_comment => $form->field('comment')->value || '',
+            new_position => $form->field ("position")->value
+        );
+
+        $c->response->redirect($c->uri_for_action('/release/cover_art', [ $entity->gid ]));
+        $c->detach;
+    }
+}
+
 sub remove_cover_art : Chained('load') PathPart('remove-cover-art') Args(1) Edit RequireAuth {
     my ($self, $c, $id) = @_;
 
     my $release = $c->stash->{entity};
-    my ($artwork) = grep { $_->id == $id }
-        @{ $c->model ('CoverArtArchive')->find_available_artwork($release->gid, $id) }
+    my $artwork = first { $_->id == $id }
+        @{ $c->model ('CoverArtArchive')->find_available_artwork($release->gid) }
             or $c->detach('/error_404');
 
     $c->stash( artwork => $artwork );
@@ -591,8 +643,8 @@ sub remove_cover_art : Chained('load') PathPart('remove-cover-art') Args(1) Edit
         form        => 'Confirm',
         type        => $EDIT_RELEASE_REMOVE_COVER_ART,
         edit_args   => {
-            release       => $release,
-            cover_art_id  => $id
+            release   => $release,
+            to_delete => $artwork
         },
         on_creation => sub {
             $c->response->redirect($c->uri_for_action('/release/cover_art', [ $release->gid ]));
