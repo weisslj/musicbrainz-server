@@ -584,9 +584,6 @@ sub edit_cover_art : Chained('load') PathPart('edit-cover-art') Args(1) Edit Req
 
     my $entity = $c->stash->{entity};
 
-    # FIXME: this does both a clientside and a serverside lookup of the available artwork.
-    # integrate the two.
-
     my @artwork = @{
         $c->model ('CoverArtArchive')->find_available_artwork($entity->gid)
     } or $c->detach('/error_404');
@@ -596,6 +593,7 @@ sub edit_cover_art : Chained('load') PathPart('edit-cover-art') Args(1) Edit Req
 
     $c->stash({
         artwork => $artwork,
+        images => \@artwork,
         index_url => DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX . "/release/" . $entity->gid . "/"
     });
 
