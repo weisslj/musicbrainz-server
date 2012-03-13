@@ -23,16 +23,25 @@
   <tr>
     <th>[% l('Types:') %]</th>
     <td>
-      <ul class="inline">
-      [% FOR type=edit.display_data.types %]
-      <li>[% type.name | html %]</li>
+      [% IF edit.display_data.types.size %]
+        <ul class="inline">
+        [% FOR type=edit.display_data.types %]
+          <li>[% type.name | html %]</li>
+        [% END %]
+        </ul>
+      [% ELSE %]
+        [% l('(none)') %]
       [% END %]
-      </ul>
     </td>
   </tr>
 
   <tr>
+    <th>[% l('Filename:') %]</th>
+    <td><code>mbid-[% edit.data.entity.mbid %]-[% edit.data.cover_art_id %].jpg</code></td>
+  </tr>
+
+  <tr>
     <th>[% l('Comment:') %]</th>
-    <td>[% edit.display_data.comment %]</td>
+    <td>[% html_escape(edit.display_data.comment) || l('(none)') %]</td>
   </tr>
 </table>
